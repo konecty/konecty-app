@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -8,6 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { useTranslation } from 'react-i18next';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { authLogin } from './actions';
+
 import Copyright from '../../Components/Copyright';
 import Link from '../../Components/Link';
 import useStyles from './useStyles';
@@ -16,7 +20,22 @@ import logo from '../../assets/konecty.png';
 
 const Login = () => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 	const { t } = useTranslation();
+	const [username, setLogin] = useState('');
+	const [pass, setPass] = useState('');
+
+	const { user } = useSelector(({ app }) => app);
+
+	const onChange = func => ({ target }) => func(target.value);
+	const submit = event => {
+		event.preventDefault();
+		dispatch(authLogin({ username, pass }));
+	};
+
+	if (user && user.logged) {
+		return <Redirect to="/" />;
+	}
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -26,7 +45,7 @@ const Login = () => {
 				<Typography component="h1" variant="h5">
 					{t('login-title')}
 				</Typography>
-				<form className={classes.form} noValidate>
+				<form className={classes.form} noValidate action="#" onSubmit={submit}>
 					<TextField
 						variant="outlined"
 						margin="normal"
@@ -34,6 +53,8 @@ const Login = () => {
 						fullWidth
 						id="email"
 						label={t('user')}
+						value={username}
+						onChange={onChange(setLogin)}
 						name="user"
 						autoComplete="user"
 						autoFocus
@@ -45,6 +66,8 @@ const Login = () => {
 						fullWidth
 						name="password"
 						label={t('password')}
+						value={pass}
+						onChange={onChange(setPass)}
 						type="password"
 						id="password"
 						autoComplete="current-password"

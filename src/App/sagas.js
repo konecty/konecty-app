@@ -14,13 +14,13 @@ function* loadConfig() {
 function* loadUser() {
 	const payload = yield queryCache.prefetchQuery('userInfo', loadUserInfo);
 	if (payload != null) {
-		yield put(userLoaded({ payload }));
+		yield put(userLoaded({ ...payload, data: payload.user }));
 	} else {
 		yield put(userLoaded({ logged: false }));
 	}
 }
 
-export default function* StateSampleSagas() {
+export default function* () {
 	yield takeLatest(LOAD_CONFIG, loadConfig);
 	yield takeLatest(LOAD_USER, loadUser);
 }
