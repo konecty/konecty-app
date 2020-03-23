@@ -1,0 +1,50 @@
+{
+	"parser": "babel-eslint",
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"env": {
+		"browser": true
+	},
+	"plugins": ["react", "prettier"],
+	"extends": ["airbnb", "standard", "plugin:prettier/recommended"],
+	"rules": {
+		"react/jsx-no-bind": [
+			"error",
+			{
+				"allowArrowFunctions": true,
+				"allowBind": false,
+				"ignoreRefs": true
+			}
+		],
+		"quotes": ["error", "single"],
+		"comma-dangle": ["error", "always-multiline"],
+		"prettier/prettier": [
+			"error",
+			{
+				"printWidth": 132,
+				"singleQuote": true,
+				"useTabs": true,
+				"semi": true,
+				"trailingComma": "all",
+				"bracketSpacing": true,
+				"arrowParens": "avoid"
+			}
+		],
+		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"no-tabs": "off",
+		"max-len": ["error", { "code": 200 }],
+		"no-underscore-dangle": "off",
+		"react/no-did-update-set-state": "error",
+		"react/no-unknown-property": "error",
+		"react/no-unused-prop-types": "error",
+		"react/prop-types": "error",
+		"react/react-in-jsx-scope": "error",
+		"react/jsx-filename-extension": "off",
+		"react/jsx-indent": ["error", "tab"],
+		"react/jsx-indent-props": ["error", "tab"],
+		"react/jsx-one-expression-per-line": 0,
+		"react/require-default-props": 0
+	}
+}
