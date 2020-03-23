@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Home from './Home';
+import GeneralList from './GeneralList';
 import StateSample from './StateSample';
 import Login from './Login';
 
@@ -45,6 +46,9 @@ const Routes = () => {
 		<Switch>
 			<Route path="/login">
 				<Login />
+			</Route>
+			<Route path="/list">
+				<GeneralList />
 			</Route>
 			<PrivateRoute exact path="/">
 				<Home />
