@@ -14,7 +14,7 @@ function* loadConfig() {
 function* loadUser() {
 	const payload = yield queryCache.prefetchQuery('userInfo', loadUserInfo);
 	if (payload != null) {
-		yield put(userLoaded({ ...payload, data: payload.user }));
+		yield put(userLoaded({ logged: true, data: payload.user }));
 	} else {
 		yield put(userLoaded({ logged: false }));
 	}

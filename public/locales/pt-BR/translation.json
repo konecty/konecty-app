@@ -3,5 +3,20 @@
 	"user": "Usuário",
 	"password": "Senha",
 	"sign-in": "Entrar",
-	"forgot-password": "Esqueci minha senha"
+    "forgot-password": "Esqueci minha senha",
+
+    "personal-data": "Dados Pessoais",
+    "opportunities": "Oportunidades",
+    "activities": "Tarefas",
+    "phone": "Telefone",
+    "gender": "Sexo",
+    "age": "Idade",
+    "prognostic": "Prognóstico",
+    "category": "Categoria",
+    "mild-symptoms": "Sintomas Brandos",
+    "severe-symptoms": "Sintomas Severos",
+    "has-fever": "Tem Febre",
+    "risk-group": "Grupo de Risco",
+    "y": "Sim",
+    "n": "Não"
 }

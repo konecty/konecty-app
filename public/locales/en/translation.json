@@ -3,5 +3,20 @@
 	"user": "User",
 	"password": "Password",
 	"sign-in": "Sign in",
-	"forgot-password": "Forgot my password"
+    "forgot-password": "Forgot my password",
+    
+    "personal-data": "Personal Data",
+    "opportunities": "Opportunities",
+    "activities": "Tasks",
+    "phone": "Phone",
+    "gender": "Gender",
+    "age": "Age",
+    "prognostic": "Prognostic",
+    "category": "Category",
+    "mild-symptoms": "Mild Symptoms",
+    "severe-symptoms": "Severe Symptoms",
+    "has-fever": "Has Fever",
+    "risk-group": "Risk Group",
+    "y": "Yes",
+    "n": "No"
 }
