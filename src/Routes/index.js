@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import Home from './Home';
 import GeneralList from './GeneralList';
+import ItemSheet from './ItemSheet';
 import StateSample from './StateSample';
 import Login from './Login';
 
@@ -47,8 +48,11 @@ const Routes = () => {
 			<Route path="/login">
 				<Login />
 			</Route>
-			<Route path="/list">
+			<Route path="/list/:code">
 				<GeneralList />
+			</Route>
+			<Route path="/record/:code">
+				<ItemSheet />
 			</Route>
 			<PrivateRoute exact path="/">
 				<Home />
