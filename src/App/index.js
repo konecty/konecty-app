@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-
+import CssBaseline from '@material-ui/core/CssBaseline';
 import Routes from '../Routes';
 import Loader from '../Components/Loader';
 import { loadConfig, loadUser } from './actions';
@@ -25,11 +25,14 @@ const App = () => {
 	}
 
 	return (
-		<Suspense fallback={<Loader />}>
-			<Router>
-				<Routes />
-			</Router>
-		</Suspense>
+		<>
+			<CssBaseline />
+			<Suspense fallback={<Loader />}>
+				<Router>
+					<Routes />
+				</Router>
+			</Suspense>
+		</>
 	);
 };
 
