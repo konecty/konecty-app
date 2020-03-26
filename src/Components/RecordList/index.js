@@ -31,6 +31,9 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: theme.palette.grey[500],
 		},
 	},
+	check: {
+		minWidth: theme.spacing(4),
+	},
 }));
 
 const RecordList = ({ members }) => {
@@ -57,7 +60,7 @@ const RecordList = ({ members }) => {
 
 				return (
 					<ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
-						<ListItemIcon>
+						<ListItemIcon className={classes.check}>
 							<Checkbox
 								edge="start"
 								checked={checked.indexOf(value) !== -1}
