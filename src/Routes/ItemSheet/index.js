@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(2),
 	},
 	title: {
-		marginBottom: theme.spacing(2),
+		marginTop: theme.spacing(4),
+		marginBottom: theme.spacing(0),
 	},
 	chip: {
 		marginRight: theme.spacing(1),
