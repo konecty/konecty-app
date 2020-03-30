@@ -4,6 +4,7 @@
 	"password": "Password",
 	"sign-in": "Sign in",
     "forgot-password": "Forgot my password",
+    "all-patients": "All Patients",
     
     "personal-data": "Personal Data",
     "opportunities": "Treatments",
@@ -22,5 +23,7 @@
 
     "next-step": "Next step",
     "notes": "Observation",
-    "reason": "Reason"
+    "reason": "Reason",
+    "no-treatments": "There is no treatment for this patient",
+    "no-tasks": "There is no tasks for this patient"
 }

@@ -4,6 +4,7 @@
 	"password": "Senha",
 	"sign-in": "Entrar",
     "forgot-password": "Esqueci minha senha",
+    "all-patients": "Todos Pacientes",
 
     "personal-data": "Dados Pessoais",
     "opportunities": "Tratamentos",
@@ -22,5 +23,7 @@
 
     "next-step": "Próximo passo",
     "notes": "Observação",
-    "reason": "Motivo"
+    "reason": "Motivo",
+    "no-treatments": "Esse paciente não possui atendimentos",
+    "no-tasks": "Esse paciente não possui tarefas"
 }

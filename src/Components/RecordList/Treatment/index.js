@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { map } from 'lodash';
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -19,12 +20,12 @@ const TreatmentList = ({ items }) => {
 	const onChange = name => () => setExpanded(isExpanded(name) ? false : name);
 
 	if (!Array.isArray(items)) {
-		return null;
+		return t('no-treatments');
 	}
 
 	return (
 		<div className={classes.root}>
-			{items.map(item => (
+			{map(items, item => (
 				<ExpansionPanel key={item._id} expanded={isExpanded(item.code)} onChange={onChange(item.code)}>
 					<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
 						<Typography className={classes.heading}>{item.status}&nbsp;</Typography>

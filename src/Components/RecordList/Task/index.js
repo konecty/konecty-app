@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { map } from 'lodash';
 
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,7 +18,7 @@ const TaskList = ({ items }) => {
 	const { t } = useTranslation();
 
 	if (!Array.isArray(items)) {
-		return null;
+		return t('no-tasks');
 	}
 
 	const priorities = {
@@ -28,7 +29,7 @@ const TaskList = ({ items }) => {
 
 	return (
 		<div>
-			{items.map(item => (
+			{map(items, item => (
 				<Paper key={item._id}>
 					<Toolbar style={{ backgroundColor: theme.palette[priorities[item.priority]].color }}>
 						<Typography className={classes.heading}>{item.priority}</Typography>
