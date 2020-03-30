@@ -9,20 +9,42 @@ import Container from '@material-ui/core/Container';
 import Chip from '@material-ui/core/Chip';
 
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
-import RecordList from '../../Components/RecordList';
-import { AppBarItem } from '../../Components/AppBar';
 import useStyles from './useStyles';
 
-import { loadDetails, loadTasks, loadOpportunities } from './actions';
+import fetchContact from '../../DAL/fetchContact';
+import fetchTasks from '../../DAL/fetchTasks';
+import fetchOpportunities from '../../DAL/fetchOpportunities';
+
 import Loader from '../../Components/Loader';
+import { Treatment as TreatmentList, Task as TaskList } from '../../Components/RecordList';
 
 const Detail = ({ match }) => {
 	const classes = useStyles();
-	const dispatch = useDispatch();
 	const { t } = useTranslation();
-	const { contact } = useSelector(({ app }) => app);
+	const [contact, setContact] = useState(null);
 	const [loading, setLoading] = useState(true);
+
+	const getDetails = async code => {
+		try {
+			const [[person] = [], tasks, opportunities] = await Promise.all([
+				fetchContact(code),
+				fetchTasks(code),
+				fetchOpportunities(code),
+			]);
+
+			if (person) {
+				return {
+					...person,
+					tasks,
+					opportunities,
+				};
+			}
+
+			return { code };
+		} catch (e) {
+			return { code };
+		}
+	};
 
 	useEffect(() => {
 		const routeCode = Number(match.params.code);
@@ -31,9 +53,7 @@ const Detail = ({ match }) => {
 		if (loaded) setLoading(false);
 		else {
 			setLoading(true);
-			dispatch(loadDetails(routeCode));
-			dispatch(loadTasks(routeCode));
-			dispatch(loadOpportunities(routeCode));
+			getDetails(routeCode).then(setContact).catch(setContact);
 		}
 	}, [contact]);
 
@@ -45,18 +65,16 @@ const Detail = ({ match }) => {
 		return <Typography>No contact found with that code.</Typography>;
 	}
 
-	const birth = get(contact, 'birthdate') && new Date(contact.birthdate).getFullYear();
 	return (
 		<>
-			<AppBarItem />
 			<Box className={classes.box}>
 				<Container maxWidth="sm">
 					<Typography variant="h4" component="h1" className={classes.title}>
 						{get(contact, 'name.full', '').trim()}
 					</Typography>
 					<Box>
-						{get(contact, 'status') && <Chip color="white" label={get(contact, 'status')} className={classes.chip} />}
-						{get(contact, 'type') && <Chip color="white" label={get(contact, 'type')} className={classes.chip} />}
+						{get(contact, 'status') && <Chip label={get(contact, 'status')} className={classes.chip} />}
+						{get(contact, 'type') && <Chip label={get(contact, 'type')} className={classes.chip} />}
 					</Box>
 				</Container>
 			</Box>
@@ -86,12 +104,12 @@ const Detail = ({ match }) => {
 							value={get(contact, 'gender')}
 						/>
 					)}
-					{birth && (
+					{get(contact, 'age') && (
 						<TextField
 							label={t('age')}
 							size="small"
 							inputProps={{ readOnly: true, 'aria-readonly': true }}
-							value={`${new Date().getFullYear() - birth} (TODO)`}
+							value={get(contact, 'age')}
 						/>
 					)}
 					{get(contact, 'notes') && (
@@ -153,13 +171,13 @@ const Detail = ({ match }) => {
 					<Typography variant="h5" component="h2" className={classes.title}>
 						{t('opportunities')}
 					</Typography>
-					<RecordList />
+					<TreatmentList items={contact.opportunities} />
 				</Box>
 				<Box my={2}>
 					<Typography variant="h5" component="h2" className={classes.title}>
 						{t('activities')}
 					</Typography>
-					<RecordList />
+					<TaskList items={contact.tasks} />
 				</Box>
 			</Container>
 		</>

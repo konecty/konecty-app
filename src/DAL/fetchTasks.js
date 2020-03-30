@@ -5,7 +5,13 @@ const getTasks = async code => {
 	try {
 		const {
 			data: { data, success, errors },
-		} = await get('/rest/data/Activity/find', apiFilter({}, { term: 'contact.code', operator: 'equals', value: code }));
+		} = await get(
+			'/rest/data/Activity/find',
+			apiFilter(
+				{ params: { sort: '[{"property": "priority", "direction": "ASC"}]' } },
+				{ term: 'contact.code', operator: 'equals', value: code },
+			),
+		);
 
 		if (success && data.length) return data;
 		if (!data.length) {

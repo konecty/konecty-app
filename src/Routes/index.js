@@ -4,13 +4,11 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Home from './Home';
-import GeneralList from './GeneralList';
-import ItemSheet from './ItemSheet';
 import StateSample from './StateSample';
 import Login from './Login';
 import Detail from './Detail';
 
-const PrivateRoute = ({ children, ...rest }) => {
+const PrivateRoute = ({ component, ...rest }) => {
 	const isAuthenticated = useSelector(({ app: { user } }) => user != null && user.logged);
 
 	return (
@@ -18,9 +16,9 @@ const PrivateRoute = ({ children, ...rest }) => {
 			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...rest}
 			render={
-				({ location }) =>
+				({ location, ...props }) =>
 					isAuthenticated ? (
-						children
+						React.createElement(component, { ...props, location })
 					) : (
 						<Redirect
 							to={{
@@ -48,8 +46,6 @@ const Routes = () => {
 	return (
 		<Switch>
 			<Route path="/login" component={Login} />
-			<Route path="/list/:code" component={GeneralList} />
-			<Route path="/record/:code" component={ItemSheet} />
 
 			<PrivateRoute exact path="/" component={Home} />
 			<PrivateRoute exact path="/detail/:code" component={Detail} />

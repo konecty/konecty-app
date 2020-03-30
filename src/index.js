@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { ReactQueryConfigProvider } from 'react-query';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import theme from './Theme';
 
 import App from './App';
 import rootReducer from './rootReducer';
@@ -34,9 +36,11 @@ sagaMiddleware.run(rootSagas);
 
 render(
 	<ReactQueryConfigProvider config={queryConfig}>
-		<Provider store={store}>
-			<App />
-		</Provider>
+		<ThemeProvider theme={theme}>
+			<Provider store={store}>
+				<App />
+			</Provider>
+		</ThemeProvider>
 	</ReactQueryConfigProvider>,
 	document.getElementById('main'),
 );

@@ -6,7 +6,7 @@
     "forgot-password": "Forgot my password",
     
     "personal-data": "Personal Data",
-    "opportunities": "Opportunities",
+    "opportunities": "Treatments",
     "activities": "Tasks",
     "phone": "Phone",
     "gender": "Gender",
@@ -18,5 +18,9 @@
     "has-fever": "Has Fever",
     "risk-group": "Risk Group",
     "y": "Yes",
-    "n": "No"
+    "n": "No",
+
+    "next-step": "Next step",
+    "notes": "Observation",
+    "reason": "Reason"
 }

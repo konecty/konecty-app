@@ -6,7 +6,7 @@
     "forgot-password": "Esqueci minha senha",
 
     "personal-data": "Dados Pessoais",
-    "opportunities": "Oportunidades",
+    "opportunities": "Tratamentos",
     "activities": "Tarefas",
     "phone": "Telefone",
     "gender": "Sexo",
@@ -18,5 +18,9 @@
     "has-fever": "Tem Febre",
     "risk-group": "Grupo de Risco",
     "y": "Sim",
-    "n": "Não"
+    "n": "Não",
+
+    "next-step": "Próximo passo",
+    "notes": "Observação",
+    "reason": "Motivo"
 }

@@ -4,7 +4,7 @@
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "parcel --port 3000 src/index.html",
+		"start": "parcel --port 8000 src/index.html",
 		"build": "parcel build src/index.html",
 		"lint": "eslint src --fix"
 	},
@@ -15,6 +15,7 @@
 	"dependencies": {
 		"@material-ui/core": "^4.9.7",
 		"@material-ui/icons": "^4.9.1",
+		"@material-ui/styles": "^4.9.6",
 		"axios": "^0.19.2",
 		"i18next": "^19.3.3",
 		"i18next-browser-languagedetector": "^4.0.2",
