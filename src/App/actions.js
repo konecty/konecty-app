@@ -9,8 +9,9 @@ export const configLoaded = payload => ({
 	payload,
 });
 
-export const loadUser = () => ({
+export const loadUser = payload => ({
 	type: LOAD_USER,
+	payload,
 });
 
 export const userLoaded = payload => ({

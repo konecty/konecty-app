@@ -1,20 +1,30 @@
 import { takeLatest, put } from 'redux-saga/effects';
 import { queryCache } from 'react-query';
+import localforage from 'localforage';
 import { LOAD_CONFIG, LOAD_USER } from './constants';
 
 import fetchConfig from '../DAL/fetchConfig';
 import { userLoaded, configLoaded } from './actions';
 import loadUserInfo from '../DAL/loadUserInfo';
+import { decrypt } from '../Util/crypto';
 
 function* loadConfig() {
 	const data = yield queryCache.prefetchQuery('config', fetchConfig);
 	yield put(configLoaded(data));
 }
 
-function* loadUser() {
-	const payload = yield queryCache.prefetchQuery('userInfo', loadUserInfo);
-	if (payload != null) {
-		yield put(userLoaded({ logged: true, data: payload.user }));
+function* loadUser({ payload }) {
+	if (payload && payload.encrypted) {
+		payload.token = yield decrypt(payload.token, payload.jwk);
+
+		const storedToken = yield localforage.getItem('token');
+		if (!storedToken) localforage.setItem('token', payload.token);
+	}
+
+	const res = yield loadUserInfo(payload);
+
+	if (res != null) {
+		yield put(userLoaded({ logged: true, data: res.user }));
 	} else {
 		yield put(userLoaded({ logged: false }));
 	}

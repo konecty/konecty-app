@@ -16,7 +16,19 @@ const App = () => {
 
 	useEffect(() => {
 		if (config != null) {
-			dispatch(loadUser());
+			let param;
+			const search = new URLSearchParams(window.location.search);
+			const token = search.get('t');
+
+			if (token) {
+				if (!config.jwk) {
+					throw new Error('Token encrypted, but missing JWK');
+				}
+
+				param = { encrypted: true, token, jwk: config.jwk };
+			}
+
+			dispatch(loadUser(param));
 		}
 	}, [config]);
 

@@ -7,6 +7,7 @@ import Home from './Home';
 import StateSample from './StateSample';
 import Login from './Login';
 import Detail from './Detail';
+import ClientByRoom from './ClientByRoom';
 
 const PrivateRoute = ({ component, ...rest }) => {
 	const isAuthenticated = useSelector(({ app: { user } }) => user != null && user.logged);
@@ -23,6 +24,7 @@ const PrivateRoute = ({ component, ...rest }) => {
 						<Redirect
 							to={{
 								pathname: '/login',
+								search: location.search,
 								state: { from: location },
 							}}
 						/>
@@ -48,6 +50,7 @@ const Routes = () => {
 			<Route path="/login" component={Login} />
 
 			<PrivateRoute exact path="/" component={Home} />
+			<PrivateRoute exact path="/clientByRoom" component={ClientByRoom} />
 			<PrivateRoute exact path="/detail/:code" component={Detail} />
 			<PrivateRoute path="/state-sample" component={StateSample} />
 		</Switch>
