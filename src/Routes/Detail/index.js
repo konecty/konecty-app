@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { get, map } from 'lodash';
+import { get } from 'lodash';
 
-import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -17,6 +16,8 @@ import fetchOpportunities from '../../DAL/fetchOpportunities';
 
 import Loader from '../../Components/Loader';
 import { Treatment as TreatmentList, Task as TaskList } from '../../Components/RecordList';
+import DisplayForm from '../../Components/DisplayForm';
+import getFields from './fields';
 
 const Detail = ({ match }) => {
 	const classes = useStyles();
@@ -65,6 +66,8 @@ const Detail = ({ match }) => {
 		return <Typography>No contact found with that code.</Typography>;
 	}
 
+	const { personalFields, locationFields, healthstatusFields } = getFields({ t, contact, setContact });
+
 	return (
 		<>
 			<Box className={classes.box}>
@@ -80,93 +83,11 @@ const Detail = ({ match }) => {
 			</Box>
 			<Container maxWidth="sm" className={classes.root}>
 				<Box my={2}>
-					<Typography variant="h5" component="h2" className={classes.title}>
-						{t('personal-data')}
-					</Typography>
-
-					{get(contact, 'phone', []).length > 0 && (
-						<>
-							<TextField
-								label={t('phone')}
-								size="small"
-								inputProps={{ readOnly: true, 'aria-readonly': true }}
-								multiline={contact.phone.length > 1}
-								rows={contact.phone.length}
-								value={map(contact.phone, phone => phone.phoneNumber).join('\n')}
-							/>
-						</>
-					)}
-					{get(contact, 'gender') && (
-						<TextField
-							label={t('gender')}
-							size="small"
-							inputProps={{ readOnly: true, 'aria-readonly': true }}
-							value={get(contact, 'gender')}
-						/>
-					)}
-					{get(contact, 'age') && (
-						<TextField
-							label={t('age')}
-							size="small"
-							inputProps={{ readOnly: true, 'aria-readonly': true }}
-							value={get(contact, 'age')}
-						/>
-					)}
-					{get(contact, 'notes') && (
-						<TextField
-							label={t('observation')}
-							size="small"
-							inputProps={{ readOnly: true, 'aria-readonly': true }}
-							value={get(contact, 'notes')}
-						/>
-					)}
+					<DisplayForm title={t('personal-data')} fields={personalFields} />
+					<DisplayForm title={t('location')} fields={locationFields} />
+					<DisplayForm title={t('health-status')} fields={healthstatusFields} />
 				</Box>
-				<Box my={2}>
-					<Typography variant="h5" component="h2" className={classes.title}>
-						{t('prognostic')}
-					</Typography>
 
-					{get(contact, 'category') && (
-						<TextField
-							label={t('category')}
-							size="small"
-							inputProps={{ readOnly: true, 'aria-readonly': true }}
-							value={get(contact, 'category')}
-						/>
-					)}
-					{get(contact, 'mildSymptoms') && (
-						<TextField
-							label={t('mild-symptoms')}
-							size="small"
-							inputProps={{ readOnly: true, 'aria-readonly': true }}
-							value={get(contact, 'mildSymptoms')}
-						/>
-					)}
-					{get(contact, 'severeSymptoms') && (
-						<TextField
-							label={t('severe-symptoms')}
-							size="small"
-							inputProps={{ readOnly: true, 'aria-readonly': true }}
-							value={get(contact, 'severeSymptoms')}
-						/>
-					)}
-					{get(contact, 'hasFever') != null && (
-						<TextField
-							label={t('has-fever')}
-							size="small"
-							inputProps={{ readOnly: true, 'aria-readonly': true }}
-							value={get(contact, 'hasFever') ? t('y') : t('n')}
-						/>
-					)}
-					{get(contact, 'riskGroup') != null && (
-						<TextField
-							label={t('risk-group')}
-							size="small"
-							inputProps={{ readOnly: true, 'aria-readonly': true }}
-							value={get(contact, 'riskGroup') ? t('y') : t('n')}
-						/>
-					)}
-				</Box>
 				<Box my={2}>
 					<Typography variant="h5" component="h2" className={classes.title}>
 						{t('opportunities')}

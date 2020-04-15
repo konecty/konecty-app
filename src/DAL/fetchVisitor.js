@@ -1,22 +1,24 @@
-import axios from 'axios';
-import localForage from 'localforage';
+import take from 'lodash/get';
+import apiFilter from '../Util/apiFilter';
 import { get } from './api';
 
-const fetchVisitor = async ({ rid, uid, parentUrl }) => {
+const fetchVisitor = async ({ rid }) => {
 	try {
-		const token = await localForage.getItem('token');
-		const headers = {
-			'X-User-Id': uid,
-			'X-Auth-Token': token,
-		};
+		const {
+			data: { data, success, errors },
+		} = await get(
+			'/rest/data/Opportunity/find?fields=code,contact',
+			apiFilter({}, { term: 'livechatId', operator: 'equals', value: rid }),
+		);
 
-		const { data: { room } } = await axios.get(`${parentUrl}/api/v1/rooms.info?roomId=${rid}`, { headers });
-		if (!room) {
-			throw new Error(`Room not found wit id ${rid}`);
+		if (success && data.length) return take(data, '0.contact');
+
+		if (!data.length) {
+			console.log(`No Opportunity found from with RID ${rid}.`);
+			return null;
 		}
 
-		const { data: visitor } = await get(`/api/v2/livechat.visitor?visitorId=${room.v._id}`);
-		return visitor;
+		throw errors;
 	} catch (e) {
 		console.error(e);
 		return null;

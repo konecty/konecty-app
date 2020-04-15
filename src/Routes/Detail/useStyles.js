@@ -13,11 +13,11 @@ const useStyles = makeStyles(theme => ({
 		marginRight: theme.spacing(1),
 	},
 	root: {
-		'& .MuiTextField-root': {
-			display: 'block',
-			margin: theme.spacing(2, 0),
-			width: 200,
-		},
+		// '& .MuiTextField-root': {
+		// 	display: 'block',
+		// 	margin: theme.spacing(2, 0),
+		// 	width: 200,
+		// },
 	},
 }));
 

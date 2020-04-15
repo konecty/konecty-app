@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { get } from 'lodash';
 
 import Loader from '../../Components/Loader';
 import fetchVisitor from '../../DAL/fetchVisitor';
@@ -18,10 +17,10 @@ const ClientByToken = ({ location }) => {
 
 	const loadVisitor = async () => {
 		const visitor = await fetchVisitor({ ...params, parentUrl });
-		const phone = get(visitor, 'phone.0.phoneNumber');
+		const { code } = visitor;
 
-		if (phone) {
-			setTo(`/detail/${phone}`);
+		if (code) {
+			setTo(`/detail/${code}`);
 		} else {
 			setTo('/');
 		}
