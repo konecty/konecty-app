@@ -9,15 +9,19 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 	},
 	inputControl: {
-		paddingLeft: 100,
-		textAlign: 'right',
+		paddingLeft: 128,
+		// textAlign: 'right',
 	},
 	input: {
-		textAlign: 'right',
+		// textAlign: 'right',
 	},
 	label: {
+		width: 126,
 		fontSize: '0.875rem',
 		transform: 'translate(0, 24px) scale(1)',
+		textOverflow: 'ellipsis',
+		overflow: 'hidden',
+		whiteSpace: 'nowrap',
 	},
 }));
 

@@ -111,23 +111,19 @@ const DisplayForm = ({ fields, title, editable }) => {
 	};
 
 	return (
-		<Box my={2}>
+		<Box my={4}>
 			{(title || editable) && (
-				<Box display="flex" justifyContent="space-between">
-					<Typography variant="h5" component="h2">
+				<Box display="flex" justifyContent="space-between" alignItems="center">
+					<Typography variant="h5" component="h2" mb={0}>
 						{title}
 					</Typography>
-					{editable && (
-						<Button color="primary" onClick={onEditClick}>
-							{editing ? (
-								<>
-									<SaveIcon /> Salvar
-								</>
-							) : (
-								<>
-									<EditIcon /> Editar
-								</>
-							)}
+					{editable && editing ? (
+						<Button color="primary" variant="contained" size="small" onClick={onEditClick} startIcon={<SaveIcon />}>
+							Salvar
+						</Button>
+					) : (
+						<Button color="" variant="contained" size="small" onClick={onEditClick} startIcon={<EditIcon />}>
+							Editar
 						</Button>
 					)}
 				</Box>
