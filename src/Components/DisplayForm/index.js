@@ -45,7 +45,11 @@ const DisplayForm = ({ fields, title, editable }) => {
 						<InputLabel htmlFor={props.label} classes={{ root: classes.label }}>
 							{props.label}
 						</InputLabel>
-						<Select id={props.label} {...props} classes={{ root: classes.inputControl, select: classes.input }}>
+						<Select
+							id={props.label}
+							{...props}
+							classes={{ root: classes.select, select: classes.input, icon: classes.selectIcon }}
+						>
 							{map(props.opts, opt => (
 								<MenuItem value={opt} key={opt}>
 									{opt}
@@ -60,7 +64,7 @@ const DisplayForm = ({ fields, title, editable }) => {
 					{...props}
 					classes={{ root: classes.textFieldRoot }}
 					InputProps={{
-						classes: { root: classes.inputControl, input: classes.input },
+						classes: { root: classes.inputControl, input: classes.input, inputMultiline: classes.inputMultiline },
 					}}
 					InputLabelProps={{
 						classes: { root: classes.label },
@@ -74,7 +78,7 @@ const DisplayForm = ({ fields, title, editable }) => {
 				{...props}
 				classes={{ root: classes.textFieldRoot }}
 				InputProps={{
-					classes: { root: classes.inputControl, input: classes.input },
+					classes: { root: classes.inputControl, input: classes.input, inputMultiline: classes.inputMultiline },
 					readOnly: true,
 				}}
 				InputLabelProps={{
@@ -117,15 +121,30 @@ const DisplayForm = ({ fields, title, editable }) => {
 					<Typography variant="h5" component="h2" mb={0}>
 						{title}
 					</Typography>
-					{editable && editing ? (
-						<Button color="primary" variant="contained" size="small" onClick={onEditClick} startIcon={<SaveIcon />}>
-							Salvar
-						</Button>
-					) : (
-						<Button color="" variant="contained" size="small" onClick={onEditClick} startIcon={<EditIcon />}>
-							Editar
-						</Button>
-					)}
+					{editable &&
+						(editing ? (
+							<Button
+								color="primary"
+								variant="contained"
+								size="small"
+								className={classes.button}
+								onClick={onEditClick}
+								startIcon={<SaveIcon />}
+							>
+								Salvar
+							</Button>
+						) : (
+							<Button
+								color=""
+								variant="contained"
+								size="small"
+								className={classes.button}
+								onClick={onEditClick}
+								startIcon={<EditIcon />}
+							>
+								Editar
+							</Button>
+						))}
 				</Box>
 			)}
 			<Box>{map(fields, renderField)}</Box>
