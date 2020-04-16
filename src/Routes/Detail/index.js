@@ -29,7 +29,8 @@ const Detail = ({ match }) => {
 		try {
 			const [[person] = [], tasks, opportunities] = await Promise.all([
 				fetchContact(code),
-				fetchTasks(code),
+				// fetchTasks(code),
+				Promise.resolve([]),
 				fetchOpportunities(code),
 			]);
 
@@ -83,8 +84,8 @@ const Detail = ({ match }) => {
 			</Box>
 			<Container maxWidth="sm" className={classes.root}>
 				<Box my={2}>
-					<DisplayForm title={t('personal-data')} fields={personalFields} />
-					<DisplayForm title={t('location')} fields={locationFields} />
+					<DisplayForm title={t('personal-data')} fields={personalFields} editable />
+					<DisplayForm title={t('location')} fields={locationFields} editable />
 					<DisplayForm title={t('health-status')} fields={healthstatusFields} />
 				</Box>
 
@@ -93,12 +94,6 @@ const Detail = ({ match }) => {
 						{t('opportunities')}
 					</Typography>
 					<TreatmentList items={contact.opportunities} />
-				</Box>
-				<Box my={2}>
-					<Typography variant="h5" component="h2" className={classes.title}>
-						{t('activities')}
-					</Typography>
-					<TaskList items={contact.tasks} />
 				</Box>
 			</Container>
 		</>

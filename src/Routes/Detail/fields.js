@@ -53,7 +53,7 @@ export default ({ t, contact, setContact }) => {
 		},
 		{
 			label: t('severe-symptoms'),
-			value: get(contact, 'address.0.severeSymptoms'),
+			value: get(contact, 'severeSymptoms'),
 			onSave: value => setContact(c => set(c, 'severeSymptoms', value)),
 		},
 		{
@@ -82,7 +82,6 @@ export default ({ t, contact, setContact }) => {
 		{
 			label: t('symptom-days'),
 			value: get(contact, 'symptomDays'),
-			boolean: true,
 			onSave: value => setContact(c => set(c, 'symptomDays', value)),
 		},
 	];

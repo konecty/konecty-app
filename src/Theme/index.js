@@ -3,16 +3,16 @@ import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 const Theme = createMuiTheme({
 	palette: {
 		statusRed: {
-			color: '#e06a6a',
-			contrastText: '#000',
+			main: '#B70007',
+			contrastText: '#fff',
 		},
 		statusYellow: {
-			color: '#ffe000',
-			contrastText: '#000',
+			main: '#EBB831',
+			contrastText: '#fff',
 		},
 		statusGreen: {
-			color: '#00ff72',
-			contrastText: '#000',
+			main: '#33CC33',
+			contrastText: '#fff',
 		},
 	},
 });
