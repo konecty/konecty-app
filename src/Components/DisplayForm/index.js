@@ -18,7 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
 
-const DisplayForm = ({ fields, title }) => {
+const DisplayForm = ({ fields, title, editable }) => {
 	const classes = useStyles();
 	const { t } = useTranslation();
 	const [editing, setEditing] = useState(false);
@@ -112,30 +112,46 @@ const DisplayForm = ({ fields, title }) => {
 
 	return (
 		<Box my={2}>
-			<Box display="flex" justifyContent="space-between">
-				<Typography variant="h6" component="h2" className={classes.title}>
-					{title}
-				</Typography>
-				<Button color="primary" onClick={onEditClick}>
-					{editing ? <SaveIcon /> : <EditIcon />}
-				</Button>
-			</Box>
-
+			{(title || editable) && (
+				<Box display="flex" justifyContent="space-between">
+					<Typography variant="h5" component="h2">
+						{title}
+					</Typography>
+					{editable && (
+						<Button color="primary" onClick={onEditClick}>
+							{editing ? (
+								<>
+									<SaveIcon /> Salvar
+								</>
+							) : (
+								<>
+									<EditIcon /> Editar
+								</>
+							)}
+						</Button>
+					)}
+				</Box>
+			)}
 			<Box>{map(fields, renderField)}</Box>
 		</Box>
 	);
 };
 
-DisplayForm.propTypes = {
-	title: PropTypes.string.isRequired,
-	fields: PropTypes.arrayOf(
-		PropTypes.shape({
-			label: PropTypes.string.isRequired,
-			value: PropTypes.any,
-			transformValue: PropTypes.func,
-			opts: PropTypes.array,
-		}),
-	).isRequired,
-};
+if (process.env.__DEV__) {
+	DisplayForm.displayName = 'DisplayForm';
+
+	DisplayForm.propTypes = {
+		title: PropTypes.string,
+		editable: PropTypes.bool,
+		fields: PropTypes.arrayOf(
+			PropTypes.shape({
+				label: PropTypes.string.isRequired,
+				value: PropTypes.any,
+				transformValue: PropTypes.func,
+				opts: PropTypes.array,
+			}),
+		).isRequired,
+	};
+}
 
 export default DisplayForm;
