@@ -41,11 +41,11 @@ const DisplayForm = ({ fields, title }) => {
 		if (editing) {
 			if (props.opts) {
 				return (
-					<FormControl>
-						<InputLabel htmlFor={props.label} shrink>
+					<FormControl className={classes.textFieldRoot}>
+						<InputLabel htmlFor={props.label} classes={{ root: classes.label }}>
 							{props.label}
 						</InputLabel>
-						<Select id={props.label} {...props} style={{ marginTop: '8px', width: 200 }}>
+						<Select id={props.label} {...props} classes={{ root: classes.inputControl, select: classes.input }}>
 							{map(props.opts, opt => (
 								<MenuItem value={opt} key={opt}>
 									{opt}
@@ -55,16 +55,32 @@ const DisplayForm = ({ fields, title }) => {
 					</FormControl>
 				);
 			}
-			return <TextField {...props} InputLabelProps={{ shrink: true }} style={{ marginTop: '4px' }} />;
+			return (
+				<TextField
+					{...props}
+					classes={{ root: classes.textFieldRoot }}
+					InputProps={{
+						classes: { root: classes.inputControl, input: classes.input },
+					}}
+					InputLabelProps={{
+						classes: { root: classes.label },
+					}}
+				/>
+			);
 		}
 
 		return (
-			<FormControl>
-				<InputLabel htmlFor={props.label} shrink>
-					{props.label}
-				</InputLabel>
-				<InputBase id={props.label} {...props} inputProps={{ readOnly: true }} style={{ marginTop: '8px' }} />
-			</FormControl>
+			<TextField
+				{...props}
+				classes={{ root: classes.textFieldRoot }}
+				InputProps={{
+					classes: { root: classes.inputControl, input: classes.input },
+					readOnly: true,
+				}}
+				InputLabelProps={{
+					classes: { root: classes.label },
+				}}
+			/>
 		);
 	};
 
@@ -97,7 +113,7 @@ const DisplayForm = ({ fields, title }) => {
 	return (
 		<Box my={2}>
 			<Box display="flex" justifyContent="space-between">
-				<Typography variant="h5" component="h2" className={classes.title}>
+				<Typography variant="h6" component="h2" className={classes.title}>
 					{title}
 				</Typography>
 				<Button color="primary" onClick={onEditClick}>
@@ -105,9 +121,7 @@ const DisplayForm = ({ fields, title }) => {
 				</Button>
 			</Box>
 
-			<Box p={2} bgcolor="#eee">
-				{map(fields, renderField)}
-			</Box>
+			<Box>{map(fields, renderField)}</Box>
 		</Box>
 	);
 };
