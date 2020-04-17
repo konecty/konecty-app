@@ -7,7 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Chip from '@material-ui/core/Chip';
 import SlideAnimation from '@material-ui/core/Slide';
-
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
 
@@ -76,21 +77,28 @@ const Detail = ({ match }) => {
 		setCurrent(item);
 	};
 
+	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
+
 	const { personalFields, locationFields, healthstatusFields } = getFields({ t, contact, setContact });
 
 	// TODO: Update local opportunity data when the opportunity is updated
 	return (
 		<>
 			<div style={{ display: current ? 'none' : 'initial' }}>
-				<Box className={classes.box}>
+				<AppBar position="static">
+					<Toolbar>
+						<Container maxWidth="sm" style={{ padding: 0 }}>
+							<Typography variant="subtitle1" component="h1" className={classes.title}>
+								{get(contact, 'name.full', '').trim()}
+							</Typography>
+						</Container>
+					</Toolbar>
+				</AppBar>
+				<Box py={1} bgcolor={`${getColor(contact.category)}.main`} color={`${getColor(contact.category)}.contrastText`}>
 					<Container maxWidth="sm">
-						<Typography variant="h4" component="h1" className={classes.title}>
-							{get(contact, 'name.full', '').trim()}
+						<Typography variant="subtitle2">
+							{t('classification')}: {t(contact.category)}
 						</Typography>
-						<Box>
-							{get(contact, 'status') && <Chip label={get(contact, 'status')} className={classes.chip} />}
-							{get(contact, 'type') && <Chip label={get(contact, 'type')} className={classes.chip} />}
-						</Box>
 					</Container>
 				</Box>
 				<Container maxWidth="sm" className={classes.root}>

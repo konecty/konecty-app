@@ -65,7 +65,7 @@ const DisplayForm = ({ fields, title, editable }) => {
 				classes={{ root: classes.textFieldRoot }}
 				InputProps={{
 					classes: { root: classes.inputControl, input: classes.input, inputMultiline: classes.inputMultiline },
-					readOnly: editing,
+					readOnly: !editing,
 				}}
 				InputLabelProps={{
 					classes: { root: classes.label },
