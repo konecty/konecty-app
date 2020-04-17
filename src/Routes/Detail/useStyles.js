@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(2),
 	},
 	title: {
-		marginBottom: theme.spacing(2),
+		// marginBottom: theme.spacing(2),
 	},
 	chip: {
 		marginRight: theme.spacing(1),

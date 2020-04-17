@@ -126,7 +126,6 @@ const DisplayForm = ({ fields, title, editable, onSave }) => {
 							</Button>
 						) : (
 							<Button
-								color=""
 								variant="contained"
 								size="small"
 								className={classes.button}

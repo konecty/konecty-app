@@ -70,20 +70,26 @@ const Symptoms = ({ data, close }) => {
 	return (
 		<>
 			<AppBar position="static">
-				<Toolbar>
-					<IconButton edge="start" onClick={onClose}>
-						<IconReturn htmlColor="#fff" />
-					</IconButton>
-					<Typography>{t('opportunities')}</Typography>
-				</Toolbar>
+				<Container maxWidth="sm" style={{ padding: 0 }}>
+					<Toolbar>
+						<IconButton edge="start" onClick={onClose}>
+							<IconReturn htmlColor="#fff" />
+						</IconButton>
+						<Typography variant="subtitle1" component="h1">
+							{t('opportunities')}
+						</Typography>
+					</Toolbar>
+				</Container>
 			</AppBar>
-			<Box px={4} py={1} bgcolor={`${getColor(data.category)}.main`} color={`${getColor(data.category)}.contrastText`}>
-				<Typography variant="subtitle2">
-					{t('classification')}: {t(data.category)}
-				</Typography>
+			<Box py={1} bgcolor={`${getColor(data.category)}.main`} color={`${getColor(data.category)}.contrastText`}>
+				<Container maxWidth="sm">
+					<Typography variant="subtitle2">
+						{t('classification')}: {t(data.category)}
+					</Typography>
+				</Container>
 			</Box>
 
-			<Container>
+			<Container maxWidth="sm">
 				<Box my={2}>
 					<Typography variant="h6" gutterBottom>
 						{t('mild-symptoms')}
