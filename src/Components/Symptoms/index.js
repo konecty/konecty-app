@@ -21,7 +21,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Loader from '../Loader';
-import updateOpportunity from '../../DAL/mutations/opportunity';
+import { updateOpportunity, createOpportunity } from '../../DAL/mutations/opportunity';
 import updateContact from '../../DAL/mutations/contact';
 
 const Symptoms = ({ data, save, cancel }) => {
@@ -44,7 +44,16 @@ const Symptoms = ({ data, save, cancel }) => {
 		};
 
 		setLoading(true);
-		const [{ severeSymptoms, mildSymptoms, healthProblems }] = await updateOpportunity([data], payload);
+		let severeSymptoms, mildSymptoms, healthProblems;
+		if (data.code) {
+			[{ severeSymptoms, mildSymptoms, healthProblems }] = await updateOpportunity([data], payload);
+		} else {
+			payload.contact = data.contact;
+			payload.status = 'Em Andamento';
+			payload.startAt = { $date: new Date() };
+			[{ severeSymptoms, mildSymptoms, healthProblems }] = await createOpportunity(payload);
+			payload.startAt = new Date().toISOString();
+		}
 		await updateContact([data.contact], { severeSymptoms, mildSymptoms, healthProblems });
 
 		save({ severeSymptoms, mildSymptoms, healthProblems, ...payload });
@@ -161,6 +170,7 @@ if (process.env.__DEV__) {
 
 	Symptoms.propTypes = {
 		data: PropTypes.shape({
+			code: PropTypes.number,
 			category: PropTypes.string,
 			symptoms: PropTypes.array,
 			contact: PropTypes.object,

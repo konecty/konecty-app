@@ -1,6 +1,6 @@
-import { put } from '../api';
+import { put, post } from '../api';
 
-const updateOpportunity = async (opportunities, payload) => {
+export const updateOpportunity = async (opportunities, payload) => {
 	try {
 		const ids = opportunities.map(({ _id, _updatedAt }) => ({ _id, _updatedAt: { $date: _updatedAt } }));
 
@@ -29,4 +29,29 @@ const updateOpportunity = async (opportunities, payload) => {
 	}
 };
 
-export default updateOpportunity;
+export const createOpportunity = async payload => {
+	try {
+		if (payload.symptoms) {
+			const { symptoms } = payload;
+
+			// TODO Translate symptoms names
+			const getSymptomsString = section =>
+				symptoms
+					.filter(item => item.section === section && item.value === true)
+					.map(item => item['name_pt-BR'])
+					.join(', ');
+
+			payload.mildSymptoms = getSymptomsString('mild');
+			payload.severeSymptoms = getSymptomsString('severe');
+			payload.healthProblems = getSymptomsString('healthProblems');
+		}
+
+		const { data: { data, success, errors } } = await post('/rest/data/Opportunity', payload);
+		if (!success) throw errors;
+
+		return data;
+	} catch (e) {
+		console.error(e);
+		return {};
+	}
+};

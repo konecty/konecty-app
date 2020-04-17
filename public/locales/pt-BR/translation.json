@@ -39,6 +39,7 @@
     "y": "Sim",
     "n": "Não",
 
+    "create-opportunity": "Criar atendimento",
     "next-step": "Próximo passo",
     "reason": "Motivo",
     "no-treatments": "Esse paciente não possui atendimentos",

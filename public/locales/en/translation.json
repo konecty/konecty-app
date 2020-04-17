@@ -39,6 +39,7 @@
     "y": "Yes",
     "n": "No",
 
+    "create-opportunity": "Create tratment",
     "next-step": "Next step",
     "reason": "Reason",
     "no-treatments": "There is no treatment for this patient",

@@ -8,6 +8,8 @@ import Container from '@material-ui/core/Container';
 import SlideAnimation from '@material-ui/core/Slide';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import PlusIcon from '@material-ui/icons/Add';
 import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
 
@@ -72,18 +74,19 @@ const Detail = ({ match }) => {
 	}
 
 	// Update state when opportunity saved
-	const onCloseEdit = ({ severeSymptoms, mildSymptoms, healthProblems, symptoms, category, description }) => {
+	const onCloseEdit = ({ severeSymptoms, mildSymptoms, healthProblems, ...rest }) => {
 		setContact(oldData => {
 			const newData = Object.assign(oldData, { severeSymptoms, mildSymptoms, healthProblems });
 			const opIdx = oldData.opportunities.findIndex(op => op.code === current.code);
-			newData.opportunities[opIdx] = Object.assign(oldData.opportunities[opIdx], {
+			const obj = {
 				severeSymptoms,
 				mildSymptoms,
 				healthProblems,
-				symptoms,
-				category,
-				description,
-			});
+				...rest,
+			};
+
+			if (opIdx > -1) newData.opportunities[opIdx] = Object.assign(oldData.opportunities[opIdx], obj);
+			else newData.opportunities.unshift(obj);
 
 			return newData;
 		});
@@ -134,6 +137,20 @@ const Detail = ({ match }) => {
 						<Typography variant="h5" component="h2" className={classes.title}>
 							{t('opportunities')}
 						</Typography>
+						{(contact.opportunities || []).every(v => !['Encaminhado', 'Em Andamento'].includes(v.status)) && (
+							<Box width={1} my={2}>
+								<Button
+									variant="contained"
+									color="primary"
+									onClick={onEdit({})}
+									endIcon={<PlusIcon />}
+									fullWidth
+									disableElevation
+								>
+									{t('create-opportunity')}
+								</Button>
+							</Box>
+						)}
 						<TreatmentList items={contact.opportunities} onEdit={onEdit} />
 					</Box>
 				</Container>
