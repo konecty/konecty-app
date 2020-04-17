@@ -71,7 +71,9 @@ const Symptoms = ({ data, close }) => {
 						<IconButton edge="start" onClick={onClose}>
 							<IconReturn htmlColor="#fff" />
 						</IconButton>
-						<Typography>{t('opportunities')}</Typography>
+						<Typography variant="subtitle1" component="h1">
+							{t('opportunities')}
+						</Typography>
 					</Toolbar>
 				</Container>
 			</AppBar>
