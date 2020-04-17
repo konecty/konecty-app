@@ -43,5 +43,7 @@
     "reason": "Reason",
     "no-treatments": "There is no treatment for this patient",
     "no-tasks": "There is no tasks for this patient",
-    "got-prefix": "Got"
+    "got-prefix": "Got",
+    "save": "Save Changes",
+    "cancel": "Cancel"
 }

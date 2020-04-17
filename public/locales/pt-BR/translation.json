@@ -43,5 +43,7 @@
     "reason": "Motivo",
     "no-treatments": "Esse paciente não possui atendimentos",
     "no-tasks": "Esse paciente não possui tarefas",
-    "got-prefix": "Possui"
+    "got-prefix": "Possui",
+    "save": "Salvar mudanças",
+    "cancel": "Cancelar"
 }
