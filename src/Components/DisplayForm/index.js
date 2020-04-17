@@ -69,11 +69,15 @@ const DisplayForm = ({ fields, title, editable, onSave }) => {
 				{...props}
 				classes={{ root: classes.textFieldRoot }}
 				InputProps={{
-					classes: { root: classes.inputControl, input: classes.input, inputMultiline: classes.inputMultiline },
+					classes: {
+						root: editing ? classes.inputControl : classes.inputControlReadOnly,
+						input: classes.input,
+						inputMultiline: classes.inputMultiline,
+					},
 					readOnly: !editing,
 				}}
 				InputLabelProps={{
-					classes: { root: classes.label },
+					classes: { root: classes.label, focused: editing ? undefined : classes.labelReadOnly },
 				}}
 			/>
 		);
