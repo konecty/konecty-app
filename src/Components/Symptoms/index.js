@@ -68,7 +68,14 @@ const Symptoms = ({ data, save, cancel }) => {
 	}, []);
 
 	const Symptom = row => (
-		<Box key={row.code} display="flex" justifyContent="space-between" py={0.5} borderBottom="1px solid #d6d6d6">
+		<Box
+			key={row.code}
+			display="flex"
+			justifyContent="space-between"
+			alignItems="center"
+			py={1}
+			borderBottom="1px solid #d6d6d6"
+		>
 			<Typography>
 				{t('got-prefix')} {toLower(translate(row))}?
 			</Typography>

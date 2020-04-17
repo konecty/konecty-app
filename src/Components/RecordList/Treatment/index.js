@@ -40,37 +40,37 @@ const TreatmentList = ({ items, onEdit }) => {
 			{map(sorted, item => (
 				<Paper key={item._id} elevation={4} style={{ marginBottom: 15 }}>
 					<ExpansionPanel expanded={isExpanded(item.code)} onChange={onChange(item.code)}>
-						<ExpansionPanelSummary>
-							<Box width={1}>
-								<Box display="flex" justifyContent="space-between" flexGrow={1} alignItems="center">
-									<Typography variant="subtitle2">{formatDate(item.startAt)}</Typography>
-									{isOpen(item) && (
-										<Button
-											variant="contained"
-											color="default"
-											style={{ textTransform: 'none' }}
-											size="small"
-											onClick={onEdit(item)}
-											disableElevation
-										>
-											{t('edit')}
-										</Button>
-									)}
+						<ExpansionPanelSummary classes={{ root: classes.expansionSummary, content: classes.summaryContent }}>
+							<Box width={1} display="flex" justifyContent="space-between" flexGrow={1} alignItems="center">
+								<Box>
+									<Typography variant="h6">{formatDate(item.startAt)}</Typography>
+									{/* Category chip */}
+									<Box
+										bgcolor={`${getColor(item.category)}.main`}
+										px={1}
+										py={0.1}
+										mb={1}
+										display="inline-block"
+										color={`${getColor(item.category)}.contrastText`}
+										borderRadius={5}
+									>
+										<Typography variant="caption" component="span" style={{ verticalAlign: 'bottom' }}>
+											{t('category')} {t(item.category).toLowerCase()}
+										</Typography>
+									</Box>
 								</Box>
-
-								{/* Category chip */}
-								<Box
-									bgcolor={`${getColor(item.category)}.main`}
-									px={0.5}
-									py={0.1}
-									display="inline"
-									color={`${getColor(item.category)}.contrastText`}
-									borderRadius={5}
-								>
-									<Typography variant="caption" component="span" style={{ verticalAlign: 'bottom' }}>
-										{t('category')} {t(item.category).toLowerCase()}
-									</Typography>
-								</Box>
+								{isOpen(item) && (
+									<Button
+										variant="contained"
+										color="default"
+										style={{ textTransform: 'none' }}
+										size="small"
+										onClick={onEdit(item)}
+										disableElevation
+									>
+										{t('edit')}
+									</Button>
+								)}
 							</Box>
 						</ExpansionPanelSummary>
 						<ExpansionPanelDetails className={classes.details}>
