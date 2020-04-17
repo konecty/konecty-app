@@ -86,8 +86,8 @@ const Detail = ({ match }) => {
 		<>
 			<div style={{ display: current ? 'none' : 'initial' }}>
 				<AppBar position="static">
-					<Toolbar>
-						<Container maxWidth="sm" style={{ padding: 0 }}>
+					<Toolbar style={{ padding: 0 }}>
+						<Container maxWidth="sm">
 							<Typography variant="subtitle1" component="h1" className={classes.title}>
 								{get(contact, 'name.full', '').trim()}
 							</Typography>
