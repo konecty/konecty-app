@@ -31,11 +31,17 @@
     "prognostic": "Prognóstico",
     "category": "Categoria",
     "has-fever": "Tem Febre",
+    "Vermelha": "Vermelha",
+    "Amarela": "Amarela",
+    "Verde": "Verde",
+    "edit": "Editar",
+    "classification": "Classificação da Triagem",
     "y": "Sim",
     "n": "Não",
 
     "next-step": "Próximo passo",
     "reason": "Motivo",
     "no-treatments": "Esse paciente não possui atendimentos",
-    "no-tasks": "Esse paciente não possui tarefas"
+    "no-tasks": "Esse paciente não possui tarefas",
+    "got-prefix": "Possui"
 }

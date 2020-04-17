@@ -16,7 +16,7 @@ import useStyles from './useStyle';
 import { formatDate } from '../../../Util/format';
 import getFields from '../../../Routes/Detail/fields';
 
-const TreatmentList = ({ items }) => {
+const TreatmentList = ({ items, onEdit }) => {
 	const [expanded, setExpanded] = useState(null);
 	const classes = useStyles();
 	const { t } = useTranslation();
@@ -30,8 +30,7 @@ const TreatmentList = ({ items }) => {
 	}
 
 	// Theme defined colors
-	const getColor = category =>
-		({ Vermelha: 'statusRed.main', Amarela: 'statusYellow.main', Verde: 'statusGreen.main' }[category]);
+	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
 
 	// Sort treatments newest first
 	const sorted = orderBy(items, [item => new Date(item.startAt)], ['desc']);
@@ -51,6 +50,7 @@ const TreatmentList = ({ items }) => {
 											color="default"
 											style={{ textTransform: 'none' }}
 											size="small"
+											onClick={onEdit(item)}
 											disableElevation
 										>
 											{t('edit')}
@@ -60,11 +60,11 @@ const TreatmentList = ({ items }) => {
 
 								{/* Category chip */}
 								<Box
-									bgcolor={getColor(item.category)}
+									bgcolor={`${getColor(item.category)}.main`}
 									px={0.5}
 									py={0.1}
 									display="inline"
-									color="white"
+									color={`${getColor(item.category)}.contrastText`}
 									borderRadius={5}
 								>
 									<Typography variant="caption" component="span" style={{ verticalAlign: 'bottom' }}>
@@ -88,6 +88,7 @@ if (process.env.__DEV__) {
 
 	TreatmentList.propTypes = {
 		items: PropTypes.arrayOf(PropTypes.object),
+		onEdit: PropTypes.func,
 	};
 }
 

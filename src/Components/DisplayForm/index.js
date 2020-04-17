@@ -38,38 +38,24 @@ const DisplayForm = ({ fields, title, editable }) => {
 	};
 
 	const Field = props => {
-		if (editing) {
-			if (props.opts) {
-				return (
-					<FormControl className={classes.textFieldRoot}>
-						<InputLabel htmlFor={props.label} classes={{ root: classes.label }}>
-							{props.label}
-						</InputLabel>
-						<Select
-							id={props.label}
-							{...props}
-							classes={{ root: classes.select, select: classes.input, icon: classes.selectIcon }}
-						>
-							{map(props.opts, opt => (
-								<MenuItem value={opt} key={opt}>
-									{opt}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-				);
-			}
+		if (editing && props.opts) {
 			return (
-				<TextField
-					{...props}
-					classes={{ root: classes.textFieldRoot }}
-					InputProps={{
-						classes: { root: classes.inputControl, input: classes.input, inputMultiline: classes.inputMultiline },
-					}}
-					InputLabelProps={{
-						classes: { root: classes.label },
-					}}
-				/>
+				<FormControl className={classes.textFieldRoot}>
+					<InputLabel htmlFor={props.label} classes={{ root: classes.label }}>
+						{props.label}
+					</InputLabel>
+					<Select
+						id={props.label}
+						{...props}
+						classes={{ root: classes.select, select: classes.input, icon: classes.selectIcon }}
+					>
+						{map(props.opts, opt => (
+							<MenuItem value={opt} key={opt}>
+								{opt}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
 			);
 		}
 
@@ -79,7 +65,7 @@ const DisplayForm = ({ fields, title, editable }) => {
 				classes={{ root: classes.textFieldRoot }}
 				InputProps={{
 					classes: { root: classes.inputControl, input: classes.input, inputMultiline: classes.inputMultiline },
-					readOnly: true,
+					readOnly: editing,
 				}}
 				InputLabelProps={{
 					classes: { root: classes.label },

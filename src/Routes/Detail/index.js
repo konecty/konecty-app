@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Chip from '@material-ui/core/Chip';
+import SlideAnimation from '@material-ui/core/Slide';
 
 import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
@@ -17,6 +18,7 @@ import fetchOpportunities from '../../DAL/fetchOpportunities';
 import Loader from '../../Components/Loader';
 import { Treatment as TreatmentList, Task as TaskList } from '../../Components/RecordList';
 import DisplayForm from '../../Components/DisplayForm';
+import Symptoms from '../../Components/Symptoms';
 import getFields from './fields';
 
 const Detail = ({ match }) => {
@@ -24,6 +26,7 @@ const Detail = ({ match }) => {
 	const { t } = useTranslation();
 	const [contact, setContact] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [current, setCurrent] = useState(null);
 
 	const getDetails = async code => {
 		try {
@@ -67,35 +70,49 @@ const Detail = ({ match }) => {
 		return <Typography>No contact found with that code.</Typography>;
 	}
 
+	const onCloseEdit = () => setCurrent(false);
+	const onEdit = item => e => {
+		e.stopPropagation();
+		setCurrent(item);
+	};
+
 	const { personalFields, locationFields, healthstatusFields } = getFields({ t, contact, setContact });
 
+	// TODO: Update local opportunity data when the opportunity is updated
 	return (
 		<>
-			<Box className={classes.box}>
-				<Container maxWidth="sm">
-					<Typography variant="h4" component="h1" className={classes.title}>
-						{get(contact, 'name.full', '').trim()}
-					</Typography>
-					<Box>
-						{get(contact, 'status') && <Chip label={get(contact, 'status')} className={classes.chip} />}
-						{get(contact, 'type') && <Chip label={get(contact, 'type')} className={classes.chip} />}
+			<div style={{ display: current ? 'none' : 'initial' }}>
+				<Box className={classes.box}>
+					<Container maxWidth="sm">
+						<Typography variant="h4" component="h1" className={classes.title}>
+							{get(contact, 'name.full', '').trim()}
+						</Typography>
+						<Box>
+							{get(contact, 'status') && <Chip label={get(contact, 'status')} className={classes.chip} />}
+							{get(contact, 'type') && <Chip label={get(contact, 'type')} className={classes.chip} />}
+						</Box>
+					</Container>
+				</Box>
+				<Container maxWidth="sm" className={classes.root}>
+					<Box my={2}>
+						<DisplayForm title={t('personal-data')} fields={personalFields} editable />
+						<DisplayForm title={t('location')} fields={locationFields} editable />
+						<DisplayForm title={t('health-status')} fields={healthstatusFields} />
+					</Box>
+
+					<Box my={2}>
+						<Typography variant="h5" component="h2" className={classes.title}>
+							{t('opportunities')}
+						</Typography>
+						<TreatmentList items={contact.opportunities} onEdit={onEdit} />
 					</Box>
 				</Container>
-			</Box>
-			<Container maxWidth="sm" className={classes.root}>
-				<Box my={2}>
-					<DisplayForm title={t('personal-data')} fields={personalFields} editable />
-					<DisplayForm title={t('location')} fields={locationFields} editable />
-					<DisplayForm title={t('health-status')} fields={healthstatusFields} />
+			</div>
+			<SlideAnimation in={!!current} direction="bottom" mountOnEnter unmountOnExit>
+				<Box bgcolor="#fff">
+					<Symptoms data={current} close={onCloseEdit} />
 				</Box>
-
-				<Box my={2}>
-					<Typography variant="h5" component="h2" className={classes.title}>
-						{t('opportunities')}
-					</Typography>
-					<TreatmentList items={contact.opportunities} />
-				</Box>
-			</Container>
+			</SlideAnimation>
 		</>
 	);
 };

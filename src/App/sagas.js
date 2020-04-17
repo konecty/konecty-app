@@ -4,13 +4,15 @@ import localforage from 'localforage';
 import { LOAD_CONFIG, LOAD_USER } from './constants';
 
 import fetchConfig from '../DAL/fetchConfig';
+import fetchSymptoms from '../DAL/fetchSymptoms';
 import { userLoaded, configLoaded } from './actions';
 import loadUserInfo from '../DAL/loadUserInfo';
 import { decrypt } from '../Util/crypto';
 
 function* loadConfig() {
 	const data = yield queryCache.prefetchQuery('config', fetchConfig);
-	yield put(configLoaded(data));
+	const symptoms = yield queryCache.prefetchQuery('symptoms', fetchSymptoms);
+	yield put(configLoaded({ ...data, symptoms }));
 }
 
 function* loadUser({ payload }) {

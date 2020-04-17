@@ -31,11 +31,17 @@
     "prognostic": "Prognostic",
     "category": "Category",
     "has-fever": "Has Fever",
+    "Vermelha": "Red",
+    "Amarela": "Yellow",
+    "Verde": "Green",
+    "edit": "Edit",
+    "classification": "Classification",
     "y": "Yes",
     "n": "No",
 
     "next-step": "Next step",
     "reason": "Reason",
     "no-treatments": "There is no treatment for this patient",
-    "no-tasks": "There is no tasks for this patient"
+    "no-tasks": "There is no tasks for this patient",
+    "got-prefix": "Got"
 }

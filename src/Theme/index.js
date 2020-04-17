@@ -15,6 +15,13 @@ const Theme = createMuiTheme({
 			contrastText: '#fff',
 		},
 	},
+	overrides: {
+		MuiButton: {
+			label: {
+				textTransform: 'none',
+			},
+		},
+	},
 });
 
 export default responsiveFontSizes(Theme);
