@@ -116,7 +116,7 @@ const Detail = ({ match }) => {
 					</Box>
 				</Container>
 			</div>
-			<SlideAnimation in={!!current} direction="bottom" mountOnEnter unmountOnExit>
+			<SlideAnimation in={!!current} direction="down" mountOnEnter unmountOnExit>
 				<Box bgcolor="#fff">
 					<Symptoms data={current} close={onCloseEdit} />
 				</Box>

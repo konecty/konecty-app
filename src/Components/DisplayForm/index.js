@@ -121,7 +121,6 @@ const DisplayForm = ({ fields, title, editable }) => {
 							</Button>
 						) : (
 							<Button
-								color=""
 								variant="contained"
 								size="small"
 								className={classes.button}
