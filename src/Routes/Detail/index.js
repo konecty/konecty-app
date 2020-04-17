@@ -72,7 +72,7 @@ const Detail = ({ match }) => {
 	}
 
 	// Update state when opportunity saved
-	const onCloseEdit = ({ severeSymptoms, mildSymptoms, healthProblems, symptoms }) => {
+	const onCloseEdit = ({ severeSymptoms, mildSymptoms, healthProblems, symptoms, category, description }) => {
 		setContact(oldData => {
 			const newData = Object.assign(oldData, { severeSymptoms, mildSymptoms, healthProblems });
 			const opIdx = oldData.opportunities.findIndex(op => op.code === current.code);
@@ -81,6 +81,8 @@ const Detail = ({ match }) => {
 				mildSymptoms,
 				healthProblems,
 				symptoms,
+				category,
+				description,
 			});
 
 			return newData;
@@ -138,7 +140,7 @@ const Detail = ({ match }) => {
 			</div>
 			<SlideAnimation in={!!current} direction="down" mountOnEnter unmountOnExit>
 				<Box bgcolor="#fff">
-					<Symptoms data={current} close={onCloseEdit} />
+					<Symptoms data={current} save={onCloseEdit} cancel={() => setCurrent(null)} />
 				</Box>
 			</SlideAnimation>
 		</>

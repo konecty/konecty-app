@@ -11,6 +11,12 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import CheckIcon from '@material-ui/icons/Check';
 
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -18,27 +24,30 @@ import Loader from '../Loader';
 import updateOpportunity from '../../DAL/mutations/opportunity';
 import updateContact from '../../DAL/mutations/contact';
 
-const Symptoms = ({ data, close }) => {
-	const [selected, setSelected] = useState({});
+const Symptoms = ({ data, save, cancel }) => {
+	if (!data) return null;
+
+	const [selected, setSelected] = useState({ description: data.description, category: data.category, symps: [] });
 	const [loading, setLoading] = useState(false);
 	const { t, i18n } = useTranslation();
 	const { symptoms: allSymptoms } = useSelector(({ app }) => app.config);
 
-	// Theme defined colors
-	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
-
 	const symptoms = section => filter(allSymptoms, propEq('section', section));
 	const translate = item => item[`name_${i18n.language}`];
-	const onSelect = (row, value) => () => setSelected(sec => ({ ...sec, [row.code]: value }));
+	const onSelect = (row, value) => () => setSelected(sec => ({ ...sec, symps: { ...sec.symps, [row.code]: value } }));
 
 	const onClose = async () => {
-		const payload = map(selected, (value, key) => ({ ...allSymptoms.find(propEq('code', Number(key))), value }));
+		const payload = {
+			category: selected.category,
+			description: selected.description,
+			symptoms: map(selected.symps, (value, key) => ({ ...allSymptoms.find(propEq('code', Number(key))), value })),
+		};
 
 		setLoading(true);
-		const [{ severeSymptoms, mildSymptoms, healthProblems }] = await updateOpportunity([data], { symptoms: payload });
+		const [{ severeSymptoms, mildSymptoms, healthProblems }] = await updateOpportunity([data], payload);
 		await updateContact([data.contact], { severeSymptoms, mildSymptoms, healthProblems });
 
-		close({ severeSymptoms, mildSymptoms, healthProblems, symptoms: payload });
+		save({ severeSymptoms, mildSymptoms, healthProblems, ...payload });
 	};
 
 	useEffect(() => {
@@ -46,21 +55,19 @@ const Symptoms = ({ data, close }) => {
 
 		// Initialize selected values from opportunity
 		const values = reduce(data.symptoms, (acc, row) => ({ ...acc, [row.code]: row.value }), {});
-		setSelected(values);
+		setSelected(s => ({ ...s, symps: values }));
 	}, []);
 
-	if (!data) return null;
-
 	const Symptom = row => (
-		<Box display="flex" justifyContent="space-between" py={0.5} borderBottom="1px solid #d6d6d6">
+		<Box key={row.code} display="flex" justifyContent="space-between" py={0.5} borderBottom="1px solid #d6d6d6">
 			<Typography>
 				{t('got-prefix')} {toLower(translate(row))}?
 			</Typography>
 			<ButtonGroup variant="contained" color="default" style={{ height: 'fit-content' }}>
-				<Button onClick={onSelect(row, true)} color={selected[row.code] && 'primary'}>
+				<Button onClick={onSelect(row, true)} color={selected.symps[row.code] && 'primary'} disableElevation>
 					{t('y')}
 				</Button>
-				<Button onClick={onSelect(row, false)} color={selected[row.code] === false && 'primary'}>
+				<Button onClick={onSelect(row, false)} color={selected.symps[row.code] === false && 'primary'} disableElevation>
 					{t('n')}
 				</Button>
 			</ButtonGroup>
@@ -72,7 +79,7 @@ const Symptoms = ({ data, close }) => {
 			<AppBar position="static">
 				<Container maxWidth="sm" style={{ padding: 0 }}>
 					<Toolbar>
-						<IconButton edge="start" onClick={onClose}>
+						<IconButton edge="start" onClick={cancel}>
 							<IconReturn htmlColor="#fff" />
 						</IconButton>
 						<Typography variant="subtitle1" component="h1">
@@ -81,14 +88,6 @@ const Symptoms = ({ data, close }) => {
 					</Toolbar>
 				</Container>
 			</AppBar>
-			<Box py={1} bgcolor={`${getColor(data.category)}.main`} color={`${getColor(data.category)}.contrastText`}>
-				<Container maxWidth="sm">
-					<Typography variant="subtitle2">
-						{t('classification')}: {t(data.category)}
-					</Typography>
-				</Container>
-			</Box>
-
 			<Container maxWidth="sm">
 				<Box my={2}>
 					<Typography variant="h6" gutterBottom>
@@ -111,9 +110,45 @@ const Symptoms = ({ data, close }) => {
 					{map(symptoms('healthProblems'), Symptom)}
 				</Box>
 			</Container>
+			<Container maxWidth="sm" style={{ marginTop: '3rem' }}>
+				<FormControl style={{ marginBottom: '1rem' }} fullWidth>
+					<InputLabel htmlFor="category-select">{t('category')}</InputLabel>
+
+					<Select
+						id="category-select"
+						value={selected.category}
+						fullWidth
+						onChange={({ target }) => setSelected(c => ({ ...c, category: target.value }))}
+					>
+						{['Verde', 'Amarela', 'Vermelha'].map(cat => (
+							<MenuItem value={cat}>{t(cat)}</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+				<TextField
+					label={t('notes')}
+					value={selected.description}
+					onChange={({ target }) => setSelected(c => ({ ...c, description: target.value }))}
+					shrink
+					multiline
+					fullWidth
+				/>
+				<Box mt={4} mb={2} display="flex" justifyContent="space-between">
+					<Box width={0.52}>
+						<Button variant="contained" color="primary" fullWidth onClick={onClose} startIcon={<CheckIcon />}>
+							{t('save')}
+						</Button>
+					</Box>
+					<Box width={0.45}>
+						<Button variant="contained" color="default" fullWidth onClick={cancel}>
+							{t('cancel')}
+						</Button>
+					</Box>
+				</Box>
+			</Container>
 
 			{loading && (
-				<Box position="absolute" top="0" width="100%" bgcolor="rgba(255, 255, 255, 0.3)">
+				<Box position="fixed" top="0" bottom="0" width="100%" bgcolor="rgba(255, 255, 255, 0.3)">
 					<Loader />
 				</Box>
 			)}
@@ -130,7 +165,8 @@ if (process.env.__DEV__) {
 			symptoms: PropTypes.array,
 			contact: PropTypes.object,
 		}),
-		close: PropTypes.func,
+		save: PropTypes.func,
+		cancel: PropTypes.func,
 	};
 }
 
