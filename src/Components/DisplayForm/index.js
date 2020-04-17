@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { map } from 'lodash';
 
 import TextField from '@material-ui/core/TextField';
-import InputBase from '@material-ui/core/InputBase';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Box from '@material-ui/core/Box';
@@ -18,7 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
 
-const DisplayForm = ({ fields, title, editable }) => {
+const DisplayForm = ({ fields, title, editable, onSave }) => {
 	const classes = useStyles();
 	const { t } = useTranslation();
 	const [editing, setEditing] = useState(false);
@@ -27,17 +26,23 @@ const DisplayForm = ({ fields, title, editable }) => {
 	const onEditClick = () => {
 		if (!editing) return setEditing(true);
 
-		fields.forEach(field => {
+		const modified = fields.reduce((acc, field) => {
+			if (!field.onSave) return acc;
+
 			// Convert string boolean to boolean
 			if (field.boolean) {
 				values[field.label] = values[field.label] === t('y') ? true : values[field.label] === t('n') ? false : null;
 			}
-			field.onSave && field.onSave(values[field.label]);
-		});
+
+			return field.onSave(acc, values[field.label]);
+		}, {});
+
+		onSave && onSave(modified);
 		return setEditing(false);
 	};
 
 	const Field = props => {
+		// If the field has a 'opts' prop, render a select
 		if (editing && props.opts) {
 			return (
 				<FormControl className={classes.textFieldRoot}>
@@ -65,7 +70,7 @@ const DisplayForm = ({ fields, title, editable }) => {
 				classes={{ root: classes.textFieldRoot }}
 				InputProps={{
 					classes: { root: classes.inputControl, input: classes.input, inputMultiline: classes.inputMultiline },
-					readOnly: editing,
+					readOnly: !editing,
 				}}
 				InputLabelProps={{
 					classes: { root: classes.label },
@@ -144,6 +149,7 @@ if (process.env.__DEV__) {
 	DisplayForm.propTypes = {
 		title: PropTypes.string,
 		editable: PropTypes.bool,
+		onSave: PropTypes.func,
 		fields: PropTypes.arrayOf(
 			PropTypes.shape({
 				label: PropTypes.string.isRequired,

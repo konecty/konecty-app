@@ -36,6 +36,7 @@
 		"no-tabs": "off",
 		"max-len": ["error", { "code": 200 }],
 		"no-underscore-dangle": "off",
+        "no-param-reassign": "off",
 		"react/no-did-update-set-state": "error",
 		"react/no-unknown-property": "error",
 		"react/no-unused-prop-types": "error",

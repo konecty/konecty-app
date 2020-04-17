@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Loader from '../Loader';
 import updateOpportunity from '../../DAL/mutations/opportunity';
+import updateContact from '../../DAL/mutations/contact';
 
 const Symptoms = ({ data, close }) => {
 	const [selected, setSelected] = useState({});
@@ -34,9 +35,10 @@ const Symptoms = ({ data, close }) => {
 		const payload = map(selected, (value, key) => ({ ...allSymptoms.find(propEq('code', Number(key))), value }));
 
 		setLoading(true);
-		await updateOpportunity(data, { symptoms: payload });
+		const [{ severeSymptoms, mildSymptoms, healthProblems }] = await updateOpportunity([data], { symptoms: payload });
+		await updateContact([data.contact], { severeSymptoms, mildSymptoms, healthProblems });
 
-		close(payload);
+		close({ severeSymptoms, mildSymptoms, healthProblems, symptoms: payload });
 	};
 
 	useEffect(() => {
@@ -46,6 +48,8 @@ const Symptoms = ({ data, close }) => {
 		const values = reduce(data.symptoms, (acc, row) => ({ ...acc, [row.code]: row.value }), {});
 		setSelected(values);
 	}, []);
+
+	if (!data) return null;
 
 	const Symptom = row => (
 		<Box display="flex" justifyContent="space-between" py={0.5} borderBottom="1px solid #d6d6d6">
@@ -118,6 +122,7 @@ if (process.env.__DEV__) {
 		data: PropTypes.shape({
 			category: PropTypes.string,
 			symptoms: PropTypes.array,
+			contact: PropTypes.object,
 		}),
 		close: PropTypes.func,
 	};

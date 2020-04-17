@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import { get, pick } from 'lodash';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -14,6 +14,7 @@ import useStyles from './useStyles';
 import fetchContact from '../../DAL/fetchContact';
 import fetchTasks from '../../DAL/fetchTasks';
 import fetchOpportunities from '../../DAL/fetchOpportunities';
+import updateContact from '../../DAL/mutations/contact';
 
 import Loader from '../../Components/Loader';
 import { Treatment as TreatmentList, Task as TaskList } from '../../Components/RecordList';
@@ -70,15 +71,35 @@ const Detail = ({ match }) => {
 		return <Typography>No contact found with that code.</Typography>;
 	}
 
-	const onCloseEdit = () => setCurrent(false);
+	// Update state when opportunity saved
+	const onCloseEdit = ({ severeSymptoms, mildSymptoms, healthProblems, symptoms }) => {
+		setContact(oldData => {
+			const newData = Object.assign(oldData, { severeSymptoms, mildSymptoms, healthProblems });
+			const opIdx = oldData.opportunities.findIndex(op => op.code === current.code);
+			newData.opportunities[opIdx] = Object.assign(oldData.opportunities[opIdx], {
+				severeSymptoms,
+				mildSymptoms,
+				healthProblems,
+				symptoms,
+			});
+
+			return newData;
+		});
+		setCurrent(null);
+	};
 	const onEdit = item => e => {
 		e.stopPropagation();
-		setCurrent(item);
+		setCurrent({ ...item, contact: pick(contact, ['_id', '_updatedAt']) });
 	};
 
-	const { personalFields, locationFields, healthstatusFields } = getFields({ t, contact, setContact });
+	// Update state and Konecty data when the fields are saved
+	const onFieldsSave = data => {
+		setContact({ ...contact, ...data });
+		updateContact([contact], data);
+	};
 
-	// TODO: Update local opportunity data when the opportunity is updated
+	const { personalFields, locationFields, healthstatusFields } = getFields({ t, contact });
+
 	return (
 		<>
 			<div style={{ display: current ? 'none' : 'initial' }}>
@@ -95,8 +116,8 @@ const Detail = ({ match }) => {
 				</Box>
 				<Container maxWidth="sm" className={classes.root}>
 					<Box my={2}>
-						<DisplayForm title={t('personal-data')} fields={personalFields} editable />
-						<DisplayForm title={t('location')} fields={locationFields} editable />
+						<DisplayForm title={t('personal-data')} fields={personalFields} onSave={onFieldsSave} editable />
+						<DisplayForm title={t('location')} fields={locationFields} onSave={onFieldsSave} editable />
 						<DisplayForm title={t('health-status')} fields={healthstatusFields} />
 					</Box>
 
