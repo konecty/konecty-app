@@ -17,6 +17,20 @@ const useStyles = makeStyles(theme => ({
 		paddingBottom: 8,
 		// textAlign: 'right',
 	},
+	inputControlReadOnly: {
+		marginTop: '8px!important',
+		paddingLeft: 128,
+		paddingTop: 2,
+		paddingBottom: 8,
+		borderBottom: 'none',
+		// textAlign: 'right',
+		'&:before': {
+			borderBottom: '1px solid rgba(0, 0, 0, 0.1)!important',
+		},
+		'&:after': {
+			display: 'none!important',
+		},
+	},
 	select: {
 		paddingTop: 11,
 		paddingLeft: 128,
@@ -40,6 +54,15 @@ const useStyles = makeStyles(theme => ({
 		textOverflow: 'ellipsis',
 		overflow: 'hidden',
 		whiteSpace: 'nowrap',
+	},
+	labelReadOnly: {
+		width: 126,
+		fontSize: '0.875rem',
+		transform: 'translate(0, 16px) scale(1)',
+		textOverflow: 'ellipsis',
+		overflow: 'hidden',
+		whiteSpace: 'nowrap',
+		color: 'rgba(0, 0, 0, 0.54)!important',
 	},
 }));
 
