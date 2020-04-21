@@ -8,7 +8,7 @@ const getOpportunities = async code => {
 		} = await get(
 			'/rest/data/Opportunity/find',
 			apiFilter(
-				{ sort: [{ property: 'startAt', direction: 'DESC' }] },
+				{ params: { sort: '[{"property": "_createdAt", "direction": "DESC"}]' } },
 				{ term: 'contact.code', operator: 'equals', value: code },
 				{
 					term: 'status',
