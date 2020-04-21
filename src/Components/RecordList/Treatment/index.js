@@ -23,7 +23,7 @@ const TreatmentList = ({ items, onEdit }) => {
 
 	const isExpanded = name => expanded === name;
 	const onChange = name => () => setExpanded(isExpanded(name) ? false : name);
-	const isOpen = ({ status }) => ['Em Andamento', 'Encaminhado'].includes(status);
+	const isOpen = ({ type, status }) => type === 'Atendimento Humano' && ['Em Andamento'].includes(status);
 
 	if (!Array.isArray(items)) {
 		return null;
