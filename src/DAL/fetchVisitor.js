@@ -2,7 +2,10 @@ import take from 'lodash/get';
 import apiFilter from '../Util/apiFilter';
 import { get } from './api';
 
-const fetchVisitor = async ({ rid }) => {
+const fetchVisitor = async (_, rid) => {
+	if (rid == null) {
+		return null;
+	}
 	try {
 		const {
 			data: { data, success, errors },

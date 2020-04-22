@@ -1,7 +1,8 @@
 import { LOAD_CONFIG, CONFIG_LOADED, LOAD_USER, USER_LOADED } from './constants';
 
-export const loadConfig = () => ({
+export const loadConfig = payload => ({
 	type: LOAD_CONFIG,
+	payload,
 });
 
 export const configLoaded = payload => ({
