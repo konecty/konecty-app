@@ -1,4 +1,10 @@
 {
-    "konecty-url": "http://localhost:3500",
-    "jwk": {"alg":"A256GCM","ext":true,"k":"UMpHg_pwaTCAX3OcOfhq7oc805Y5mdixkFiOxZNsiYo","key_ops":["encrypt","decrypt"],"kty":"oct"}
+	"konecty-url": "https://crm.telemedicine.rocket.chat",
+	"jwk": {
+		"alg": "A256GCM",
+		"ext": true,
+		"k": "UMpHg_pwaTCAX3OcOfhq7oc805Y5mdixkFiOxZNsiYo",
+		"key_ops": ["encrypt", "decrypt"],
+		"kty": "oct"
+	}
 }
