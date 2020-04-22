@@ -1,40 +1,71 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import reduce from 'lodash/reduce';
+import { useQuery } from 'react-query';
+import { useTranslation } from 'react-i18next';
 
 import Loader from '../../Components/Loader';
 import fetchVisitor from '../../DAL/fetchVisitor';
 
-const ClientByToken = ({ location }) => {
-	const [to, setTo] = useState(null);
+import { loadConfig, loadUser } from '../../App/actions';
 
-	const search = new URLSearchParams(location.search);
-	const params = ['uid', 'rid', 't'].reduce((acc, cur) => ({ ...acc, [cur]: search.get(cur) }), {});
-	const parentUrl = document.location.ancestorOrigins && document.location.ancestorOrigins[0];
+import Detail from '../Detail';
 
-	if (!params.uid || !parentUrl) {
-		return <Redirect to="/" />;
-	}
+const ClientByToken = () => {
+	// const [to, setTo] = useState(null);
+	const { t } = useTranslation();
+	const [roomId, setRoomId] = useState();
+	const [localError, setLocalError] = useState();
 
-	const loadVisitor = async () => {
-		const visitor = await fetchVisitor({ ...params, parentUrl });
-		const { code } = visitor;
+	const { konectyUrl } = useParams();
+	const location = useLocation();
 
-		if (code) {
-			setTo(`/detail/${code}`);
-		} else {
-			setTo('/');
-		}
-	};
+	const dispatch = useDispatch();
+	const { user, config } = useSelector(({ app }) => app);
+
+	const { data, error, isFetching } = useQuery(user && roomId && ['visitor', roomId], fetchVisitor);
 
 	useEffect(() => {
-		loadVisitor();
-	}, []);
+		if (error) {
+			setLocalError(error);
+		}
+	}, [error]);
 
-	if (to) {
-		return <Redirect to={`${to}${location.search}`} />;
+	useEffect(() => {
+		dispatch(loadConfig(konectyUrl));
+	}, [dispatch, konectyUrl]);
+
+	useEffect(() => {
+		if (config != null) {
+			const search = new URLSearchParams(location.search);
+			if (search != null) {
+				const { rid, t: token } = reduce([...search.entries()], (acc, [k, v]) => ({ ...acc, [k]: v }), {});
+				if (t != null) {
+					dispatch(
+						loadUser({
+							encrypted: true,
+							token,
+							jwk: config.jwk,
+						}),
+					);
+					setRoomId(rid);
+				}
+			}
+		}
+	}, [config]);
+
+	if (localError != null) {
+		// eslint-disable-next-line no-console
+		console.error(error);
+		return <p>{t('error-message')}</p>;
 	}
 
-	return <Loader />;
+	if (user == null || config == null || isFetching) {
+		return <Loader />;
+	}
+
+	return <Detail match={{ params: { code: data.code } }} />;
 };
 
 export default ClientByToken;

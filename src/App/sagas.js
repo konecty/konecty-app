@@ -9,8 +9,8 @@ import { userLoaded, configLoaded } from './actions';
 import loadUserInfo from '../DAL/loadUserInfo';
 import { decrypt } from '../Util/crypto';
 
-function* loadConfig() {
-	const data = yield queryCache.prefetchQuery('config', fetchConfig);
+function* loadConfig({ payload }) {
+	const data = yield queryCache.prefetchQuery('config', [payload], fetchConfig);
 	const symptoms = yield queryCache.prefetchQuery('symptoms', fetchSymptoms);
 	yield put(configLoaded({ ...data, symptoms }));
 }

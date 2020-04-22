@@ -14,12 +14,12 @@ import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
 
 import fetchContact from '../../DAL/fetchContact';
-import fetchTasks from '../../DAL/fetchTasks';
+// import fetchTasks from '../../DAL/fetchTasks';
 import fetchOpportunities from '../../DAL/fetchOpportunities';
 import updateContact from '../../DAL/mutations/contact';
 
 import Loader from '../../Components/Loader';
-import { Treatment as TreatmentList, Task as TaskList } from '../../Components/RecordList';
+import { Treatment as TreatmentList } from '../../Components/RecordList';
 import DisplayForm from '../../Components/DisplayForm';
 import Symptoms from '../../Components/Symptoms';
 import getFields from './fields';

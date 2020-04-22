@@ -5,7 +5,18 @@ const getOpportunities = async code => {
 	try {
 		const {
 			data: { data, success, errors },
-		} = await get('/rest/data/Opportunity/find', apiFilter({}, { term: 'contact.code', operator: 'equals', value: code }));
+		} = await get(
+			'/rest/data/Opportunity/find',
+			apiFilter(
+				{ params: { sort: '[{"property": "_createdAt", "direction": "DESC"}]' } },
+				{ term: 'contact.code', operator: 'equals', value: code },
+				{
+					term: 'status',
+					operator: 'in',
+					value: ['Concluído', 'Em Andamento', 'Encaminhado'],
+				},
+			),
+		);
 
 		if (success && data.length) return data;
 		if (!data.length) {

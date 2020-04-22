@@ -48,9 +48,9 @@ const Routes = () => {
 	return (
 		<Switch>
 			<Route path="/login" component={Login} />
+			<Route exact path="/:konectyUrl/clientByRoom" component={ClientByRoom} />
 
 			<PrivateRoute exact path="/" component={Home} />
-			<PrivateRoute exact path="/clientByRoom" component={ClientByRoom} />
 			<PrivateRoute exact path="/detail/:code" component={Detail} />
 			<PrivateRoute path="/state-sample" component={StateSample} />
 		</Switch>
