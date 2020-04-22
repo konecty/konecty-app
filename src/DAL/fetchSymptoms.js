@@ -6,7 +6,7 @@ const fetchSymptoms = async () => {
 		const {
 			data: { data, success, errors },
 		} = await get(
-			'/rest/data/Symptoms/find?fields=code,name_pt-BR,name_en,section',
+			'/rest/data/Symptoms/find?fields=code,name_pt-BR,name_en,section,indicator',
 			apiFilter({}, { term: 'active', operator: 'equals', value: true }),
 		);
 

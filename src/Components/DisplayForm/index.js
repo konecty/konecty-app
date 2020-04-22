@@ -140,7 +140,7 @@ const DisplayForm = ({ fields, title, editable, onSave, button }) => {
 							</Button>
 						))}
 
-					{button && React.createElement(button)}
+					{button && button}
 				</Box>
 			)}
 			<Box>{map(fields, renderField)}</Box>

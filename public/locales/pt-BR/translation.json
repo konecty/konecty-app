@@ -6,7 +6,8 @@
 	"forgot-password": "Esqueci minha senha",
 	"all-patients": "Todos Pacientes",
 
-	"personal-data": "Dados Pessoais",
+    "personal-data": "Dados Pessoais",
+    "name": "Nome",
 	"phone": "Telefone",
 	"gender": "Sexo",
 	"age": "Idade",

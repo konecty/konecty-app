@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { filter, map, matchesProperty as propEq, toLower, reduce } from 'lodash';
+import { filter, map, matchesProperty as propEq, toLower, pick } from 'lodash';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -27,21 +27,17 @@ import updateContact from '../../DAL/mutations/contact';
 const Symptoms = ({ data, save, cancel }) => {
 	if (!data) return null;
 
-	const [selected, setSelected] = useState({ description: data.description, category: data.category, symps: [] });
+	const [selected, setSelected] = useState(data);
 	const [loading, setLoading] = useState(false);
 	const { t, i18n } = useTranslation();
 	const { symptoms: allSymptoms } = useSelector(({ app }) => app.config);
 
 	const symptoms = section => filter(allSymptoms, propEq('section', section));
-	const translate = item => item[`name_${i18n.language}`];
-	const onSelect = (row, value) => () => setSelected(sec => ({ ...sec, symps: { ...sec.symps, [row.code]: value } }));
+	const translate = item => item['name_pt-BR']; // item[`name_${i18n.language}`];
+	const onSelect = (row, value) => () => setSelected(sec => ({ ...sec, symptomIndicators: { ...sec.symptomIndicators, [row.indicator]: value } }));
 
 	const onClose = async () => {
-		const payload = {
-			category: selected.category,
-			description: selected.description,
-			symptoms: map(selected.symps, (value, key) => ({ ...allSymptoms.find(propEq('code', Number(key))), value })),
-		};
+		const payload = pick(selected, ['symptomIndicators', 'description', 'category', 'riskGroup', 'isPregnant', 'symptomDays']);
 
 		setLoading(true);
 		let severeSymptoms, mildSymptoms, healthProblems;
@@ -50,22 +46,13 @@ const Symptoms = ({ data, save, cancel }) => {
 		} else {
 			payload.contact = data.contact;
 			payload.status = 'Em Andamento';
-			payload.startAt = { $date: new Date() };
 			[{ severeSymptoms, mildSymptoms, healthProblems }] = await createOpportunity(payload);
-			payload.startAt = new Date().toISOString();
 		}
 		await updateContact([data.contact], { severeSymptoms, mildSymptoms, healthProblems });
+		setLoading(false);
 
 		save({ severeSymptoms, mildSymptoms, healthProblems, ...payload });
 	};
-
-	useEffect(() => {
-		if (!Array.isArray(data.symptoms)) return;
-
-		// Initialize selected values from opportunity
-		const values = reduce(data.symptoms, (acc, row) => ({ ...acc, [row.code]: row.value }), {});
-		setSelected(s => ({ ...s, symps: values }));
-	}, []);
 
 	const Symptom = row => (
 		<Box
@@ -80,10 +67,18 @@ const Symptoms = ({ data, save, cancel }) => {
 				{t('got-prefix')} {toLower(translate(row))}?
 			</Typography>
 			<ButtonGroup variant="contained" color="default" style={{ height: 'fit-content' }}>
-				<Button onClick={onSelect(row, true)} color={selected.symps[row.code] && 'primary'} disableElevation>
+				<Button
+					onClick={onSelect(row, true)}
+					color={selected.symptomIndicators[row.indicator] && 'primary'}
+					disableElevation
+				>
 					{t('y')}
 				</Button>
-				<Button onClick={onSelect(row, false)} color={selected.symps[row.code] === false && 'primary'} disableElevation>
+				<Button
+					onClick={onSelect(row, false)}
+					color={selected.symptomIndicators[row.indicator] === false && 'primary'}
+					disableElevation
+				>
 					{t('n')}
 				</Button>
 			</ButtonGroup>
@@ -173,7 +168,7 @@ const Symptoms = ({ data, save, cancel }) => {
 				<TextField
 					label={t('symptom-days')}
 					value={selected.symptomDays}
-					onChange={({ target }) => setSelected(c => ({ ...c, symptomDays: target.value }))}
+					onChange={({ target }) => setSelected(c => ({ ...c, symptomDays: Number(target.value) }))}
 					style={{ marginBottom: '1rem' }}
 					multiline
 					fullWidth
@@ -216,7 +211,7 @@ if (process.env.__DEV__) {
 		data: PropTypes.shape({
 			code: PropTypes.number,
 			category: PropTypes.string,
-			symptoms: PropTypes.array,
+			symptomIndicators: PropTypes.object,
 			contact: PropTypes.object,
 		}),
 		save: PropTypes.func,

@@ -139,7 +139,7 @@ const Detail = ({ match }) => {
 						<DisplayForm
 							title={t('health-status')}
 							fields={healthstatusFields}
-							button={() => (
+							button={(
 								<Button
 									variant="contained"
 									size="small"
@@ -190,7 +190,7 @@ if (process.env.__DEV__) {
 	Detail.propTypes = {
 		match: PropTypes.shape({
 			params: PropTypes.shape({
-				code: PropTypes.string,
+				code: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 			}),
 		}),
 	};

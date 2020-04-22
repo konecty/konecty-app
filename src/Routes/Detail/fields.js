@@ -4,6 +4,16 @@ import { set } from 'immutable';
 export default ({ t, contact }) => {
 	const personalFields = [
 		{
+			label: t('name'),
+			value: get(contact, 'name.full'),
+			onSave: (data, value) =>
+				set(data, 'name', {
+					first: value.split(' ').shift(),
+					last: value.split(' ').slice(1).join(' '),
+					full: value,
+				}),
+		},
+		{
 			label: t('phone'),
 			value: get(contact, 'phone'),
 			transformValue: v => map(v, phone => phone.phoneNumber),
