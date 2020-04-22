@@ -28,7 +28,8 @@
 
 	"opportunities": "Episode",
 	"activities": "Tasks",
-	"prognostic": "Prognostic",
+    "prognostic": "Prognostic",
+    "current-opportunity": "Current Treatment",
 	"category": "Category",
 	"has-fever": "Has Fever",
 	"Vermelha": "Red",
@@ -40,7 +41,7 @@
 	"y": "Yes",
 	"n": "No",
 
-	"create-opportunity": "Create tratment",
+	"create-opportunity": "Create treatment",
 	"next-step": "Next step",
 	"reason": "Reason",
 	"no-treatments": "There is no treatment for this patient",

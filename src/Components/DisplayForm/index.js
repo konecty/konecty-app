@@ -17,7 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
 
-const DisplayForm = ({ fields, title, editable, onSave }) => {
+const DisplayForm = ({ fields, title, editable, onSave, button }) => {
 	const classes = useStyles();
 	const { t } = useTranslation();
 	const [editing, setEditing] = useState(false);
@@ -139,6 +139,8 @@ const DisplayForm = ({ fields, title, editable, onSave }) => {
 								Editar
 							</Button>
 						))}
+
+					{button && React.createElement(button)}
 				</Box>
 			)}
 			<Box>{map(fields, renderField)}</Box>
@@ -153,6 +155,7 @@ if (process.env.__DEV__) {
 		title: PropTypes.string,
 		editable: PropTypes.bool,
 		onSave: PropTypes.func,
+		button: PropTypes.element,
 		fields: PropTypes.arrayOf(
 			PropTypes.shape({
 				label: PropTypes.string.isRequired,

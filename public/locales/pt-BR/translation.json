@@ -28,7 +28,8 @@
 
 	"opportunities": "Atendimentos",
 	"activities": "Tarefas",
-	"prognostic": "Prognóstico",
+    "prognostic": "Prognóstico",
+    "current-opportunity": "Atendimento Atual",
 	"category": "Categoria",
 	"has-fever": "Tem Febre",
 	"Vermelha": "Vermelha",

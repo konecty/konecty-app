@@ -9,7 +9,7 @@ export const authLogin = ({ username, pass }) => {
 	return {
 		type: AUTH_LOGIN,
 		payload: {
-			username,
+			user: username,
 			password_SHA256: passwordSHA256,
 			password: hashedPass,
 		},

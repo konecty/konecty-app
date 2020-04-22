@@ -22,25 +22,25 @@ export default ({ t, contact }) => {
 		},
 		{ label: t('age'), value: get(contact, 'age'), onSave: (data, value) => set(data, 'age', value) },
 		{ label: 'CPF', value: get(contact, 'CPF'), onSave: (data, value) => set(data, 'CPF', value) },
-		{ label: t('notes'), value: get(contact, 'notes'), onSave: (data, value) => set(data, 'notes', value) },
-	];
-
-	const locationFields = [
 		{
 			label: t('state'),
 			value: get(contact, 'address.0.state'),
-			onSave: (data, value) => set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), state: value }]),
+			onSave: (data, value) =>
+				set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), state: value }]),
 		},
 		{
 			label: t('city'),
 			value: get(contact, 'address.0.city'),
-			onSave: (data, value) => set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), city: value }]),
+			onSave: (data, value) =>
+				set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), city: value }]),
 		},
 		{
 			label: t('district'),
 			value: get(contact, 'address.0.district'),
-			onSave: (data, value) => set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), district: value }]),
+			onSave: (data, value) =>
+				set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), district: value }]),
 		},
+		{ label: t('notes'), value: get(contact, 'notes'), onSave: (data, value) => set(data, 'notes', value) },
 	];
 
 	const healthstatusFields = [
@@ -84,5 +84,5 @@ export default ({ t, contact }) => {
 		},
 	];
 
-	return { personalFields, locationFields, healthstatusFields };
+	return { personalFields, healthstatusFields };
 };

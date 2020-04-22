@@ -141,6 +141,43 @@ const Symptoms = ({ data, save, cancel }) => {
 						))}
 					</Select>
 				</FormControl>
+				<FormControl style={{ marginBottom: '1rem' }} fullWidth>
+					<InputLabel htmlFor="preg-select">{t('is-pregnant')}</InputLabel>
+
+					<Select
+						id="preg-select"
+						value={selected.isPregnant ? 'y' : 'n'}
+						fullWidth
+						onChange={({ target }) => setSelected(c => ({ ...c, isPregnant: target.value === 'y' }))}
+					>
+						{['y', 'n'].map(cat => (
+							<MenuItem value={cat}>{t(cat)}</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+				<FormControl style={{ marginBottom: '1rem' }} fullWidth>
+					<InputLabel htmlFor="risk-select">{t('risk-group')}</InputLabel>
+
+					<Select
+						id="risk-select"
+						value={selected.riskGroup ? 'y' : 'n'}
+						fullWidth
+						onChange={({ target }) => setSelected(c => ({ ...c, riskGroup: target.value === 'y' }))}
+					>
+						{['y', 'n'].map(cat => (
+							<MenuItem value={cat}>{t(cat)}</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+
+				<TextField
+					label={t('symptom-days')}
+					value={selected.symptomDays}
+					onChange={({ target }) => setSelected(c => ({ ...c, symptomDays: target.value }))}
+					style={{ marginBottom: '1rem' }}
+					multiline
+					fullWidth
+				/>
 				<TextField
 					label={t('notes')}
 					value={selected.description}

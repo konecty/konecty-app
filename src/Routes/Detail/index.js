@@ -76,7 +76,14 @@ const Detail = ({ match }) => {
 	// Update state when opportunity saved
 	const onCloseEdit = ({ severeSymptoms, mildSymptoms, healthProblems, ...rest }) => {
 		setContact(oldData => {
-			const newData = Object.assign(oldData, { severeSymptoms, mildSymptoms, healthProblems });
+			const newData = Object.assign(oldData, {
+				severeSymptoms,
+				mildSymptoms,
+				healthProblems,
+				riskGroup: rest.riskGroup,
+				isPregnant: rest.isPregnant,
+				symptomDays: rest.symptomDays,
+			});
 			const opIdx = oldData.opportunities.findIndex(op => op.code === current.code);
 			const obj = {
 				severeSymptoms,
@@ -105,7 +112,7 @@ const Detail = ({ match }) => {
 
 	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
 
-	const { personalFields, locationFields, healthstatusFields } = getFields({ t, contact });
+	const { personalFields, healthstatusFields } = getFields({ t, contact });
 
 	return (
 		<>
@@ -129,8 +136,21 @@ const Detail = ({ match }) => {
 				<Container maxWidth="sm" className={classes.root}>
 					<Box my={2}>
 						<DisplayForm title={t('personal-data')} fields={personalFields} onSave={onFieldsSave} editable />
-						<DisplayForm title={t('location')} fields={locationFields} onSave={onFieldsSave} editable />
-						<DisplayForm title={t('health-status')} fields={healthstatusFields} />
+						<DisplayForm
+							title={t('health-status')}
+							fields={healthstatusFields}
+							button={() => (
+								<Button
+									variant="contained"
+									size="small"
+									onClick={onEdit(get(contact, 'opportunities.0', {}))}
+									disableElevation
+									disableFocusRipple
+								>
+									{t('edit')} {t('opportunities')}
+								</Button>
+							)}
+						/>
 					</Box>
 
 					<Box my={2}>

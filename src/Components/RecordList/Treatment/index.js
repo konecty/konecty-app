@@ -52,7 +52,7 @@ const TreatmentList = ({ items, onEdit }) => {
 								</Avatar>
 								<Box flexGrow={1} flexShrink={1}>
 									<Box display="flex" justifyContent="space-between" alignItems="center">
-										<Typography variant="h6">{formatDate(item.startAt)}</Typography>
+										<Typography variant="h6">{item.startAt ? formatDate(item.startAt) : t('current-opportunity')}</Typography>
 										{/* Category chip */}
 										<Box
 											bgcolor={`${getColor(item.category)}.main`}
