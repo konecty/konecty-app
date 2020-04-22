@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { filter, map, matchesProperty as propEq, toLower, pick } from 'lodash';
 
@@ -27,58 +27,55 @@ import updateContact from '../../DAL/mutations/contact';
 const Symptoms = ({ data, save, cancel }) => {
 	if (!data) return null;
 
-	const [selected, setSelected] = useState(data);
+	const [selected, setSelected] = useState({ ...data, symptoms: {} });
 	const [loading, setLoading] = useState(false);
 	const { t, i18n } = useTranslation();
 	const { symptoms: allSymptoms } = useSelector(({ app }) => app.config);
 
 	const symptoms = section => filter(allSymptoms, propEq('section', section));
 	const translate = item => item['name_pt-BR']; // item[`name_${i18n.language}`];
-	const onSelect = (row, value) => () => setSelected(sec => ({ ...sec, symptomIndicators: { ...sec.symptomIndicators, [row.indicator]: value } }));
+	const onSelect = (key, value) => () => setSelected(sec => ({ ...sec, symptoms: { ...sec.symptoms, [key]: value } }));
 
 	const onClose = async () => {
-		const payload = pick(selected, ['symptomIndicators', 'description', 'category', 'riskGroup', 'isPregnant', 'symptomDays']);
+		const payload = pick(selected, ['symptoms', 'description', 'category', 'riskGroup', 'isPregnant', 'symptomDays']);
+		payload.symptoms = map(payload.symptoms, (value, key) => ({ ...allSymptoms.find(propEq('indicator', key)), value }));
 
 		setLoading(true);
-		let severeSymptoms, mildSymptoms, healthProblems;
+		let processedFields;
 		if (data.code) {
-			[{ severeSymptoms, mildSymptoms, healthProblems }] = await updateOpportunity([data], payload);
+			processedFields = await updateOpportunity([data], payload);
 		} else {
 			payload.contact = data.contact;
 			payload.status = 'Em Andamento';
-			[{ severeSymptoms, mildSymptoms, healthProblems }] = await createOpportunity(payload);
+			processedFields = await createOpportunity(payload);
 		}
-		await updateContact([data.contact], { severeSymptoms, mildSymptoms, healthProblems });
+
+		await updateContact([data.contact], processedFields);
 		setLoading(false);
 
-		save({ severeSymptoms, mildSymptoms, healthProblems, ...payload });
+		save({ ...processedFields, ...payload });
 	};
 
-	const Symptom = row => (
-		<Box
-			key={row.code}
-			display="flex"
-			justifyContent="space-between"
-			alignItems="center"
-			py={1}
-			borderBottom="1px solid #d6d6d6"
-		>
+	useEffect(() => {
+		setSelected(sec => ({
+			...sec,
+			symptoms: {
+				...sec.symptomIndicators,
+				...sec.healthProblemsIndicators,
+			},
+		}));
+	}, []);
+
+	const Symptom = ({ code, indicator: key, ...rest }) => (
+		<Box key={code} display="flex" justifyContent="space-between" alignItems="center" py={1} borderBottom="1px solid #d6d6d6">
 			<Typography>
-				{t('got-prefix')} {toLower(translate(row))}?
+				{t('got-prefix')} {toLower(translate(rest))}?
 			</Typography>
 			<ButtonGroup variant="contained" color="default" style={{ height: 'fit-content' }}>
-				<Button
-					onClick={onSelect(row, true)}
-					color={selected.symptomIndicators[row.indicator] && 'primary'}
-					disableElevation
-				>
+				<Button onClick={onSelect(key, true)} color={selected.symptoms[key] && 'primary'} disableElevation>
 					{t('y')}
 				</Button>
-				<Button
-					onClick={onSelect(row, false)}
-					color={selected.symptomIndicators[row.indicator] === false && 'primary'}
-					disableElevation
-				>
+				<Button onClick={onSelect(key, false)} color={selected.symptoms[key] === false && 'primary'} disableElevation>
 					{t('n')}
 				</Button>
 			</ButtonGroup>

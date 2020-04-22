@@ -40,15 +40,13 @@ export default ({ t, contact }) => {
 		},
 		{
 			label: t('city'),
-			value: get(contact, 'address.0.city'),
-			onSave: (data, value) =>
-				set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), city: value }]),
+			value: get(contact, 'city'),
+			onSave: (data, value) => set(data, 'city', value),
 		},
 		{
 			label: t('district'),
-			value: get(contact, 'address.0.district'),
-			onSave: (data, value) =>
-				set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), district: value }]),
+			value: get(contact, 'district'),
+			onSave: (data, value) => set(data, 'district', value),
 		},
 		{ label: t('notes'), value: get(contact, 'notes'), onSave: (data, value) => set(data, 'notes', value) },
 	];
