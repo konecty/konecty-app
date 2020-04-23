@@ -53,7 +53,7 @@ const Symptoms = ({ data, save, cancel }) => {
 		await updateContact([data.contact], processedFields);
 		setLoading(false);
 
-		save({ ...processedFields, ...payload });
+		save(processedFields);
 	};
 
 	useEffect(() => {

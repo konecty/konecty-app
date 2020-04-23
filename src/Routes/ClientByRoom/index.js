@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import reduce from 'lodash/reduce';
-import { useQuery } from 'react-query';
+import { useQuery, setFocusHandler } from 'react-query';
 import { useTranslation } from 'react-i18next';
 
 import Loader from '../../Components/Loader';
@@ -13,7 +13,6 @@ import { loadConfig, loadUser } from '../../App/actions';
 import Detail from '../Detail';
 
 const ClientByToken = () => {
-	// const [to, setTo] = useState(null);
 	const { t } = useTranslation();
 	const [roomId, setRoomId] = useState();
 	const [localError, setLocalError] = useState();
@@ -24,6 +23,12 @@ const ClientByToken = () => {
 	const dispatch = useDispatch();
 	const { user, config } = useSelector(({ app }) => app);
 
+	// Remove react-query onfocus re-fetch to prevent it
+	// from re-rendering the whole page everytime the user focus it again
+	setFocusHandler(handler => () => {
+		window.removeEventListener('visibilitychange', handler);
+		window.removeEventListener('focus', handler);
+	});
 	const { data, error, isFetching } = useQuery(user && roomId && ['visitor', roomId], fetchVisitor);
 
 	useEffect(() => {
@@ -65,6 +70,8 @@ const ClientByToken = () => {
 		return <Loader />;
 	}
 
+	// Render the page instead of redirecting to it
+	// so as to mantain the contact code type [string, number]
 	return <Detail match={{ params: { code: data.code } }} />;
 };
 

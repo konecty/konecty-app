@@ -74,26 +74,13 @@ const Detail = ({ match }) => {
 	}
 
 	// Update state when opportunity saved
-	const onCloseEdit = ({ severeSymptoms, mildSymptoms, healthProblems, ...rest }) => {
+	const onCloseEdit = updatedFields => {
 		setContact(oldData => {
-			const newData = Object.assign(oldData, {
-				severeSymptoms,
-				mildSymptoms,
-				healthProblems,
-				riskGroup: rest.riskGroup,
-				isPregnant: rest.isPregnant,
-				symptomDays: rest.symptomDays,
-			});
+			const newData = Object.assign(oldData, updatedFields);
 			const opIdx = oldData.opportunities.findIndex(op => op.code === current.code);
-			const obj = {
-				severeSymptoms,
-				mildSymptoms,
-				healthProblems,
-				...rest,
-			};
 
-			if (opIdx > -1) newData.opportunities[opIdx] = Object.assign(oldData.opportunities[opIdx], obj);
-			else newData.opportunities.unshift(obj);
+			if (opIdx > -1) newData.opportunities[opIdx] = Object.assign(oldData.opportunities[opIdx], updatedFields);
+			else newData.opportunities.unshift(updatedFields);
 
 			return newData;
 		});
@@ -157,7 +144,7 @@ const Detail = ({ match }) => {
 						<Typography variant="h5" component="h2" className={classes.title}>
 							{t('opportunities')}
 						</Typography>
-						{(contact.opportunities || []).every(v => !['Encaminhado', 'Em Andamento'].includes(v.status)) && (
+						{(contact.opportunities || []).every(v => !['Em Andamento'].includes(v.status)) && (
 							<Box width={1} my={2}>
 								<Button
 									variant="contained"

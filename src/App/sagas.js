@@ -19,8 +19,7 @@ function* loadUser({ payload }) {
 	if (payload && payload.encrypted) {
 		payload.token = yield decrypt(payload.token, payload.jwk);
 
-		const storedToken = yield localforage.getItem('token');
-		if (!storedToken) localforage.setItem('token', payload.token);
+		localforage.setItem('token', payload.token);
 	}
 
 	const res = yield loadUserInfo(payload);
