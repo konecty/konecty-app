@@ -6,6 +6,7 @@ import { useQuery, setFocusHandler } from 'react-query';
 import { useTranslation } from 'react-i18next';
 
 import Loader from '../../Components/Loader';
+import ElegantError from '../../Components/Error';
 import fetchVisitor from '../../DAL/fetchVisitor';
 
 import { loadConfig, loadUser } from '../../App/actions';
@@ -29,13 +30,13 @@ const ClientByToken = () => {
 		window.removeEventListener('visibilitychange', handler);
 		window.removeEventListener('focus', handler);
 	});
-	const { data, error, isFetching } = useQuery(user && roomId && ['visitor', roomId], fetchVisitor);
+	const { data, isFetching } = useQuery(user && roomId && ['visitor', roomId], fetchVisitor);
 
 	useEffect(() => {
-		if (error) {
-			setLocalError(error);
+		if (!data && !isFetching) {
+			setLocalError(true);
 		}
-	}, [error]);
+	}, [data, isFetching]);
 
 	useEffect(() => {
 		dispatch(loadConfig(konectyUrl));
@@ -61,12 +62,10 @@ const ClientByToken = () => {
 	}, [config]);
 
 	if (localError != null) {
-		// eslint-disable-next-line no-console
-		console.error(error);
-		return <p>{t('error-message')}</p>;
+		return <ElegantError text={t('error-opportunity-not-found')} fullScreen />;
 	}
 
-	if (user == null || config == null || isFetching) {
+	if (user == null || config == null || isFetching || (!data && !localError)) {
 		return <Loader />;
 	}
 

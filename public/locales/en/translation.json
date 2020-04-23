@@ -49,5 +49,8 @@
 	"no-tasks": "There is no tasks for this patient",
 	"got-prefix": "Got",
 	"save": "Save Changes",
-	"cancel": "Cancel"
+    "cancel": "Cancel",
+    
+    "error-opportunity-not-found": "Treatment not found for this room...",
+    "error-contact-not-found": "Contact not found with this code."
 }

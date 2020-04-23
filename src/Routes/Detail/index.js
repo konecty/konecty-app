@@ -19,6 +19,7 @@ import fetchOpportunities from '../../DAL/fetchOpportunities';
 import updateContact from '../../DAL/mutations/contact';
 
 import Loader from '../../Components/Loader';
+import ElegantError from '../../Components/Error';
 import { Treatment as TreatmentList } from '../../Components/RecordList';
 import DisplayForm from '../../Components/DisplayForm';
 import Symptoms from '../../Components/Symptoms';
@@ -70,7 +71,7 @@ const Detail = ({ match }) => {
 	}
 
 	if (!contact._id) {
-		return <Typography>No contact found with that code.</Typography>;
+		return <ElegantError text={t('error-contact-not-found')} fullScreen />;
 	}
 
 	// Update state when opportunity saved

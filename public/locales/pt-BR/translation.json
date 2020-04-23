@@ -49,5 +49,8 @@
 	"no-tasks": "Esse paciente não possui tarefas",
 	"got-prefix": "Possui",
 	"save": "Salvar mudanças",
-	"cancel": "Cancelar"
+    "cancel": "Cancelar",
+    
+    "error-opportunity-not-found": "Atendimento não encontrado para essa sala...",
+    "error-contact-not-found": "Contato não encontrado com esse código."
 }
