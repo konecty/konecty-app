@@ -35,6 +35,8 @@ const ClientByToken = () => {
 	useEffect(() => {
 		if (!data && !isFetching) {
 			setLocalError(true);
+		} else {
+			setLocalError(null);
 		}
 	}, [data, isFetching]);
 
