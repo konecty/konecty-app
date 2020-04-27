@@ -12,6 +12,7 @@
 	"gender": "Gender",
 	"age": "Age",
 	"nearest-health-unit": "Unidades de saúde próximas",
+	"registration-time-expired": "Registration time expired",
 	"notes": "Observation",
 
 	"location": "Location",
