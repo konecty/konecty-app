@@ -11,8 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+import CancelIcon from '@material-ui/icons/Clear';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Bb from '@material-ui/core/ButtonBase';
 
 import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
@@ -118,16 +120,27 @@ const DisplayForm = ({ fields, title, editable, onSave, button }) => {
 					</Typography>
 					{editable &&
 						(editing ? (
-							<Button
-								color="primary"
-								variant="contained"
-								size="small"
-								className={classes.button}
-								onClick={onEditClick}
-								startIcon={<SaveIcon />}
-							>
-								Salvar
-							</Button>
+							<Box alignItems="flex-end">
+								<Bb
+									color="default"
+									variant="contained"
+									size="small"
+									className={classes.cancelButton}
+									onClick={() => setEditing(false)}
+								>
+									<CancelIcon />
+								</Bb>
+								<Button
+									color="primary"
+									variant="contained"
+									size="small"
+									className={classes.button}
+									onClick={onEditClick}
+									startIcon={<SaveIcon />}
+								>
+									{t('save')}
+								</Button>
+							</Box>
 						) : (
 							<Button
 								variant="contained"
@@ -136,7 +149,7 @@ const DisplayForm = ({ fields, title, editable, onSave, button }) => {
 								onClick={onEditClick}
 								startIcon={<EditIcon />}
 							>
-								Editar
+								{t('edit')}
 							</Button>
 						))}
 

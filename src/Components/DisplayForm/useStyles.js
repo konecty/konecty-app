@@ -6,6 +6,12 @@ const useStyles = makeStyles(theme => ({
 	},
 	button: {
 		boxShadow: 'none',
+		marginLeft: '5px',
+	},
+	cancelButton: {
+		backgroundColor: theme.palette.grey[300],
+		padding: '3px',
+		borderRadius: '3px',
 	},
 	textFieldRoot: {
 		width: '100%',
