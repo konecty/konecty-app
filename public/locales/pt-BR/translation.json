@@ -6,11 +6,12 @@
 	"forgot-password": "Esqueci minha senha",
 	"all-patients": "Todos Pacientes",
 
-    "personal-data": "Dados Pessoais",
-    "name": "Nome",
+	"personal-data": "Dados Pessoais",
+	"name": "Nome",
 	"phone": "Telefone",
 	"gender": "Sexo",
 	"age": "Idade",
+	"nearest-health-unit": "Unidades de saúde próximas",
 	"notes": "Observação",
 
 	"location": "Localização",
@@ -19,25 +20,26 @@
 	"district": "Bairro",
 
 	"health-status": "Situação de Saúde",
-	"mild-symptoms": "Sintomas brandos",
-	"severe-symptoms": "Sintomas severos",
-	"health-problems": "Condições pré-existentes",
+	"mild-symptoms": "Sintomas leves",
+	"severe-symptoms": "Sintomas graves",
+	"health-problems": "Condições preexistentes",
 	"short-of-breath": "Falta de ar",
-	"is-pregnant": "Grávida",
+	"is-pregnant": "Gravidez",
 	"risk-group": "Grupo de risco",
 	"symptom-days": "Dias com sintomas",
+	"symptom-start": "Início dos sintomas",
 
-	"opportunities": "Atendimentos",
+	"opportunities": "Histórico de atendimentos",
 	"activities": "Tarefas",
-    "prognostic": "Prognóstico",
-    "current-opportunity": "Atendimento Atual",
+	"prognostic": "Prognóstico",
+	"current-opportunity": "Atendimento Atual",
 	"category": "Categoria",
 	"has-fever": "Tem Febre",
 	"Vermelha": "Vermelha",
 	"Amarela": "Amarela",
 	"Verde": "Verde",
 	"edit": "Editar",
-	"edit-opportunity": "Editar o atendimento",
+	"edit-opportunity": "Editar",
 	"classification": "Classificação da Triagem",
 	"y": "Sim",
 	"n": "Não",
@@ -49,8 +51,8 @@
 	"no-tasks": "Esse paciente não possui tarefas",
 	"got-prefix": "Possui",
 	"save": "Salvar mudanças",
-    "cancel": "Cancelar",
-    
-    "error-opportunity-not-found": "Atendimento não encontrado para essa sala...",
-    "error-contact-not-found": "Contato não encontrado com esse código."
+	"cancel": "Cancelar",
+
+	"error-opportunity-not-found": "Atendimento não encontrado para essa sala...",
+	"error-contact-not-found": "Contato não encontrado com esse código."
 }
