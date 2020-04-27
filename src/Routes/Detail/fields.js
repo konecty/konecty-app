@@ -1,5 +1,6 @@
 import { get, map } from 'lodash';
 import { set } from 'immutable';
+import { formatDate } from '../../Util/format';
 
 export default ({ t, contact }) => {
 	const personalFields = [
@@ -53,25 +54,19 @@ export default ({ t, contact }) => {
 
 	const healthstatusFields = [
 		{
-			label: t('mild-symptoms'),
-			value: get(contact, 'mildSymptoms'),
-			onSave: (data, value) => set(data, 'mildSymptoms', value),
-		},
-		{
 			label: t('severe-symptoms'),
 			value: get(contact, 'severeSymptoms'),
 			onSave: (data, value) => set(data, 'severeSymptoms', value),
 		},
 		{
+			label: t('mild-symptoms'),
+			value: get(contact, 'mildSymptoms'),
+			onSave: (data, value) => set(data, 'mildSymptoms', value),
+		},
+		{
 			label: t('health-problems'),
 			value: get(contact, 'healthProblems'),
 			onSave: (data, value) => set(data, 'healthProblems', value),
-		},
-		{
-			label: t('short-of-breath'),
-			value: get(contact, 'hasShortnessofBreath'),
-			boolean: true,
-			onSave: (data, value) => set(data, 'hasShortnessofBreath', value),
 		},
 		{
 			label: t('is-pregnant'),
@@ -90,6 +85,12 @@ export default ({ t, contact }) => {
 			value: get(contact, 'symptomDays'),
 			onSave: (data, value) => set(data, 'symptomDays', value),
 		},
+		// {
+		// 	label: t('symptom-start'),
+		// 	value: get(contact, 'symptomsStart'),
+		// 	transformValue: value => formatDate(value),
+		// 	onSave: (data, value) => set(data, 'symptomsStart', value),
+		// },
 	];
 
 	return { personalFields, healthstatusFields };

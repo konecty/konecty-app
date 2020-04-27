@@ -75,7 +75,7 @@ const Symptoms = ({ data, save, cancel }) => {
 				<Button onClick={onSelect(key, true)} color={selected.symptoms[key] && 'primary'} disableElevation>
 					{t('y')}
 				</Button>
-				<Button onClick={onSelect(key, false)} color={selected.symptoms[key] === false && 'primary'} disableElevation>
+				<Button onClick={onSelect(key, false)} color={!selected.symptoms[key] && 'primary'} disableElevation>
 					{t('n')}
 				</Button>
 			</ButtonGroup>
@@ -99,16 +99,16 @@ const Symptoms = ({ data, save, cancel }) => {
 			<Container maxWidth="sm">
 				<Box my={2}>
 					<Typography variant="h6" gutterBottom>
-						{t('mild-symptoms')}
+						{t('severe-symptoms')}
 					</Typography>
-					{map(symptoms('mild'), Symptom)}
+					{map(symptoms('severe'), Symptom)}
 				</Box>
 
 				<Box mb={2}>
 					<Typography variant="h6" gutterBottom>
-						{t('severe-symptoms')}
+						{t('mild-symptoms')}
 					</Typography>
-					{map(symptoms('severe'), Symptom)}
+					{map(symptoms('mild'), Symptom)}
 				</Box>
 
 				<Box mb={2}>

@@ -14,7 +14,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Clear';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import Bb from '@material-ui/core/ButtonBase';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
@@ -121,7 +121,7 @@ const DisplayForm = ({ fields, title, editable, onSave, button }) => {
 					{editable &&
 						(editing ? (
 							<Box alignItems="flex-end">
-								<Bb
+								<ButtonBase
 									color="default"
 									variant="contained"
 									size="small"
@@ -129,7 +129,7 @@ const DisplayForm = ({ fields, title, editable, onSave, button }) => {
 									onClick={() => setEditing(false)}
 								>
 									<CancelIcon />
-								</Bb>
+								</ButtonBase>
 								<Button
 									color="primary"
 									variant="contained"

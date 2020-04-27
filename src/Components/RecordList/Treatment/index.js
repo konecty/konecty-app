@@ -87,21 +87,21 @@ const TreatmentList = ({ items, onEdit }) => {
 									) : (
 										<Box display="flex" flexWrap="wrap">
 											<Typography
-												variant="body2"
+												variant="caption"
 												style={{
-													maxWidth: 220,
-													whiteSpace: 'nowrap',
+													maxWidth: 250,
+													whiteSpace: 'wrap',
 													overflow: 'hidden',
 													textOverflow: 'ellipsis',
 												}}
+												color="textSecondary"
 											>
 												{without(
 													concat(item.severeSymptoms, item.mildSymptoms, item.healthProblems),
 													undefined,
 													null,
-												).join()}
+												).join(', ')}
 											</Typography>
-											<ExpandMore fontSize="small" color="primary" />
 											{item.livechatId && parentUrl && (
 												<>
 													<br />
