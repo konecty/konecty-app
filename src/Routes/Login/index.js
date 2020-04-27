@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { authLogin } from './actions';
+import { loadConfig } from '../../App/actions';
 
 import Copyright from '../../Components/Copyright';
 import Link from '../../Components/Link';
@@ -24,13 +25,17 @@ const Login = () => {
 	const [username, setLogin] = useState('');
 	const [pass, setPass] = useState('');
 
-	const { user } = useSelector(({ app }) => app);
+	const { user, config } = useSelector(({ app }) => app);
 
 	const onChange = func => ({ target }) => func(target.value);
 	const submit = event => {
 		event.preventDefault();
 		dispatch(authLogin({ username, pass }));
 	};
+
+	useEffect(() => {
+		if (!config) dispatch(loadConfig());
+	}, [config]);
 
 	if (user && user.logged) {
 		return <Redirect to="/" />;
