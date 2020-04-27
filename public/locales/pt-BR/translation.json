@@ -50,6 +50,7 @@
 	"got-prefix": "Possui",
 	"save": "Salvar mudanças",
     "cancel": "Cancelar",
+    "message-history": "Histórico de mensagens",
     
     "error-opportunity-not-found": "Atendimento não encontrado para essa sala...",
     "error-contact-not-found": "Contato não encontrado com esse código."

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { map, orderBy, concat, without } from 'lodash';
+import { map, orderBy, concat, without, filter } from 'lodash';
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -11,8 +11,11 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import Link from '@material-ui/core/Link';
 import { useTheme } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+
 import DisplayForm from '../../DisplayForm';
 import Bot from '../../Icons/Bot';
 import MD from '../../Icons/MD';
@@ -25,6 +28,7 @@ const TreatmentList = ({ items, onEdit }) => {
 	const classes = useStyles();
 	const theme = useTheme();
 	const { t } = useTranslation();
+	const { parentUrl } = useSelector(({ app }) => app);
 
 	const isExpanded = name => expanded === name;
 	const onChange = name => () => setExpanded(isExpanded(name) ? false : name);
@@ -38,7 +42,8 @@ const TreatmentList = ({ items, onEdit }) => {
 	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
 
 	// Sort treatments newest first
-	const sorted = orderBy(items, [item => new Date(item.startAt)], ['desc']);
+	const filtered = filter(items, item => item.status !== 'Em Andamento');
+	const sorted = orderBy(filtered, [item => new Date(item.startAt)], ['desc']);
 
 	return (
 		<div className={classes.root}>
@@ -52,7 +57,9 @@ const TreatmentList = ({ items, onEdit }) => {
 								</Avatar>
 								<Box flexGrow={1} flexShrink={1}>
 									<Box display="flex" justifyContent="space-between" alignItems="center">
-										<Typography variant="h6">{item.startAt ? formatDate(item.startAt) : t('current-opportunity')}</Typography>
+										<Typography variant="h6">
+											{item.startAt ? formatDate(item.startAt) : t('current-opportunity')}
+										</Typography>
 										{/* Category chip */}
 										<Box
 											bgcolor={`${getColor(item.category)}.main`}
@@ -78,7 +85,7 @@ const TreatmentList = ({ items, onEdit }) => {
 											{t('edit-opportunity')}
 										</Button>
 									) : (
-										<Box display="flex">
+										<Box display="flex" flexWrap="wrap">
 											<Typography
 												variant="body2"
 												style={{
@@ -95,13 +102,25 @@ const TreatmentList = ({ items, onEdit }) => {
 												).join()}
 											</Typography>
 											<ExpandMore fontSize="small" color="primary" />
+											{item.livechatId && parentUrl && (
+												<>
+													<br />
+													<Link
+														href={`${parentUrl}/live/${item.livechatId}`}
+														target="_blank"
+														rel="noopener noreferrer"
+													>
+														{t('message-history')}
+													</Link>
+												</>
+											)}
 										</Box>
 									)}
 								</Box>
 							</Box>
 						</ExpansionPanelSummary>
 						<ExpansionPanelDetails className={classes.details}>
-							<DisplayForm fields={getFields({ t, contact: item, setContact: () => null }).healthstatusFields} />
+							<DisplayForm fields={getFields({ t, contact: item }).healthstatusFields} />
 						</ExpansionPanelDetails>
 					</ExpansionPanel>
 				</Paper>

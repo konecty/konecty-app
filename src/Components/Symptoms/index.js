@@ -37,7 +37,7 @@ const Symptoms = ({ data, save, cancel }) => {
 	const onSelect = (key, value) => () => setSelected(sec => ({ ...sec, symptoms: { ...sec.symptoms, [key]: value } }));
 
 	const onClose = async () => {
-		const payload = pick(selected, ['symptoms', 'description', 'category', 'riskGroup', 'isPregnant', 'symptomDays']);
+		const payload = pick(selected, ['symptoms', 'description', 'isPregnant', 'symptomDays']);
 		payload.symptoms = map(payload.symptoms, (value, key) => ({ ...allSymptoms.find(propEq('indicator', key)), value }));
 
 		setLoading(true);
@@ -120,20 +120,6 @@ const Symptoms = ({ data, save, cancel }) => {
 			</Container>
 			<Container maxWidth="sm" style={{ marginTop: '3rem' }}>
 				<FormControl style={{ marginBottom: '1rem' }} fullWidth>
-					<InputLabel htmlFor="category-select">{t('category')}</InputLabel>
-
-					<Select
-						id="category-select"
-						value={selected.category}
-						fullWidth
-						onChange={({ target }) => setSelected(c => ({ ...c, category: target.value }))}
-					>
-						{['Verde', 'Amarela', 'Vermelha'].map(cat => (
-							<MenuItem value={cat}>{t(cat)}</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-				<FormControl style={{ marginBottom: '1rem' }} fullWidth>
 					<InputLabel htmlFor="preg-select">{t('is-pregnant')}</InputLabel>
 
 					<Select
@@ -141,20 +127,6 @@ const Symptoms = ({ data, save, cancel }) => {
 						value={selected.isPregnant ? 'y' : 'n'}
 						fullWidth
 						onChange={({ target }) => setSelected(c => ({ ...c, isPregnant: target.value === 'y' }))}
-					>
-						{['y', 'n'].map(cat => (
-							<MenuItem value={cat}>{t(cat)}</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-				<FormControl style={{ marginBottom: '1rem' }} fullWidth>
-					<InputLabel htmlFor="risk-select">{t('risk-group')}</InputLabel>
-
-					<Select
-						id="risk-select"
-						value={selected.riskGroup ? 'y' : 'n'}
-						fullWidth
-						onChange={({ target }) => setSelected(c => ({ ...c, riskGroup: target.value === 'y' }))}
 					>
 						{['y', 'n'].map(cat => (
 							<MenuItem value={cat}>{t(cat)}</MenuItem>

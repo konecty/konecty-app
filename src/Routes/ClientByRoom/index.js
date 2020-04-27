@@ -10,6 +10,7 @@ import ElegantError from '../../Components/Error';
 import fetchVisitor from '../../DAL/fetchVisitor';
 
 import { loadConfig, loadUser } from '../../App/actions';
+import { PROP_CHANGE } from '../../App/constants';
 
 import Detail from '../Detail';
 
@@ -31,6 +32,7 @@ const ClientByToken = () => {
 		window.removeEventListener('focus', handler);
 	});
 	const { data, isFetching } = useQuery(user && roomId && ['visitor', roomId], fetchVisitor);
+	const parentUrl = document.location.ancestorOrigins && document.location.ancestorOrigins[0];
 
 	useEffect(() => {
 		if (!data && !isFetching) {
@@ -58,6 +60,9 @@ const ClientByToken = () => {
 						}),
 					);
 					setRoomId(rid);
+					if (parentUrl) {
+						dispatch({ type: PROP_CHANGE, payload: { parentUrl } });
+					}
 				}
 			}
 		}

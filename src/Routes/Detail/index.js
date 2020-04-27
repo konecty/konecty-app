@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { get, pick } from 'lodash';
+import { get, pick, find } from 'lodash';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -87,9 +87,15 @@ const Detail = ({ match }) => {
 		});
 		setCurrent(null);
 	};
-	const onEdit = item => e => {
+	const onEdit = createNew => e => {
 		e.stopPropagation();
-		setCurrent({ ...item, contact: pick(contact, ['_id', '_updatedAt']) });
+		let op;
+		if (createNew) {
+			op = {};
+		} else {
+			op = find(contact.opportunities, item => item.status === 'Em Andamento') || {};
+		}
+		setCurrent({ ...op, contact: pick(contact, ['_id', '_updatedAt']) });
 	};
 
 	// Update state and Konecty data when the fields are saved
@@ -127,17 +133,11 @@ const Detail = ({ match }) => {
 						<DisplayForm
 							title={t('health-status')}
 							fields={healthstatusFields}
-							button={(
-								<Button
-									variant="contained"
-									size="small"
-									onClick={onEdit(get(contact, 'opportunities.0', {}))}
-									disableElevation
-									disableFocusRipple
-								>
-									{t('edit')} {t('opportunities')}
+							button={
+								<Button variant="contained" size="small" onClick={onEdit()} disableElevation disableFocusRipple>
+									{t('edit')}
 								</Button>
-							)}
+							}
 						/>
 					</Box>
 
@@ -150,7 +150,7 @@ const Detail = ({ match }) => {
 								<Button
 									variant="contained"
 									color="primary"
-									onClick={onEdit({})}
+									onClick={onEdit(true)}
 									endIcon={<PlusIcon />}
 									fullWidth
 									disableElevation

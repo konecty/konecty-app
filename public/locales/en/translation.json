@@ -50,6 +50,7 @@
 	"got-prefix": "Got",
 	"save": "Save Changes",
     "cancel": "Cancel",
+    "message-history": "Message history",
     
     "error-opportunity-not-found": "Treatment not found for this room...",
     "error-contact-not-found": "Contact not found with this code."

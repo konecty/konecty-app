@@ -5,7 +5,7 @@ const getPatients = async code => {
 	try {
 		const {
 			data: { data, success, errors },
-		} = await get('/rest/data/Contact/find', apiFilter({}, { term: 'type', operator: 'equals', value: 'Paciente' }));
+		} = await get('/rest/data/Contact/find?limit=1500', apiFilter({}, { term: 'type', operator: 'equals', value: 'Paciente' }));
 
 		if (success && data.length) return data;
 		if (!data.length) throw new Error('No patient found.');
