@@ -90,7 +90,7 @@ const DisplayForm = ({ fields, title, editable, onSave, onSuccess, button }) => 
 						input: classes.input,
 						inputMultiline: classes.inputMultiline,
 					},
-					readOnly: !editing,
+					readOnly: props.readOnly || !editing,
 				}}
 				InputLabelProps={{
 					classes: { root: classes.label, focused: editing ? undefined : classes.labelReadOnly },

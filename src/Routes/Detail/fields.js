@@ -1,6 +1,8 @@
-import { get, map, find } from 'lodash';
+import { get, map, find, startCase, toLower } from 'lodash';
 import { set } from 'immutable';
 import { DateTime } from 'luxon';
+
+const polite = string => startCase(toLower(string));
 
 export default ({ t, contact }) => {
 	const personalFields = [
@@ -53,13 +55,6 @@ export default ({ t, contact }) => {
 			onSave: (data, value) => set(data, 'district', value),
 		},
 		{
-			label: t('nearest-health-unit'),
-			value: get(contact, 'healthUnits'),
-			transformValue: value => map(value, hu => get(hu, 'description')),
-			readOnly: true,
-			dispensable: true,
-		},
-		{
 			label: t('registration-time-expired'),
 			value: get(contact, 'registerExpired'),
 			boolean: true,
@@ -109,6 +104,13 @@ export default ({ t, contact }) => {
 			label: t('notes'),
 			value: find(contact.opportunities, item => item.status === 'Em Andamento') || {},
 			transformValue: value => value.description,
+		},
+		{
+			label: t('nearest-health-unit'),
+			value: get(contact, 'healthUnits'),
+			transformValue: value => [].concat(...map(value, hu => [hu.type, polite(hu.name), polite(hu.address), ''])),
+			readOnly: true,
+			dispensable: true,
 		},
 	];
 

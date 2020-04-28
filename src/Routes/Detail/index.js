@@ -35,7 +35,7 @@ const Detail = ({ match }) => {
 
 	const getDetails = async code => {
 		try {
-			const [[person] = [], tasks, opportunities] = await Promise.all([
+			const [person, tasks, opportunities] = await Promise.all([
 				fetchContact(code),
 				// fetchTasks(code),
 				Promise.resolve([]),
