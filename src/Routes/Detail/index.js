@@ -11,6 +11,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import PlusIcon from '@material-ui/icons/Add';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import useStyles from './useStyles';
 
 import fetchContact from '../../DAL/fetchContact';
@@ -30,7 +31,8 @@ const Detail = ({ match }) => {
 	const { t } = useTranslation();
 	const [contact, setContact] = useState(null);
 	const [loading, setLoading] = useState(true);
-	const [current, setCurrent] = useState(null);
+    const [current, setCurrent] = useState(null);
+    const { rid } = useSelector(({ app }) => app);
 
 	const getDetails = async code => {
 		try {
@@ -101,7 +103,7 @@ const Detail = ({ match }) => {
 	// Update state and Konecty data when the fields are saved
 	const onFieldsSave = data => {
 		setContact({ ...contact, ...data });
-		updateContact([contact], data);
+		updateContact([contact], { ...data, rid });
 	};
 
 	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);

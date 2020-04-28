@@ -30,7 +30,10 @@ const Symptoms = ({ data, save, cancel }) => {
 	const [selected, setSelected] = useState({ ...data, symptoms: {} });
 	const [loading, setLoading] = useState(false);
 	const { t, i18n } = useTranslation();
-	const { symptoms: allSymptoms } = useSelector(({ app }) => app.config);
+	const {
+		config: { symptoms: allSymptoms },
+		rid,
+	} = useSelector(({ app }) => app);
 
 	const symptoms = section => filter(allSymptoms, propEq('section', section));
 	const translate = item => item['name_pt-BR']; // item[`name_${i18n.language}`];
@@ -39,6 +42,7 @@ const Symptoms = ({ data, save, cancel }) => {
 	const onClose = async () => {
 		const payload = pick(selected, ['symptoms', 'description', 'isPregnant', 'contact']);
 		payload.symptoms = map(payload.symptoms, (value, key) => ({ ...allSymptoms.find(propEq('indicator', key)), value }));
+		payload.rid = rid;
 		// payload.symptomsStart = payload.symptomsStart.toDate();
 
 		setLoading(true);

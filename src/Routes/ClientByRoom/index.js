@@ -61,7 +61,7 @@ const ClientByToken = () => {
 					);
 					setRoomId(rid);
 					if (parentUrl) {
-						dispatch({ type: PROP_CHANGE, payload: { parentUrl } });
+						dispatch({ type: PROP_CHANGE, payload: { parentUrl, rid } });
 					}
 				}
 			}
