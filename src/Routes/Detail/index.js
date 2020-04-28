@@ -31,8 +31,8 @@ const Detail = ({ match }) => {
 	const { t } = useTranslation();
 	const [contact, setContact] = useState(null);
 	const [loading, setLoading] = useState(true);
-    const [current, setCurrent] = useState(null);
-    const { rid } = useSelector(({ app }) => app);
+	const [current, setCurrent] = useState(null);
+	const { rid } = useSelector(({ app }) => app);
 
 	const getDetails = async code => {
 		try {
@@ -89,14 +89,10 @@ const Detail = ({ match }) => {
 		});
 		setCurrent(null);
 	};
-	const onEdit = createNew => e => {
+	const onEdit = e => {
 		e.stopPropagation();
-		let op;
-		if (createNew) {
-			op = {};
-		} else {
-			op = find(contact.opportunities, item => item.status === 'Em Andamento') || {};
-		}
+		const op = find(contact.opportunities, item => item.status === 'Em Andamento') || {};
+
 		setCurrent({ ...op, contact: pick(contact, ['_id', '_updatedAt', 'age']) });
 	};
 
@@ -136,7 +132,7 @@ const Detail = ({ match }) => {
 							title={t('health-status')}
 							fields={healthstatusFields}
 							button={
-								<Button variant="contained" size="small" onClick={onEdit()} disableElevation disableFocusRipple>
+								<Button variant="contained" size="small" onClick={onEdit} disableElevation disableFocusRipple>
 									{t('edit')}
 								</Button>
 							}
@@ -147,20 +143,6 @@ const Detail = ({ match }) => {
 						<Typography variant="h5" component="h2" className={classes.title}>
 							{t('opportunities')}
 						</Typography>
-						{(contact.opportunities || []).every(v => !['Em Andamento'].includes(v.status)) && (
-							<Box width={1} my={2}>
-								<Button
-									variant="contained"
-									color="primary"
-									onClick={onEdit(true)}
-									endIcon={<PlusIcon />}
-									fullWidth
-									disableElevation
-								>
-									{t('create-opportunity')}
-								</Button>
-							</Box>
-						)}
 						<TreatmentList items={contact.opportunities} onEdit={onEdit} />
 					</Box>
 				</Container>

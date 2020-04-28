@@ -79,7 +79,7 @@ const TreatmentList = ({ items, onEdit }) => {
 											color="primary"
 											style={{ textTransform: 'none', padding: 0 }}
 											size="small"
-											onClick={onEdit(item)}
+											onClick={onEdit}
 											disableElevation
 										>
 											{t('edit-opportunity')}
