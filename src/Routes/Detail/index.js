@@ -97,10 +97,8 @@ const Detail = ({ match }) => {
 	};
 
 	// Update state and Konecty data when the fields are saved
-	const onFieldsSave = data => {
-		setContact({ ...contact, ...data });
-		updateContact([contact], { ...data, rid });
-	};
+	const onFieldsSave = data => updateContact([contact], { ...data, rid });
+	const onSuccess = data => setContact({ ...contact, ...data });
 
 	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
 
@@ -127,7 +125,13 @@ const Detail = ({ match }) => {
 				</Box>
 				<Container maxWidth="sm" className={classes.root}>
 					<Box my={2}>
-						<DisplayForm title={t('personal-data')} fields={personalFields} onSave={onFieldsSave} editable />
+						<DisplayForm
+							title={t('personal-data')}
+							fields={personalFields}
+							onSave={onFieldsSave}
+							onSuccess={onSuccess}
+							editable
+						/>
 						<DisplayForm
 							title={t('health-status')}
 							fields={healthstatusFields}

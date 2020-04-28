@@ -1,6 +1,6 @@
 import { get, map } from 'lodash';
 import { set } from 'immutable';
-import { formatDate } from '../../Util/format';
+import { DateTime } from 'luxon';
 
 export default ({ t, contact }) => {
 	const personalFields = [
@@ -81,16 +81,11 @@ export default ({ t, contact }) => {
 			onSave: (data, value) => set(data, 'riskGroup', value),
 		},
 		{
-			label: t('symptom-days'),
-			value: get(contact, 'symptomDays'),
-			onSave: (data, value) => set(data, 'symptomDays', value),
+			label: t('symptom-start'),
+			value: get(contact, 'symptomsStart'),
+			transformValue: value => DateTime.fromISO(value).toFormat(t('date-format')),
+			onSave: (data, value) => set(data, 'symptomsStart', value),
 		},
-		// {
-		// 	label: t('symptom-start'),
-		// 	value: get(contact, 'symptomsStart'),
-		// 	transformValue: value => formatDate(value),
-		// 	onSave: (data, value) => set(data, 'symptomsStart', value),
-		// },
 	];
 
 	return { personalFields, healthstatusFields };

@@ -40,10 +40,10 @@ const Symptoms = ({ data, save, cancel }) => {
 	const onSelect = (key, value) => () => setSelected(sec => ({ ...sec, symptoms: { ...sec.symptoms, [key]: value } }));
 
 	const onClose = async () => {
-		const payload = pick(selected, ['symptoms', 'description', 'isPregnant', 'contact']);
+		const payload = pick(selected, ['symptoms', 'description', 'isPregnant', 'contact', 'symptomsStart']);
 		payload.symptoms = map(payload.symptoms, (value, key) => ({ ...allSymptoms.find(propEq('indicator', key)), value }));
 		payload.rid = rid;
-		// payload.symptomsStart = payload.symptomsStart.toDate();
+		payload.symptomsStart = payload.symptomsStart.toISO();
 
 		setLoading(true);
 		let processedFields;
@@ -56,7 +56,6 @@ const Symptoms = ({ data, save, cancel }) => {
 		}
 
 		setLoading(false);
-
 		save(processedFields);
 	};
 
@@ -146,14 +145,14 @@ const Symptoms = ({ data, save, cancel }) => {
 					</Select>
 				</FormControl>
 
-				{/* <DatePicker
+				<DatePicker
 					label={t('symptom-start')}
 					value={selected.symptomsStart}
 					format={t('date-format')}
 					disableFuture
 					onChange={value => setSelected(c => ({ ...c, symptomsStart: value }))}
-					style={{ marginBottom: '1rem' }}
-				/> */}
+					style={{ marginBottom: '1rem', width: '100%' }}
+				/>
 				<TextField
 					label={t('notes')}
 					value={selected.description}

@@ -19,14 +19,16 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import { useTranslation } from 'react-i18next';
 import useStyles from './useStyles';
 
-const DisplayForm = ({ fields, title, editable, onSave, button }) => {
+const DisplayForm = ({ fields, title, editable, onSave, onSuccess, button }) => {
 	const classes = useStyles();
 	const { t } = useTranslation();
 	const [editing, setEditing] = useState(false);
+	const [errors, setErrors] = useState(null);
 	const values = {};
 
 	const onEditClick = () => {
 		if (!editing) return setEditing(true);
+		setErrors(null);
 
 		const modified = fields.reduce((acc, field) => {
 			if (!field.onSave) return acc;
@@ -39,8 +41,20 @@ const DisplayForm = ({ fields, title, editable, onSave, button }) => {
 			return field.onSave(acc, values[field.label]);
 		}, {});
 
-		onSave && onSave(modified);
-		return setEditing(false);
+		const promise = onSave && onSave(modified);
+		if (promise && promise.then) {
+			promise.then(res => {
+				if (res && res.errors) {
+					setErrors(res.errors);
+				} else {
+					onSuccess(modified);
+				}
+				setEditing(false);
+			});
+		} else {
+			setEditing(false);
+			onSuccess(modified);
+		}
 	};
 
 	const Field = props => {
@@ -113,6 +127,13 @@ const DisplayForm = ({ fields, title, editable, onSave, button }) => {
 
 	return (
 		<Box my={4}>
+			{errors && (
+				<Box mb={2} py={2} px={1} bgcolor="error.main" color="common.white">
+					{errors.map(err => (
+						<li>{t(err)}</li>
+					))}
+				</Box>
+			)}
 			{(title || editable) && (
 				<Box display="flex" justifyContent="space-between" alignItems="center">
 					<Typography variant="h5" component="h2" mb={0}>
