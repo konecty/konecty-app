@@ -1,5 +1,6 @@
 import { get } from './api';
 import apiFilter from '../Util/apiFilter';
+import fetchHealthUnits from './fetchHealthUnits';
 
 const getContact = async code => {
 	try {
@@ -7,10 +8,14 @@ const getContact = async code => {
 			data: { data, success, errors },
 		} = await get('/rest/data/Contact/find', apiFilter({}, { term: 'code', operator: 'equals', value: code }));
 
-		if (success && data.length) return data;
 		if (!data.length) throw new Error(`No contact found with code ${code}.`);
+		if (errors) throw errors;
 
-		throw errors;
+		if (data[0] && data[0].location) {
+			const hu = await fetchHealthUnits(data[0].location.coordinates.join());
+			data.healthUnits = hu;
+		}
+		return data;
 	} catch (e) {
 		console.error(e);
 		return null;

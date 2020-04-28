@@ -1,4 +1,4 @@
-import { get, map } from 'lodash';
+import { get, map, find } from 'lodash';
 import { set } from 'immutable';
 import { DateTime } from 'luxon';
 
@@ -36,18 +36,34 @@ export default ({ t, contact }) => {
 		{
 			label: t('state'),
 			value: get(contact, 'address.0.state'),
+			readOnly: true,
 			onSave: (data, value) =>
 				set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), state: value }]),
 		},
 		{
 			label: t('city'),
 			value: get(contact, 'city'),
+			readOnly: true,
 			onSave: (data, value) => set(data, 'city', value),
 		},
 		{
 			label: t('district'),
 			value: get(contact, 'district'),
+			readOnly: true,
 			onSave: (data, value) => set(data, 'district', value),
+		},
+		{
+			label: t('nearest-health-unit'),
+			value: get(contact, 'healthUnits'),
+			transformValue: value => map(value, hu => get(hu, 'description')),
+			readOnly: true,
+			dispensable: true,
+		},
+		{
+			label: t('registration-time-expired'),
+			value: get(contact, 'registerExpired'),
+			boolean: true,
+			readOnly: true,
 		},
 		{ label: t('notes'), value: get(contact, 'notes'), onSave: (data, value) => set(data, 'notes', value) },
 	];
@@ -56,16 +72,19 @@ export default ({ t, contact }) => {
 		{
 			label: t('severe-symptoms'),
 			value: get(contact, 'severeSymptoms'),
+			transformValue: value => value && value.replace(/[()]/gi, ''),
 			onSave: (data, value) => set(data, 'severeSymptoms', value),
 		},
 		{
 			label: t('mild-symptoms'),
 			value: get(contact, 'mildSymptoms'),
+			transformValue: value => value && value.replace(/[()]/gi, ''),
 			onSave: (data, value) => set(data, 'mildSymptoms', value),
 		},
 		{
 			label: t('health-problems'),
 			value: get(contact, 'healthProblems'),
+			transformValue: value => value && value.replace(/[()]/gi, ''),
 			onSave: (data, value) => set(data, 'healthProblems', value),
 		},
 		{
@@ -83,8 +102,13 @@ export default ({ t, contact }) => {
 		{
 			label: t('symptom-start'),
 			value: get(contact, 'symptomsStart'),
-			transformValue: value => DateTime.fromISO(value).toFormat(t('date-format')),
+			transformValue: value => (value ? DateTime.fromISO(value).toFormat(t('date-format')) : null),
 			onSave: (data, value) => set(data, 'symptomsStart', value),
+		},
+		{
+			label: t('notes'),
+			value: find(contact.opportunities, item => item.status === 'Em Andamento') || {},
+			transformValue: value => value.description,
 		},
 	];
 

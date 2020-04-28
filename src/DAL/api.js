@@ -17,6 +17,21 @@ export const get = async (...args) => {
 	return null;
 };
 
+export const getRed = async (...args) => {
+	const token = await localforage.getItem('token');
+	const config = await queryCache.getQueryData('config');
+	if (config != null) {
+		const axiosInstance = axios.create({
+			baseURL: `${config['konecty-url']}/api/v2`,
+			headers: {
+				Authorization: token,
+			},
+		});
+		return axiosInstance.get(...args);
+	}
+	return null;
+};
+
 export const post = async (...args) => {
 	const token = await localforage.getItem('token');
 	const config = await queryCache.getQueryData('config');

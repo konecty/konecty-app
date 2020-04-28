@@ -59,5 +59,6 @@
 	"error-opportunity-not-found": "Episode not found for this room...",
     "error-contact-not-found": "Contact not found with this code.",
     "error-invalid-cpf": "This CPF is invalid.",
+    "error-invalid-phone": "This phone is invalid.",
     "error-konecty-save": "Error updating. Review your data."
 }

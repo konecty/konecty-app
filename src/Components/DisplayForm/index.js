@@ -100,10 +100,14 @@ const DisplayForm = ({ fields, title, editable, onSave, onSuccess, button }) => 
 	};
 
 	const renderField = field => {
-		let { label, value = '', transformValue, ...props } = field;
+		let { label, value = '', transformValue, dispensable, ...props } = field;
 
 		if (transformValue instanceof Function) {
 			value = transformValue(value);
+		}
+
+		if (dispensable && (!value || !value.length)) {
+			return null;
 		}
 
 		if (Array.isArray(value)) {

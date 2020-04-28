@@ -9,7 +9,6 @@ import SlideAnimation from '@material-ui/core/Slide';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import PlusIcon from '@material-ui/icons/Add';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import useStyles from './useStyles';

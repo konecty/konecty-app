@@ -59,5 +59,6 @@
 	"error-opportunity-not-found": "Atendimento não encontrado para essa sala...",
     "error-contact-not-found": "Contato não encontrado com esse código.",
     "error-invalid-cpf": "Esse CPF é inválido.",
+    "error-invalid-phone": "Esse telefone é inválido.",
     "error-konecty-save": "Erro ao atualizar. Revise suas informações."
 }

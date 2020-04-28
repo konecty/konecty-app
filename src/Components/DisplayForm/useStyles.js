@@ -59,7 +59,6 @@ const useStyles = makeStyles(theme => ({
 		transform: 'translate(0, 16px) scale(1)',
 		textOverflow: 'ellipsis',
 		overflow: 'hidden',
-		whiteSpace: 'nowrap',
 	},
 	labelReadOnly: {
 		width: 126,
@@ -67,7 +66,6 @@ const useStyles = makeStyles(theme => ({
 		transform: 'translate(0, 16px) scale(1)',
 		textOverflow: 'ellipsis',
 		overflow: 'hidden',
-		whiteSpace: 'nowrap',
 		color: 'rgba(0, 0, 0, 0.54)!important',
 	},
 }));
