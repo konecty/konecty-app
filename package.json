@@ -13,8 +13,10 @@
 		"watcherGlob": "**"
 	},
 	"dependencies": {
+		"@date-io/luxon": "1.x",
 		"@material-ui/core": "^4.9.7",
 		"@material-ui/icons": "^4.9.1",
+		"@material-ui/pickers": "^3.2.10",
 		"@material-ui/styles": "^4.9.6",
 		"axios": "^0.19.2",
 		"i18next": "^19.3.3",
@@ -23,6 +25,7 @@
 		"immutable": "^4.0.0-rc.12",
 		"localforage": "^1.7.3",
 		"lodash": "^4.17.15",
+		"luxon": "^1.23.0",
 		"prop-types": "^15.7.2",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",

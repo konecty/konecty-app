@@ -55,6 +55,7 @@
     "cancel": "Cancel",
     "message-history": "Message history",
 
+    "date-format": "MM/dd/yyyy",
 	"error-opportunity-not-found": "Episode not found for this room...",
 	"error-contact-not-found": "Contact not found with this code."
 }
