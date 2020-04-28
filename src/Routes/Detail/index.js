@@ -95,7 +95,7 @@ const Detail = ({ match }) => {
 		} else {
 			op = find(contact.opportunities, item => item.status === 'Em Andamento') || {};
 		}
-		setCurrent({ ...op, contact: pick(contact, ['_id', '_updatedAt']) });
+		setCurrent({ ...op, contact: pick(contact, ['_id', '_updatedAt', 'age']) });
 	};
 
 	// Update state and Konecty data when the fields are saved

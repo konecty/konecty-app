@@ -17,12 +17,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import CheckIcon from '@material-ui/icons/Check';
+import { DatePicker } from '@material-ui/pickers';
 
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Loader from '../Loader';
 import { updateOpportunity, createOpportunity } from '../../DAL/mutations/opportunity';
-import updateContact from '../../DAL/mutations/contact';
 
 const Symptoms = ({ data, save, cancel }) => {
 	if (!data) return null;
@@ -37,8 +37,9 @@ const Symptoms = ({ data, save, cancel }) => {
 	const onSelect = (key, value) => () => setSelected(sec => ({ ...sec, symptoms: { ...sec.symptoms, [key]: value } }));
 
 	const onClose = async () => {
-		const payload = pick(selected, ['symptoms', 'description', 'isPregnant', 'symptomDays']);
+		const payload = pick(selected, ['symptoms', 'description', 'isPregnant', 'contact']);
 		payload.symptoms = map(payload.symptoms, (value, key) => ({ ...allSymptoms.find(propEq('indicator', key)), value }));
+		// payload.symptomsStart = payload.symptomsStart.toDate();
 
 		setLoading(true);
 		let processedFields;
@@ -50,7 +51,6 @@ const Symptoms = ({ data, save, cancel }) => {
 			processedFields = await createOpportunity(payload);
 		}
 
-		await updateContact([data.contact], processedFields);
 		setLoading(false);
 
 		save(processedFields);
@@ -65,6 +65,7 @@ const Symptoms = ({ data, save, cancel }) => {
 			},
 		}));
 	}, []);
+	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
 
 	const Symptom = ({ code, indicator: key, ...rest }) => (
 		<Box key={code} display="flex" justifyContent="space-between" alignItems="center" py={1} borderBottom="1px solid #d6d6d6">
@@ -96,6 +97,13 @@ const Symptoms = ({ data, save, cancel }) => {
 					</Toolbar>
 				</Container>
 			</AppBar>
+			<Box py={1} bgcolor={`${getColor(selected.category)}.main`} color={`${getColor(selected.category)}.contrastText`}>
+				<Container maxWidth="sm">
+					<Typography variant="subtitle2">
+						{t('classification')}: {t(selected.category)}
+					</Typography>
+				</Container>
+			</Box>
 			<Container maxWidth="sm">
 				<Box my={2}>
 					<Typography variant="h6" gutterBottom>
@@ -134,14 +142,14 @@ const Symptoms = ({ data, save, cancel }) => {
 					</Select>
 				</FormControl>
 
-				<TextField
-					label={t('symptom-days')}
-					value={selected.symptomDays}
-					onChange={({ target }) => setSelected(c => ({ ...c, symptomDays: Number(target.value) }))}
+				{/* <DatePicker
+					label={t('symptom-start')}
+					value={selected.symptomsStart}
+					format={t('date-format')}
+					disableFuture
+					onChange={value => setSelected(c => ({ ...c, symptomsStart: value }))}
 					style={{ marginBottom: '1rem' }}
-					multiline
-					fullWidth
-				/>
+				/> */}
 				<TextField
 					label={t('notes')}
 					value={selected.description}
