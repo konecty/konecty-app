@@ -54,12 +54,6 @@ export default ({ t, contact }) => {
 			readOnly: true,
 			onSave: (data, value) => set(data, 'district', value),
 		},
-		{
-			label: t('registration-time-expired'),
-			value: get(contact, 'registerExpired'),
-			boolean: true,
-			readOnly: true,
-		},
 		{ label: t('notes'), value: get(contact, 'notes'), onSave: (data, value) => set(data, 'notes', value) },
 	];
 

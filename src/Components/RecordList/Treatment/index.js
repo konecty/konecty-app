@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { map, orderBy, concat, without, filter } from 'lodash';
@@ -10,7 +12,6 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import Link from '@material-ui/core/Link';
 import { useTheme } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
@@ -106,9 +107,23 @@ const TreatmentList = ({ items, onEdit }) => {
 												<>
 													<br />
 													<Link
-														href={`${parentUrl}/live/${item.livechatId}`}
-														target="_blank"
-														rel="noopener noreferrer"
+														onClick={e => {
+															e.stopPropagation();
+
+															// Use window open to open on browser
+															window.open(
+																`${parentUrl}/live/${item.livechatId}`,
+																'_blank',
+																'width=1280,height=950',
+															);
+
+															// Use window.parent open to open on electron app
+															window.parent.open(
+																`${parentUrl}/live/${item.livechatId}`,
+																'_blank',
+																'width=1280,height=950',
+															);
+														}}
 													>
 														{t('message-history')}
 													</Link>

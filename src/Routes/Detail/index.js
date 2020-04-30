@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux';
 import useStyles from './useStyles';
 
 import fetchContact from '../../DAL/fetchContact';
-// import fetchTasks from '../../DAL/fetchTasks';
 import fetchOpportunities from '../../DAL/fetchOpportunities';
 import updateContact from '../../DAL/mutations/contact';
 
@@ -37,7 +36,6 @@ const Detail = ({ match }) => {
 		try {
 			const [person, tasks, opportunities] = await Promise.all([
 				fetchContact(code),
-				// fetchTasks(code),
 				Promise.resolve([]),
 				fetchOpportunities(code),
 			]);
@@ -122,6 +120,13 @@ const Detail = ({ match }) => {
 						</Typography>
 					</Container>
 				</Box>
+				{contact.registerExpired && (
+					<Box bgcolor="grey.300" py={1}>
+						<Container maxWidth="sm">
+							<Typography variant="subtitle2">{t('registration-time-expired')}</Typography>
+						</Container>
+					</Box>
+				)}
 				<Container maxWidth="sm" className={classes.root}>
 					<Box my={2}>
 						<DisplayForm
