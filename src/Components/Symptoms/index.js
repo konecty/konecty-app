@@ -43,7 +43,7 @@ const Symptoms = ({ data, save, cancel }) => {
 		const payload = pick(selected, ['symptoms', 'description', 'isPregnant', 'contact', 'symptomsStart']);
 		payload.symptoms = map(payload.symptoms, (value, key) => ({ ...allSymptoms.find(propEq('indicator', key)), value }));
 		payload.rid = rid;
-		payload.symptomsStart = payload.symptomsStart.toISO();
+		payload.symptomsStart = payload.symptomsStart && payload.symptomsStart.toISO();
 
 		setLoading(true);
 		let processedFields;

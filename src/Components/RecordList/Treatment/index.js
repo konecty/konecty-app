@@ -21,7 +21,7 @@ import Bot from '../../Icons/Bot';
 import MD from '../../Icons/MD';
 import useStyles from './useStyle';
 import { formatDate } from '../../../Util/format';
-import getFields from '../../../Routes/Detail/fields';
+import getFields from './fields';
 
 const TreatmentList = ({ items, onEdit }) => {
 	const [expanded, setExpanded] = useState(null);
@@ -120,7 +120,7 @@ const TreatmentList = ({ items, onEdit }) => {
 							</Box>
 						</ExpansionPanelSummary>
 						<ExpansionPanelDetails className={classes.details}>
-							<DisplayForm fields={getFields({ t, contact: item }).healthstatusFields} />
+							<DisplayForm fields={getFields({ t, data: item })} />
 						</ExpansionPanelDetails>
 					</ExpansionPanel>
 				</Paper>

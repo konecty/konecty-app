@@ -67,19 +67,19 @@ export default ({ t, contact }) => {
 		{
 			label: t('severe-symptoms'),
 			value: get(contact, 'severeSymptoms'),
-			transformValue: value => value && value.replace(/[()]/gi, ''),
+			transformValue: value => value && value.replace(/\s?\(.*?\)/gi, ''),
 			onSave: (data, value) => set(data, 'severeSymptoms', value),
 		},
 		{
 			label: t('mild-symptoms'),
 			value: get(contact, 'mildSymptoms'),
-			transformValue: value => value && value.replace(/[()]/gi, ''),
+			transformValue: value => value && value.replace(/\s?\(.*?\)/gi, ''),
 			onSave: (data, value) => set(data, 'mildSymptoms', value),
 		},
 		{
 			label: t('health-problems'),
 			value: get(contact, 'healthProblems'),
-			transformValue: value => value && value.replace(/[()]/gi, ''),
+			transformValue: value => value && value.replace(/\s?\(.*?\)/gi, ''),
 			onSave: (data, value) => set(data, 'healthProblems', value),
 		},
 		{
