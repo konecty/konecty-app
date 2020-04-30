@@ -103,7 +103,7 @@ const TreatmentList = ({ items, onEdit }) => {
 													null,
 												)
 													.join(', ')
-													.replace(/\s?\(.*?\)/gi, '')}
+													.replace(/\s?\(.*?\)\s?,?/gi, '')}
 											</Typography>
 											{item.livechatId && parentUrl && (
 												<>
