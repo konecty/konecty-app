@@ -101,7 +101,9 @@ const TreatmentList = ({ items, onEdit }) => {
 													concat(item.severeSymptoms, item.mildSymptoms, item.healthProblems),
 													undefined,
 													null,
-												).join(', ')}
+												)
+													.join(', ')
+													.replace(/\s?\(.*?\)/gi, '')}
 											</Typography>
 											{item.livechatId && parentUrl && (
 												<>
