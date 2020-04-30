@@ -92,16 +92,11 @@ const TreatmentList = ({ items, onEdit }) => {
 												style={{
 													maxWidth: 250,
 													whiteSpace: 'wrap',
-													overflow: 'hidden',
-													textOverflow: 'ellipsis',
+													flexBasis: '100%',
 												}}
 												color="textSecondary"
 											>
-												{without(
-													concat(item.severeSymptoms, item.mildSymptoms, item.healthProblems),
-													undefined,
-													null,
-												)
+												{without(concat(item.severeSymptoms, item.mildSymptoms), undefined, null)
 													.join(', ')
 													.replace(/\s?\(.*?\)\s?,?/gi, '')}
 											</Typography>
