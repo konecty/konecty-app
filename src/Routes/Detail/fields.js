@@ -39,20 +39,20 @@ export default ({ t, contact }) => {
 		{
 			label: t('state'),
 			value: get(contact, 'address.0.state'),
-			readOnly: true,
+			readOnly: false,
 			onSave: (data, value) =>
 				set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), state: value }]),
 		},
 		{
 			label: t('city'),
 			value: get(contact, 'city'),
-			readOnly: true,
+			readOnly: false,
 			onSave: (data, value) => set(data, 'city', value),
 		},
 		{
 			label: t('district'),
 			value: get(contact, 'district'),
-			readOnly: true,
+			readOnly: false,
 			onSave: (data, value) => set(data, 'district', value),
 		},
 		{ label: t('notes'), value: get(contact, 'notes'), onSave: (data, value) => set(data, 'notes', value) },

@@ -134,7 +134,7 @@ const DisplayForm = ({ fields, title, editable, onSave, onSuccess, button }) => 
 			{errors && (
 				<Box mb={2} py={2} px={1} bgcolor="error.main" color="common.white">
 					{errors.map(err => (
-						<li>{t(err)}</li>
+						<li>{t(err.msg, { field: err.field })}</li>
 					))}
 				</Box>
 			)}
