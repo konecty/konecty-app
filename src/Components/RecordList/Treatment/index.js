@@ -16,12 +16,13 @@ import Link from '@material-ui/core/Link';
 import { useTheme } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { DateTime } from 'luxon';
 
 import DisplayForm from '../../DisplayForm';
 import Bot from '../../Icons/Bot';
 import MD from '../../Icons/MD';
 import useStyles from './useStyle';
-import { formatDate } from '../../../Util/format';
+import { normalizeSymptoms } from '../../../Util/format';
 import getFields from './fields';
 
 const TreatmentList = ({ items, onEdit }) => {
@@ -59,7 +60,9 @@ const TreatmentList = ({ items, onEdit }) => {
 								<Box flexGrow={1} flexShrink={1}>
 									<Box display="flex" justifyContent="space-between" alignItems="center">
 										<Typography variant="h6">
-											{item.startAt ? formatDate(item.startAt) : t('current-opportunity')}
+											{item.startAt
+												? DateTime.fromISO(item.startAt).toFormat(t('date-format'))
+												: t('current-opportunity')}
 										</Typography>
 										{/* Category chip */}
 										<Box
@@ -96,9 +99,11 @@ const TreatmentList = ({ items, onEdit }) => {
 												}}
 												color="textSecondary"
 											>
-												{without(concat(item.severeSymptoms, item.mildSymptoms), undefined, null)
-													.join(', ')
-													.replace(/\s?\(.*?\)\s?,?/gi, '')}
+												{normalizeSymptoms(
+													without(concat(item.severeSymptoms, item.mildSymptoms), undefined, null).join(
+														', ',
+													),
+												)}
 											</Typography>
 											{item.livechatId && parentUrl && (
 												<>

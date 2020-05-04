@@ -83,7 +83,7 @@ const Symptoms = ({ data, save, cancel }) => {
 				<Button onClick={onSelect(key, true)} color={selected.symptoms[key] && 'primary'} disableElevation>
 					{t('y')}
 				</Button>
-				<Button onClick={onSelect(key, false)} color={!selected.symptoms[key] && 'primary'} disableElevation>
+				<Button onClick={onSelect(key, false)} color={selected.symptoms[key] === false && 'primary'} disableElevation>
 					{t('n')}
 				</Button>
 			</ButtonGroup>

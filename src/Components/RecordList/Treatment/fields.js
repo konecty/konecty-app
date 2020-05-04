@@ -1,15 +1,16 @@
 import { get, find } from 'lodash';
+import { normalizeSymptoms } from '../../../Util/format';
 
 export default ({ t, data }) => [
 	{
 		label: t('severe-symptoms'),
 		value: get(data, 'severeSymptoms'),
-		transformValue: value => value && value.replace(/\s?\(.*?\)/gi, ''),
+		transformValue: normalizeSymptoms,
 	},
 	{
 		label: t('mild-symptoms'),
 		value: get(data, 'mildSymptoms'),
-		transformValue: value => value && value.replace(/\s?\(.*?\)/gi, ''),
+		transformValue: normalizeSymptoms,
 	},
 	{
 		label: t('notes'),
