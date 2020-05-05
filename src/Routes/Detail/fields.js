@@ -1,4 +1,4 @@
-import { get, map, find, startCase, toLower } from 'lodash';
+import { get, map, find, startCase, toLower, chain } from 'lodash';
 import { set } from 'immutable';
 import { DateTime } from 'luxon';
 import { normalizeSymptoms } from '../../Util/format';
@@ -6,6 +6,13 @@ import { normalizeSymptoms } from '../../Util/format';
 const polite = string => startCase(toLower(string));
 
 export default ({ t, contact }) => {
+	const huServices = hu =>
+		chain(['hasAssistance', 'hasHospitalization', 'hasTestCollect'])
+			.pickBy(v => !!hu[v])
+			.map(v => t(v))
+			.join(', ')
+			.value();
+
 	const personalFields = [
 		{
 			label: t('name'),
@@ -103,9 +110,11 @@ export default ({ t, contact }) => {
 		{
 			label: t('nearest-health-unit'),
 			value: get(contact, 'healthUnits'),
-			transformValue: value => [].concat(...map(value, hu => [hu.type, polite(hu.name), polite(hu.address), ''])),
+			transformValue: value =>
+				[].concat(...map(value, hu => [hu.type, polite(hu.name), polite(hu.address), huServices(hu), ''])),
 			readOnly: true,
 			dispensable: true,
+			breakLine: true,
 		},
 	];
 

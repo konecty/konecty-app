@@ -21,7 +21,10 @@ const useStyles = makeStyles(theme => ({
 		paddingLeft: 128,
 		paddingTop: 2,
 		paddingBottom: 8,
-		// textAlign: 'right',
+		'&[data-break=true]': {
+			paddingLeft: 0,
+			paddingTop: 30,
+		},
 	},
 	inputControlReadOnly: {
 		marginTop: '8px!important',
@@ -29,7 +32,10 @@ const useStyles = makeStyles(theme => ({
 		paddingTop: 2,
 		paddingBottom: 8,
 		borderBottom: 'none',
-		// textAlign: 'right',
+		'&[data-break=true]': {
+			paddingLeft: 0,
+			paddingTop: 30,
+		},
 		'&:before': {
 			borderBottom: '1px solid rgba(0, 0, 0, 0.1)!important',
 		},
@@ -48,7 +54,10 @@ const useStyles = makeStyles(theme => ({
 		top: 'calc(50% - 20px)',
 	},
 	input: {
-		// textAlign: 'right',
+		'&[data-break=true]': {
+			paddingLeft: 0,
+			paddingTop: 30,
+		},
 	},
 	inputMultiline: {
 		paddingBottom: 9,
@@ -59,6 +68,9 @@ const useStyles = makeStyles(theme => ({
 		transform: 'translate(0, 16px) scale(1)',
 		textOverflow: 'ellipsis',
 		overflow: 'hidden',
+		'&[data-break=true]': {
+			width: '100%',
+		},
 	},
 	labelReadOnly: {
 		width: 126,

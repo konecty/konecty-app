@@ -28,7 +28,10 @@
 	"is-pregnant": "Gravidez",
 	"risk-group": "Grupo de risco",
 	"symptom-days": "Dias com sintomas",
-	"symptom-start": "Início dos sintomas",
+    "symptom-start": "Início dos sintomas",
+    "hasAssistance": "Atendimento",
+    "hasHospitalization": "Internação",
+    "hasTestCollect": "Coleta de exame",
 
 	"opportunities": "Histórico de atendimentos",
 	"activities": "Tarefas",

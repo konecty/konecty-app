@@ -91,9 +91,11 @@ const DisplayForm = ({ fields, title, editable, onSave, onSuccess, button }) => 
 						inputMultiline: classes.inputMultiline,
 					},
 					readOnly: props.readOnly || !editing,
+					'data-break': props.breakLine,
 				}}
 				InputLabelProps={{
 					classes: { root: classes.label, focused: editing ? undefined : classes.labelReadOnly },
+					'data-break': props.breakLine,
 				}}
 			/>
 		);

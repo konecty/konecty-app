@@ -28,7 +28,10 @@
 	"is-pregnant": "Pregnancy",
 	"risk-group": "Risk group",
 	"symptom-days": "Days with symptoms",
-	"symptom-start": "Symptoms start",
+    "symptom-start": "Symptoms start",
+    "hasAssistance": "Assistance",
+    "hasHospitalization": "Hospitalization",
+    "hasTestCollect": "Exam collection",
 
 	"opportunities": "Episodes",
 	"activities": "Tasks",
