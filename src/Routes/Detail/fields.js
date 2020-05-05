@@ -44,6 +44,13 @@ export default ({ t, contact }) => {
 		{ label: t('age'), value: get(contact, 'age'), onSave: (data, value) => set(data, 'age', value) },
 		{ label: 'CPF', value: get(contact, 'CPF'), onSave: (data, value) => set(data, 'CPF', value) },
 		{
+			label: t('state'),
+			value: get(contact, 'address.0.state'),
+			readOnly: false,
+			onSave: (data, value) =>
+				set(data, 'address', [{ ...get(contact, 'address.0'), ...get(data, 'address.0', {}), state: value }]),
+		},
+		{
 			label: t('city'),
 			value: get(contact, 'city'),
 			readOnly: false,
