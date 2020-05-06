@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { map } from 'lodash';
+import { map, omit } from 'lodash';
 
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -46,6 +46,7 @@ const DisplayForm = ({ fields, title, editable, onSave, onSuccess, button }) => 
 			promise.then(res => {
 				if (res && res.errors) {
 					setErrors(res.errors);
+					onSuccess(omit(modified, res.omits));
 				} else {
 					onSuccess(modified);
 				}
@@ -195,6 +196,7 @@ if (process.env.__DEV__) {
 		title: PropTypes.string,
 		editable: PropTypes.bool,
 		onSave: PropTypes.func,
+		onSuccess: PropTypes.func,
 		button: PropTypes.element,
 		fields: PropTypes.arrayOf(
 			PropTypes.shape({
