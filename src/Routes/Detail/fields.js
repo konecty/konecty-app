@@ -1,7 +1,7 @@
 import { get, map, find, startCase, toLower, chain } from 'lodash';
 import { set } from 'immutable';
 import { DateTime } from 'luxon';
-import { normalizeSymptoms } from '../../Util/format';
+import { normalizeSymptoms, formatPhone } from '../../Util/format';
 
 const polite = string => startCase(toLower(string));
 
@@ -27,12 +27,15 @@ export default ({ t, contact }) => {
 		{
 			label: t('phone'),
 			value: get(contact, 'phone'),
-			transformValue: v => map(v, phone => phone.phoneNumber),
+			transformValue: v => map(v, phone => formatPhone(phone.phoneNumber)),
 			onSave: (data, value) =>
 				set(
 					data,
 					'phone',
-					value.split('\n').map(e => ({ phoneNumber: e, countryCode: get(contact, 'phone.0.countryCode', 55) })),
+					value.split('\n').map((e = '') => ({
+						phoneNumber: e.replace(/\D/g, ''),
+						countryCode: get(contact, 'phone.0.countryCode', 55),
+					})),
 				),
 		},
 		{
