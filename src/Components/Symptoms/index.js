@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { filter, map, matchesProperty as propEq, toLower, pick, reduce } from 'lodash';
+import { filter, map, matchesProperty as propEq, toLower, pick, reduce, get } from 'lodash';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -69,7 +69,7 @@ const Symptoms = ({ data, save, cancel }) => {
 		const symptomsDefaults = setSymptomsDefaults(selected);
 
 		// If none mild symptoms was answered, set them to "null"
-		const isMildAnswered = symptoms('mild').some(item => selected.symptomIndicators[item.indicator] != null);
+		const isMildAnswered = symptoms('mild').some(item => get(selected, 'symptomIndicators', {})[item.indicator] != null);
 		if (!isMildAnswered) {
 			const indicators = reduce(symptoms('mild'), (acc, value) => ({ ...acc, [value.indicator]: null }), {});
 			symptomsDefaults.symptomIndicators = { ...symptomsDefaults.symptomIndicators, ...indicators };
