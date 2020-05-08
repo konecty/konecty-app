@@ -62,6 +62,7 @@
 	"error-opportunity-not-found": "Episode not found for this room...",
     "error-contact-not-found": "Contact not found with this code.",
     "error-konecty-save": "Error updating. Review your data.",
+    "error-state-missing": "City validation error. State is not present in the registry.",
     "error-field-missing": "The field $t({{field}}) is required.",
     "error-field-invalid": "The field $t({{field}}) is invalid."
 }

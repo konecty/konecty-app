@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { filter, map, matchesProperty as propEq, toLower, pick } from 'lodash';
+import { filter, map, matchesProperty as propEq, toLower, pick, reduce } from 'lodash';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Loader from '../Loader';
 import { updateOpportunity, createOpportunity } from '../../DAL/mutations/opportunity';
+import setSymptomsDefaults from '../../Util/symptomsDefaults';
 
 const Symptoms = ({ data, save, cancel }) => {
 	if (!data) return null;
@@ -64,11 +65,21 @@ const Symptoms = ({ data, save, cancel }) => {
 	};
 
 	useEffect(() => {
+		// Set all falsy answers to false, so as to mark the "no" button
+		const symptomsDefaults = setSymptomsDefaults(selected);
+
+		// If none mild symptoms was answered, set them to "null"
+		const isMildAnswered = symptoms('mild').some(item => selected.symptomIndicators[item.indicator] != null);
+		if (!isMildAnswered) {
+			const indicators = reduce(symptoms('mild'), (acc, value) => ({ ...acc, [value.indicator]: null }), {});
+			symptomsDefaults.symptomIndicators = { ...symptomsDefaults.symptomIndicators, ...indicators };
+		}
+
 		setSelected(sec => ({
 			...sec,
 			symptoms: {
-				...sec.symptomIndicators,
-				...sec.healthProblemsIndicators,
+				...symptomsDefaults.symptomIndicators,
+				...symptomsDefaults.healthProblemsIndicators,
 			},
 		}));
 	}, []);

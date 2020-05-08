@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux';
 import useStyles from './useStyles';
 
 import fetchContact from '../../DAL/fetchContact';
-import fetchOpportunities from '../../DAL/fetchOpportunities';
 import updateContact from '../../DAL/mutations/contact';
 
 import Loader from '../../Components/Loader';
@@ -34,18 +33,10 @@ const Detail = ({ match }) => {
 
 	const getDetails = async code => {
 		try {
-			const [person, tasks, opportunities] = await Promise.all([
-				fetchContact(code),
-				Promise.resolve([]),
-				fetchOpportunities(code),
-			]);
+			const person = await fetchContact(code);
 
 			if (person) {
-				return {
-					...person,
-					tasks,
-					opportunities,
-				};
+				return person;
 			}
 
 			return { code };
@@ -82,6 +73,7 @@ const Detail = ({ match }) => {
 			if (opIdx > -1) newData.opportunities[opIdx] = Object.assign(oldData.opportunities[opIdx], updatedFields);
 			else newData.opportunities.unshift(updatedFields);
 
+			newData.opDescription = updatedFields.opDescription;
 			return newData;
 		});
 		setCurrent(null);

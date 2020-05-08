@@ -49,7 +49,7 @@ export default ({ t, contact }) => {
 		{
 			label: t('city'),
 			value: get(contact, 'city'),
-			readOnly: false,
+			readOnly: true,
 			onSave: (data, value) => set(data, 'city', value),
 		},
 		{
@@ -100,8 +100,11 @@ export default ({ t, contact }) => {
 		},
 		{
 			label: t('notes'),
-			value: find(contact.opportunities, item => item.status === 'Em Andamento') || {},
-			transformValue: value => value.description,
+			value: {
+				op: find(contact.opportunities, item => item.status === 'Em Andamento') || {},
+				desc: get(contact, 'opDescription'),
+			},
+			transformValue: value => value.desc || get(value, 'op.description'),
 		},
 		{
 			label: t('nearest-health-unit'),
