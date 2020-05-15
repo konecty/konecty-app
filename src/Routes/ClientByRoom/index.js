@@ -50,7 +50,7 @@ const ClientByToken = () => {
 		if (config != null) {
 			const search = new URLSearchParams(location.search);
 			if (search != null) {
-				const { rid, t: token } = reduce([...search.entries()], (acc, [k, v]) => ({ ...acc, [k]: v }), {});
+				const { uid, rid, t: token } = reduce([...search.entries()], (acc, [k, v]) => ({ ...acc, [k]: v }), {});
 				if (t != null) {
 					dispatch(
 						loadUser({
@@ -60,7 +60,7 @@ const ClientByToken = () => {
 						}),
 					);
 					setRoomId(rid);
-					dispatch({ type: PROP_CHANGE, payload: { rid } });
+					dispatch({ type: PROP_CHANGE, payload: { rid, uid } });
 
 					if (parentUrl) {
 						dispatch({ type: PROP_CHANGE, payload: { parentUrl } });

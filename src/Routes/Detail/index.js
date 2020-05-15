@@ -29,11 +29,11 @@ const Detail = ({ match }) => {
 	const [contact, setContact] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [current, setCurrent] = useState(null);
-	const { rid } = useSelector(({ app }) => app);
+	const { rid, uid } = useSelector(({ app }) => app);
 
 	const getDetails = async code => {
 		try {
-			const person = await fetchContact(code);
+			const person = await fetchContact({ code, rid, uid });
 
 			if (person) {
 				return person;
@@ -64,25 +64,28 @@ const Detail = ({ match }) => {
 		return <ElegantError text={t('error-contact-not-found')} fullScreen />;
 	}
 
+	const treatment = find(contact.opportunities, item => item.editable === true);
+
 	// Update state when opportunity saved
 	const onCloseEdit = updatedFields => {
 		setContact(oldData => {
 			const newData = Object.assign(oldData, updatedFields);
 			const opIdx = oldData.opportunities.findIndex(op => op.code === current.code);
 
+			updatedFields.description = updatedFields.opDescription;
 			if (opIdx > -1) newData.opportunities[opIdx] = Object.assign(oldData.opportunities[opIdx], updatedFields);
 			else newData.opportunities.unshift(updatedFields);
 
-			newData.opDescription = updatedFields.opDescription;
+			newData.opDescription = updatedFields.description;
 			return newData;
 		});
 		setCurrent(null);
 	};
 	const onEdit = e => {
 		e.stopPropagation();
-		const op = find(contact.opportunities, item => item.status === 'Em Andamento') || {};
+		if (!treatment) return;
 
-		setCurrent({ ...op, contact: pick(contact, ['_id', '_updatedAt', 'age']) });
+		setCurrent({ ...treatment, contact: pick(contact, ['_id', '_updatedAt', 'age']) });
 	};
 
 	// Update state and Konecty data when the fields are saved
@@ -131,11 +134,18 @@ const Detail = ({ match }) => {
 						<DisplayForm
 							title={t('health-status')}
 							fields={healthstatusFields}
-							button={
-								<Button variant="contained" size="small" onClick={onEdit} disableElevation disableFocusRipple>
+							button={(
+								<Button
+									variant="contained"
+									size="small"
+									onClick={onEdit}
+									disabled={!treatment}
+									disableElevation
+									disableFocusRipple
+								>
 									{t('edit')}
 								</Button>
-							}
+                            )}
 						/>
 					</Box>
 

@@ -1,8 +1,8 @@
 import { getRed as get } from './api';
 
-const getContact = async code => {
+const getContact = async ({ code, rid, uid }) => {
 	try {
-		const { data } = await get(`fetchContact?code=${code}`);
+		const { data } = await get(`fetchContact?code=${code}&rid=${rid}&uid=${uid}`);
 
 		return data;
 	} catch (e) {

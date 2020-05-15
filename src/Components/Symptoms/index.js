@@ -47,7 +47,7 @@ const Symptoms = ({ data, save, cancel }) => {
 
 		// If it is a Luxon date instance, convert to iso
 		if (payload.symptomsStart && payload.symptomsStart.toISO) {
-			payload.symptomsStart = payload.symptomsStart && payload.symptomsStart.toISO();
+			payload.symptomsStart = payload.symptomsStart.toISO();
 		}
 
 		setLoading(true);
@@ -155,24 +155,25 @@ const Symptoms = ({ data, save, cancel }) => {
 						onChange={({ target }) => setSelected(c => ({ ...c, isPregnant: target.value === 'y' }))}
 					>
 						{['y', 'n'].map(cat => (
-							<MenuItem value={cat}>{t(cat)}</MenuItem>
+							<MenuItem key={cat} value={cat}>{t(cat)}</MenuItem>
 						))}
 					</Select>
 				</FormControl>
 
 				<DatePicker
 					label={t('symptom-start')}
-					value={selected.symptomsStart}
+					value={selected.symptomsStart || null}
 					format={t('date-format')}
 					disableFuture
 					onChange={value => setSelected(c => ({ ...c, symptomsStart: value }))}
 					style={{ marginBottom: '1rem', width: '100%' }}
+					TextFieldComponent={props => <TextField fullWidth InputLabelProps={{ shrink: true }} {...props} />}
 				/>
 				<TextField
 					label={t('notes')}
 					value={selected.description}
 					onChange={({ target }) => setSelected(c => ({ ...c, description: target.value }))}
-					shrink
+					InputLabelProps={{ shrink: true }}
 					multiline
 					fullWidth
 				/>
