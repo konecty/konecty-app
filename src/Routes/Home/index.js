@@ -11,15 +11,34 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 
 import { useTranslation } from 'react-i18next';
 
+import { useSelector, useDispatch } from 'react-redux';
 import fetchPatients from '../../DAL/fetchPatients';
 
 import Loader from '../../Components/Loader';
 import Link from '../../Components/Link';
 
+import { loadConfig, loadUser } from '../../App/actions';
+
 const Home = () => {
 	const { t } = useTranslation();
 	const [contacts, setContacts] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const { config } = useSelector(({ app }) => app);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (!config) dispatch(loadConfig());
+	}, []);
+
+	useEffect(() => {
+		if (config != null && !config.symptoms) {
+			dispatch(
+				loadUser({
+					encrypted: false,
+				}),
+			);
+		}
+	}, [config]);
 
 	useEffect(() => {
 		if (contacts) setLoading(false);

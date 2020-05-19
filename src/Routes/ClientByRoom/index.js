@@ -47,7 +47,7 @@ const ClientByToken = () => {
 	}, [dispatch, konectyUrl]);
 
 	useEffect(() => {
-		if (config != null) {
+		if (config != null && !config.symptoms) {
 			const search = new URLSearchParams(location.search);
 			if (search != null) {
 				const { uid, rid, t: token } = reduce([...search.entries()], (acc, [k, v]) => ({ ...acc, [k]: v }), {});

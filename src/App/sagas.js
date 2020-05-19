@@ -1,7 +1,7 @@
 import { takeLatest, put } from 'redux-saga/effects';
 import { queryCache } from 'react-query';
 import localforage from 'localforage';
-import { LOAD_CONFIG, LOAD_USER } from './constants';
+import { LOAD_CONFIG, LOAD_USER, PROP_MERGE } from './constants';
 
 import fetchConfig from '../DAL/fetchConfig';
 import fetchSymptoms from '../DAL/fetchSymptoms';
@@ -11,8 +11,7 @@ import { decrypt } from '../Util/crypto';
 
 function* loadConfig({ payload }) {
 	const data = yield queryCache.prefetchQuery('config', [payload], fetchConfig);
-	const symptoms = yield queryCache.prefetchQuery('symptoms', fetchSymptoms);
-	yield put(configLoaded({ ...data, symptoms }));
+	yield put(configLoaded(data));
 }
 
 function* loadUser({ payload }) {
@@ -26,6 +25,8 @@ function* loadUser({ payload }) {
 
 	if (res != null) {
 		yield put(userLoaded({ logged: true, data: res.user }));
+		const symptoms = yield queryCache.prefetchQuery('symptoms', fetchSymptoms);
+		yield put({ type: PROP_MERGE, payload: { config: { symptoms } } });
 	} else {
 		yield put(userLoaded({ logged: false }));
 	}
