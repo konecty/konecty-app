@@ -14,7 +14,9 @@ import { useSelector } from 'react-redux';
 import useStyles from './useStyles';
 
 import fetchContact from '../../DAL/fetchContact';
+import fetchMemedToken from '../../DAL/fetchMemedToken';
 import updateContact from '../../DAL/mutations/contact';
+import createPrescription from '../../DAL/mutations/prescription';
 
 import Loader from '../../Components/Loader';
 import ElegantError from '../../Components/Error';
@@ -22,9 +24,6 @@ import { Treatment as TreatmentList } from '../../Components/RecordList';
 import DisplayForm from '../../Components/DisplayForm';
 import Symptoms from '../../Components/Symptoms';
 import getFields from './fields';
-
-import localforage from 'localforage';
-import { queryCache } from 'react-query';
 
 const Detail = ({ match }) => {
 	const classes = useStyles();
@@ -99,7 +98,7 @@ const Detail = ({ match }) => {
 
 	const { personalFields, healthstatusFields } = getFields({ t, contact });
 
-	const memedAbrirPopUp = (appBaseUrl, appToken, memedToken, memedHost, memedPacienteNome) => {
+	const memedAbrirPopUp = (memedToken, memedHost, memedPacienteNome) => {
 		const memedPopUp = window.open(
 			`${window.location.origin}/memed?host=${memedHost}&nome=${memedPacienteNome}&token=${memedToken}`,
 			'_blank',
@@ -115,25 +114,9 @@ const Detail = ({ match }) => {
 				for (let i = 0; i < len; i++) {
 					const prescricao = memedPopUp.document.memedPrescricoesAdicionadas[i];
 					if (!memedPrescricoesAdicionadas.includes(prescricao)) {
-						var memedAdicionarPrescricaoHeaders = new Headers();
-						memedAdicionarPrescricaoHeaders.append('Authorization', appToken);
-						memedAdicionarPrescricaoHeaders.append('Content-Type', 'application/json');
-						var memedAdicionarPrescricaoConfig = {
-							method: 'POST',
-							headers: memedAdicionarPrescricaoHeaders,
-							body: JSON.stringify({ rid: uid, idPrescricao: prescricao }),
-						};
-						fetch(`${appBaseUrl}/memed/prescricao`, memedAdicionarPrescricaoConfig)
-							.then(response => {
-								if (response.ok) {
-									console.log(`Prescrição ${prescricao} adicionada com sucesso!`);
-								} else {
-									console.log(`A adição da prescrição ${prescricao} foi rejeitada pelo servidor!`);
-								}
-							})
-							.catch(error => {
-								console.log(`Erro ao tentar adicionar a prescrição ${prescricao}: ${error}`);
-							});
+						const data = { rid: uid, idPrescricao: prescricao };
+
+						createPrescription(data);
 						memedPrescricoesAdicionadas.push(prescricao);
 					}
 				}
@@ -167,40 +150,12 @@ const Detail = ({ match }) => {
 	};
 
 	const memedPrescricaoClick = async e => {
-		//TODO - Refatorar posteriormente. Usar métodos da classe Api.js
-		const appConfig = await queryCache.getQueryData('config');
-		const appBaseUrl = `${appConfig['konecty-url']}/api/v2`;
-
-		const appToken = await localforage.getItem('token');
-		var memedObterTokenHeaders = new Headers();
-		memedObterTokenHeaders.append('Authorization', appToken);
-
-		var memedObterTokenFetchConfig = {
-			method: 'GET',
-			headers: memedObterTokenHeaders,
-		};
-
 		const memedPacienteNome = personalFields[0].value;
 
-		if (uid === undefined) {
-			//TODO - Retirar tratamento do uid usado para desenvolvimento e testes
-			const memedHost = 'sandbox.memed.com.br';
-			const memedToken =
-				'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.WzMzOTMzLCJlYzQ4ZDZhZTMxNTkyMTlhZjZjZWNmMGE1M2YxNmZkMCIsIjIwMjAtMDUtMTgiLCJzaW5hcHNlLnByZXNjcmljYW8iLCJwYXJ0bmVyLjMuMjkzMTQiXQ.PrWJUSGDgFW2oYJqPir13O-HhsZNAjKC9OuwhMy0mOE';
-			memedAbrirPopUp(appBaseUrl, appToken, memedToken, memedHost, memedPacienteNome);
-		} else {
-			fetch(`${appBaseUrl}/memed/getToken?uid=${uid}`, memedObterTokenFetchConfig)
-				.then(response => {
-					if (response.ok) {
-						const memedHost = 'api.memed.com.br';
-						memedAbrirPopUp(appBaseUrl, appToken, response.data.token, memedHost, memedPacienteNome);
-					} else {
-						console.log('Não foi possível recuperar o token para integração com a Memed');
-					}
-				})
-				.catch(error => {
-					console.log(`Não foi possível carregar o módulo de prescrições da Memed devido ao erro: ${error}`);
-				});
+		const memedToken = await fetchMemedToken(uid);
+		if (memedToken) {
+			const memedHost = 'api.memed.com.br';
+			memedAbrirPopUp(memedToken, memedHost, memedPacienteNome);
 		}
 	};
 
