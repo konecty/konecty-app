@@ -169,7 +169,7 @@ const Detail = ({ match }) => {
 	const memedPrescricaoClick = async e => {
 		//TODO - Refatorar posteriormente. Usar métodos da classe Api.js
 		const appConfig = await queryCache.getQueryData('config');
-		const appBaseUrl = appConfig['konecty-url'];
+		const appBaseUrl = `${appConfig['konecty-url']}/api/v2`;
 
 		const appToken = await localforage.getItem('token');
 		var memedObterTokenHeaders = new Headers();
