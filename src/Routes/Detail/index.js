@@ -31,7 +31,7 @@ const Detail = ({ match }) => {
 	const [contact, setContact] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [current, setCurrent] = useState(null);
-	const { rid, uid } = useSelector(({ app }) => app);
+	const { rid, uid, config } = useSelector(({ app }) => app);
 
 	const getDetails = async code => {
 		try {
@@ -154,7 +154,7 @@ const Detail = ({ match }) => {
 
 		const memedToken = await fetchMemedToken(uid);
 		if (memedToken) {
-			const memedHost = 'api.memed.com.br';
+			const memedHost = config.memedScriptHost;
 			memedAbrirPopUp(memedToken, memedHost, memedPacienteNome);
 		}
 	};
