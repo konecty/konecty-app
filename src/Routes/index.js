@@ -8,6 +8,7 @@ import StateSample from './StateSample';
 import Login from './Login';
 import Detail from './Detail';
 import ClientByRoom from './ClientByRoom';
+import Memed from './Memed';
 
 const PrivateRoute = ({ component, ...rest }) => {
 	const isAuthenticated = useSelector(({ app: { user } }) => user != null && user.logged);
@@ -53,6 +54,8 @@ const Routes = () => {
 			<PrivateRoute exact path="/" component={Home} />
 			<PrivateRoute exact path="/detail/:code" component={Detail} />
 			<PrivateRoute path="/state-sample" component={StateSample} />
+
+			<Route path="/memed" component={Memed} />
 		</Switch>
 	);
 };

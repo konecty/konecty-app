@@ -64,5 +64,7 @@
     "error-konecty-save": "Error updating. Review your data.",
     "error-state-missing": "City validation error. State is not present in the registry.",
     "error-field-missing": "The field $t({{field}}) is required.",
-    "error-field-invalid": "The field $t({{field}}) is invalid."
+	"error-field-invalid": "The field $t({{field}}) is invalid.",
+	
+	"prescricao": "Prescription"
 }

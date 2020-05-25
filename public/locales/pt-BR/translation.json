@@ -64,5 +64,7 @@
     "error-konecty-save": "Erro ao atualizar. Revise suas informações.",
     "error-state-missing": "Erro ao validar a cidade. Estado não está presente no cadastro",
     "error-field-missing": "O campo $t({{field}}) é obrigatório.",
-    "error-field-invalid": "O campo $t({{field}}) é inválido."
+	"error-field-invalid": "O campo $t({{field}}) é inválido.",
+	
+	"prescricao": "Prescrição e Atestado"
 }
