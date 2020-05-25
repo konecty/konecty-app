@@ -1,5 +1,5 @@
 {
-	"konecty-url": "http://localhost:3500",
+	"konecty-url": "https://crm.telemedicine.rocket.chat",
 	"jwk": {
 		"alg": "A256GCM",
 		"ext": true,

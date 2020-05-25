@@ -34,24 +34,13 @@ const Memed = () => {
 		MdHub.command.send('plataforma.prescricao', 'setPaciente', { nome: pacienteNome });
 	};
 
-	document.memedPrescricoesAdicionadas = [];
-	document.memdPrescricoesExcluidas = [];
-
-	const memedDepoisDeCriarPrescricao = idPrescricao => {
-		document.memedPrescricoesAdicionadas.push(idPrescricao);
-	};
-
-	const memedDepoisDeExcluirPrescricao = idPrescricao => {
-		document.memdPrescricoesExcluidas.push(idPrescricao);
-	};
-
 	if (!memedScriptImported()) {
 		memedScriptImport();
-
 		const memedLoadingInterval = setInterval(() => {
 			try {
-				MdHub.event.add('prescricaoSalva', memedDepoisDeCriarPrescricao);
-				MdHub.event.add('prescricaoExcluida', memedDepoisDeExcluirPrescricao);
+				if (window.onMemedScriptLoaded) {
+					window.onMemedScriptLoaded();
+				}
 				clearInterval(memedLoadingInterval);
 				setTimeout(() => {
 					memedAntesDeObterPrescricao(memedPacienteNome);

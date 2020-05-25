@@ -105,47 +105,11 @@ const Detail = ({ match }) => {
 			'toolbar=no,status=no,titlebar=no,location=no,menubar=no,width=800,height=600',
 		);
 
-		let memedPrescricoesAdicionadas = [];
-		let memdPrescricoesExcluidas = [];
-
-		const memedAdicionarPrescricao = idPrescricao => {
-			if (memedPopUp.document.memedPrescricoesAdicionadas !== undefined) {
-				let len = memedPopUp.document.memedPrescricoesAdicionadas.length;
-				for (let i = 0; i < len; i++) {
-					const prescricao = memedPopUp.document.memedPrescricoesAdicionadas[i];
-					if (!memedPrescricoesAdicionadas.includes(prescricao)) {
-						const data = { rid: uid, idPrescricao: prescricao };
-
-						createPrescription(data);
-						memedPrescricoesAdicionadas.push(prescricao);
-					}
-				}
-			}
-		};
-
-		const memedExcluirPrescricao = idPrescricao => {
-			if (memedPopUp.document.memdPrescricoesExcluidas !== undefined) {
-				let len = memedPopUp.document.memdPrescricoesExcluidas.length;
-				for (let i = 0; i < len; i++) {
-					const prescricao = memedPopUp.document.memdPrescricoesExcluidas[i];
-					if (!memdPrescricoesExcluidas.includes(prescricao)) {
-						//TODO excluir prescricao
-						console.log('Excluir prescrição: ' + prescricao);
-						memdPrescricoesExcluidas.push(prescricao);
-					}
-				}
-			}
-		};
-
-		const memedPopUpMonitor = setInterval(() => {
-			if (memedPopUp.document.readyState === 'complete') {
-				memedAdicionarPrescricao();
-				memedExcluirPrescricao();
-			}
-		}, 50);
-
-		memedPopUp.onbeforeunload = () => {
-			clearInterval(memedPopUpMonitor);
+		memedPopUp.onMemedScriptLoaded = () => {
+			memedPopUp.MdHub.event.add('prescricaoSalva', idPrescricao =>
+				createPrescription({ idPrescricao, token: memedToken, rid, uid }),
+			);
+			memedPopUp.MdHub.event.add('prescricaoExcluida', console.log);
 		};
 	};
 
