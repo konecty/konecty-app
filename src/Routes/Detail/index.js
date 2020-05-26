@@ -31,7 +31,7 @@ const Detail = ({ match }) => {
 	const [contact, setContact] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [current, setCurrent] = useState(null);
-	const { rid, uid, config } = useSelector(({ app }) => app);
+	const { rid, uid, config, user } = useSelector(({ app }) => app);
 
 	const getDetails = async code => {
 		try {
@@ -152,20 +152,21 @@ const Detail = ({ match }) => {
 					</Box>
 				)}
 				<Container maxWidth="sm" className={classes.root}>
-					<Box my={2}>
-						<Button
-							id="memed-prescricao"
-							variant="contained"
-							color="primary"
-							size="medium"
-							onClick={memedPrescricaoClick}
-							disabled={!treatment}
-							disableElevation
-							disableFocusRipple
-						>
-							{t('prescricao')}
-						</Button>
-					</Box>
+					{user.data.memedAgent && (
+						<Box my={2}>
+							<Button
+								id="memed-prescricao"
+								variant="contained"
+								color="primary"
+								size="medium"
+								onClick={memedPrescricaoClick}
+								disableElevation
+								disableFocusRipple
+							>
+								{t('prescricao')}
+							</Button>
+						</Box>
+					)}
 					<Box my={2}>
 						<DisplayForm
 							title={t('personal-data')}
