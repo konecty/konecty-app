@@ -5,6 +5,7 @@ const Memed = () => {
 	const memedToken = memedUrlParams.get('token');
 	const memedHost = memedUrlParams.get('host');
 	const memedPacienteNome = memedUrlParams.get('nome');
+	const memedPacienteTelefone = memedUrlParams.get('telefone');
 
 	const memedScriptImported = () => {
 		const scriptsOnDocument = document.getElementsByTagName('script');
@@ -25,13 +26,16 @@ const Memed = () => {
 		document.body.appendChild(memedScript);
 	};
 
-	const memedAntesDeObterPrescricao = pacienteNome => {
+	const memedAntesDeObterPrescricao = (pacienteNome, pacienteTelefone) => {
 		if (module.name === 'plataforma.prescricao') {
 			MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
 				buttonClose: false,
 			});
 		}
-		MdHub.command.send('plataforma.prescricao', 'setPaciente', { nome: pacienteNome });
+		MdHub.command.send('plataforma.prescricao', 'setPaciente', { 
+			nome: pacienteNome,
+			telefone: pacienteTelefone
+		});
 	};
 
 	if (!memedScriptImported()) {
@@ -43,7 +47,7 @@ const Memed = () => {
 				}
 				clearInterval(memedLoadingInterval);
 				setTimeout(() => {
-					memedAntesDeObterPrescricao(memedPacienteNome);
+					memedAntesDeObterPrescricao(memedPacienteNome, memedPacienteTelefone);
 					document.getElementById('memed-prescricao').click();
 					console.log('API Memed carregada.');
 				}, 1000);
