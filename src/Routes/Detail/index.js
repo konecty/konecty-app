@@ -110,6 +110,28 @@ const Detail = ({ match }) => {
 				createPrescription({ idPrescricao, token: memedToken, rid, uid }),
 			);
 			memedPopUp.MdHub.event.add('prescricaoExcluida', console.log);
+			MdSinapsePrescricao.event.add('core:moduleInit', function startMemedConfigs(module) {
+				if(module.name === 'plataforma.prescricao') {
+					MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
+						alwaysSendSMS: true,
+						deletePatient: false,
+						historyPrescription: true,
+						newPrescription: true,
+						optionsPrescription: true,
+						removePatient: false,
+						editPatient: false,
+						setPatientAllergy: true,
+						autocompleteExams: true,
+						autocompleteIndustrialized: true,
+						autocompleteManipulated: true,
+						autocompleteCompositions: true,
+						autocompletePeripherals: true,
+						copyMedicalRecords: true,
+						buttonClose: false,
+						newFormula: true,
+					});
+				}
+			});			
 		};
 	};
 

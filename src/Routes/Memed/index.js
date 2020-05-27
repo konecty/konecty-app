@@ -27,11 +27,6 @@ const Memed = () => {
 	};
 
 	const memedAntesDeObterPrescricao = (pacienteNome, pacienteTelefone) => {
-		if (module.name === 'plataforma.prescricao') {
-			MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
-				buttonClose: false,
-			});
-		}
 		MdHub.command.send('plataforma.prescricao', 'setPaciente', { 
 			nome: pacienteNome,
 			telefone: pacienteTelefone
