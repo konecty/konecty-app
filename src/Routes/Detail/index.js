@@ -98,11 +98,11 @@ const Detail = ({ match }) => {
 
 	const { personalFields, healthstatusFields } = getFields({ t, contact });
 
-	const memedAbrirPopUp = (memedToken, memedHost, memedPacienteNome) => {
+	const memedAbrirPopUp = (memedToken, memedHost, memedPacienteNome, memedPacienteTelefone) => {
 		const memedPopUp = window.open(
-			`${window.location.origin}/memed?host=${memedHost}&nome=${memedPacienteNome}&token=${memedToken}`,
+			`${window.location.origin}/memed?host=${memedHost}&nome=${memedPacienteNome}&telefone=${memedPacienteTelefone}&token=${memedToken}`,
 			'_blank',
-			'toolbar=no,status=no,titlebar=no,location=no,menubar=no,width=800,height=600',
+			'toolbar=no,status=no,titlebar=no,location=no,menubar=no,resizable=no,width=800,height=600',
 		);
 
 		memedPopUp.onMemedScriptLoaded = () => {
@@ -114,12 +114,35 @@ const Detail = ({ match }) => {
 	};
 
 	const memedPrescricaoClick = async e => {
-		const memedPacienteNome = personalFields[0].value;
+
+		const memedObterPacienteNome = () => {
+			if ((personalFields !== null) && (personalFields !== undefined)
+					&& (personalFields[0] !== null) && (personalFields[0] !== undefined)
+					&& (personalFields[0].value !== null) && (personalFields[0].value !== undefined)
+					&& (personalFields[0].value !== '')) {
+				return personalFields[0].value;
+			}
+			return null;
+		}
+
+		const memedObterPacienteTelefone = () => {
+			if ((personalFields !== null) && (personalFields !== undefined)
+					&& (personalFields[1] !== null) && (personalFields[1] !== undefined)
+					&& (personalFields[1].value !== null) && (personalFields[1].value !== undefined)
+					&& (personalFields[1].value[0] !== null) && (personalFields[1].value[0] !== undefined)
+					&& (personalFields[1].value[0].phoneNumber !== '')) {
+				return personalFields[1].value[0].phoneNumber;
+			}
+			return null;
+		}
+
+		const memedPacienteNome = memedObterPacienteNome()
+		const memedPacienteTelefone = memedObterPacienteTelefone()		
 
 		const memedToken = await fetchMemedToken(uid);
 		if (memedToken) {
 			const memedHost = config.memedScriptHost;
-			memedAbrirPopUp(memedToken, memedHost, memedPacienteNome);
+			memedAbrirPopUp(memedToken, memedHost, memedPacienteNome, memedPacienteTelefone);
 		}
 	};
 
