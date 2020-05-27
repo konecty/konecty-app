@@ -26,6 +26,13 @@ const Memed = () => {
 		document.body.appendChild(memedScript);
 	};
 
+	const memedAntesDeClicarBotaoPrescricao = () => {
+		MdHub.command.send('plataforma.prescricao', 'setPaciente', {
+			nome: memedPacienteNome,
+			telefone: memedPacienteTelefone,
+		})
+	}	
+
 	const memedAntesDeObterPrescricao = (pacienteNome, pacienteTelefone) => {
 		MdHub.command.send('plataforma.prescricao', 'setPaciente', { 
 			nome: pacienteNome,
@@ -54,7 +61,7 @@ const Memed = () => {
 
 	return (
 		<div>
-			<a id="memed-prescricao" style={{ display: 'none' }}>
+			<a id="memed-prescricao" onClick={memedAntesDeClicarBotaoPrescricao} style={{ display: 'none' }}>
 				Click-me
 			</a>
 		</div>
