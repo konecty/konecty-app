@@ -47,7 +47,7 @@ const Memed = () => {
 					console.log('API Memed carregada.');
 				}, 1000);
 			} catch (e) {
-				console.log('Aguardando API Memed...');
+				console.log(`Aguardando API Memed... ${e}`);
 			}
 		}, 300);
 	}

@@ -110,9 +110,9 @@ const Detail = ({ match }) => {
 				createPrescription({ idPrescricao, token: memedToken, rid, uid }),
 			);
 			memedPopUp.MdHub.event.add('prescricaoExcluida', console.log);
-			MdSinapsePrescricao.event.add('core:moduleInit', function startMemedConfigs(module) {
+			memedPopUp.MdSinapsePrescricao.event.add('core:moduleInit', function startMemedConfigs(module) {
 				if(module.name === 'plataforma.prescricao') {
-					MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
+					memedPopUp.MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
 						alwaysSendSMS: true,
 						deletePatient: false,
 						historyPrescription: true,
