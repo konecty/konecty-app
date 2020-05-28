@@ -114,12 +114,12 @@ const Detail = ({ match }) => {
 				if(module.name === 'plataforma.prescricao') {
 					memedPopUp.MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
 						alwaysSendSMS: true,
-						deletePatient: false,
-						historyPrescription: false,
+						deletePatient: true,
+						historyPrescription: true,
 						newPrescription: true,
 						optionsPrescription: true,
-						removePatient: false,
-						editPatient: false,
+						removePatient: true,
+						editPatient: true,
 						setPatientAllergy: true,
 						autocompleteExams: true,
 						autocompleteIndustrialized: true,
@@ -127,7 +127,7 @@ const Detail = ({ match }) => {
 						autocompleteCompositions: true,
 						autocompletePeripherals: true,
 						copyMedicalRecords: true,
-						buttonClose: false,
+						buttonClose: true,
 						newFormula: true,
 					});
 				}
