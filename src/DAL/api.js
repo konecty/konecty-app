@@ -50,7 +50,6 @@ export const post = async (...args) => {
 export const postRed = async (...args) => {
 	const token = await localforage.getItem('token');
 	const config = await queryCache.getQueryData('config');
-    console.log("postRed -> config", config)
 	if (config != null) {
 		const axiosInstance = axios.create({
 			baseURL: `${config['konecty-url']}/api/v2`,

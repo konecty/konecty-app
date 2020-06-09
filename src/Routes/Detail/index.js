@@ -31,7 +31,7 @@ const Detail = ({ match }) => {
 	const [contact, setContact] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [current, setCurrent] = useState(null);
-	const { rid, uid, config } = useSelector(({ app }) => app);
+	const { rid, uid, config, user } = useSelector(({ app }) => app);
 
 	const getDetails = async code => {
 		try {
@@ -98,11 +98,11 @@ const Detail = ({ match }) => {
 
 	const { personalFields, healthstatusFields } = getFields({ t, contact });
 
-	const memedAbrirPopUp = (memedToken, memedHost, memedPacienteNome) => {
+	const memedAbrirPopUp = (memedToken, memedHost, memedPacienteNome, memedPacienteTelefone) => {
 		const memedPopUp = window.open(
-			`${window.location.origin}/memed?host=${memedHost}&nome=${memedPacienteNome}&token=${memedToken}`,
+			`${window.location.origin}/memed?host=${memedHost}&nome=${memedPacienteNome}&telefone=${memedPacienteTelefone}&token=${memedToken}`,
 			'_blank',
-			'toolbar=no,status=no,titlebar=no,location=no,menubar=no,width=800,height=600',
+			'toolbar=no,status=no,titlebar=no,location=no,menubar=no,resizable=no,width=800,height=600',
 		);
 
 		memedPopUp.onMemedScriptLoaded = () => {
@@ -110,16 +110,61 @@ const Detail = ({ match }) => {
 				createPrescription({ idPrescricao, token: memedToken, rid, uid }),
 			);
 			memedPopUp.MdHub.event.add('prescricaoExcluida', console.log);
+			memedPopUp.MdSinapsePrescricao.event.add('core:moduleInit', function startMemedConfigs(module) {
+				if(module.name === 'plataforma.prescricao') {
+					memedPopUp.MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
+						alwaysSendSMS: true,
+						deletePatient: true,
+						historyPrescription: true,
+						newPrescription: true,
+						optionsPrescription: true,
+						removePatient: false,
+						editPatient: true,
+						setPatientAllergy: true,
+						autocompleteExams: true,
+						autocompleteIndustrialized: true,
+						autocompleteManipulated: true,
+						autocompleteCompositions: true,
+						autocompletePeripherals: true,
+						copyMedicalRecords: true,
+						buttonClose: false,
+						newFormula: true,
+					});
+				}
+			});			
 		};
 	};
 
 	const memedPrescricaoClick = async e => {
-		const memedPacienteNome = personalFields[0].value;
+
+		const memedObterPacienteNome = () => {
+			if ((personalFields !== null) && (personalFields !== undefined)
+					&& (personalFields[0] !== null) && (personalFields[0] !== undefined)
+					&& (personalFields[0].value !== null) && (personalFields[0].value !== undefined)
+					&& (personalFields[0].value !== '')) {
+				return personalFields[0].value;
+			}
+			return null;
+		}
+
+		const memedObterPacienteTelefone = () => {
+			if ((personalFields !== null) && (personalFields !== undefined)
+					&& (personalFields[1] !== null) && (personalFields[1] !== undefined)
+					&& (personalFields[1].value !== null) && (personalFields[1].value !== undefined)
+					&& (personalFields[1].value[0] !== null) && (personalFields[1].value[0] !== undefined)
+					&& (personalFields[1].value[0].phoneNumber !== '')) {
+				return personalFields[1].value[0].phoneNumber;
+			}
+			return null;
+		}
+
+		const memedPacienteNome = memedObterPacienteNome()
+		const memedPacienteTelefone = memedObterPacienteTelefone()		
 
 		const memedToken = await fetchMemedToken(uid);
 		if (memedToken) {
 			const memedHost = config.memedScriptHost;
-			memedAbrirPopUp(memedToken, memedHost, memedPacienteNome);
+			memedAbrirPopUp(memedToken, memedHost, memedPacienteNome, memedPacienteTelefone);
 		}
 	};
 
@@ -152,20 +197,21 @@ const Detail = ({ match }) => {
 					</Box>
 				)}
 				<Container maxWidth="sm" className={classes.root}>
-					<Box my={2}>
-						<Button
-							id="memed-prescricao"
-							variant="contained"
-							color="primary"
-							size="medium"
-							onClick={memedPrescricaoClick}
-							disabled={!treatment}
-							disableElevation
-							disableFocusRipple
-						>
-							{t('prescricao')}
-						</Button>
-					</Box>
+					{user.data.memedAgent && (
+						<Box my={2}>
+							<Button
+								id="memed-prescricao"
+								variant="contained"
+								color="primary"
+								size="medium"
+								onClick={memedPrescricaoClick}
+								disableElevation
+								disableFocusRipple
+							>
+								{t('prescricao')}
+							</Button>
+						</Box>
+					)}
 					<Box my={2}>
 						<DisplayForm
 							title={t('personal-data')}
