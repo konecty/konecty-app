@@ -113,7 +113,7 @@ const Detail = ({ match }) => {
 			memedPopUp.MdSinapsePrescricao.event.add('core:moduleInit', function startMemedConfigs(module) {
 				if(module.name === 'plataforma.prescricao') {
 					memedPopUp.MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
-						alwaysSendSMS: true,
+						alwaysSendSMS: false,
 						deletePatient: true,
 						historyPrescription: true,
 						newPrescription: true,
