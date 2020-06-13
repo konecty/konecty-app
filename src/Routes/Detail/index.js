@@ -115,7 +115,7 @@ const Detail = ({ match }) => {
 					memedPopUp.MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
 						alwaysSendSMS: false,
 						deletePatient: true,
-						historyPrescription: true,
+						historyPrescription: false,
 						newPrescription: true,
 						optionsPrescription: true,
 						removePatient: false,
