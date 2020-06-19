@@ -34,11 +34,13 @@ const Symptoms = ({ data, save, cancel }) => {
 	const {
 		config: { symptoms: allSymptoms },
 		rid,
+		user,
 	} = useSelector(({ app }) => app);
 
 	const symptoms = section => filter(allSymptoms, propEq('section', section));
 	const translate = item => item['name_pt-BR']; // item[`name_${i18n.language}`];
 	const onSelect = (key, value) => () => setSelected(sec => ({ ...sec, symptoms: { ...sec.symptoms, [key]: value } }));
+	const isMentalAgent = get(user, 'data.mentalAgent');
 
 	const onClose = async () => {
 		const payload = pick(selected, ['symptoms', 'description', 'isPregnant', 'contact', 'symptomsStart']);
@@ -123,60 +125,79 @@ const Symptoms = ({ data, save, cancel }) => {
 				</Container>
 			</Box>
 			<Container maxWidth="sm">
-				<Box my={2}>
-					<Typography variant="h6" gutterBottom>
-						{t('severe-symptoms')}
-					</Typography>
-					{map(symptoms('severe'), Symptom)}
-				</Box>
+				{isMentalAgent && (
+					<Box my={2}>
+						<Typography variant="h6" gutterBottom>
+							{t('mental-problems')}
+						</Typography>
+						{map(symptoms('mentalProblems'), Symptom)}
+					</Box>
+				)}
+				{!isMentalAgent && (
+					<>
+						<Box my={2}>
+							<Typography variant="h6" gutterBottom>
+								{t('severe-symptoms')}
+							</Typography>
+							{map(symptoms('severe'), Symptom)}
+						</Box>
 
-				<Box mb={2}>
-					<Typography variant="h6" gutterBottom>
-						{t('mild-symptoms')}
-					</Typography>
-					{map(symptoms('mild'), Symptom)}
-				</Box>
+						<Box mb={2}>
+							<Typography variant="h6" gutterBottom>
+								{t('mild-symptoms')}
+							</Typography>
+							{map(symptoms('mild'), Symptom)}
+						</Box>
 
-				<Box mb={2}>
-					<Typography variant="h6" gutterBottom>
-						{t('health-problems')}
-					</Typography>
-					{map(symptoms('healthProblems'), Symptom)}
-				</Box>
+						<Box mb={2}>
+							<Typography variant="h6" gutterBottom>
+								{t('health-problems')}
+							</Typography>
+							{map(symptoms('healthProblems'), Symptom)}
+						</Box>
+					</>
+				)}
 			</Container>
 			<Container maxWidth="sm" style={{ marginTop: '3rem' }}>
-				<FormControl style={{ marginBottom: '1rem' }} fullWidth>
-					<InputLabel htmlFor="preg-select">{t('is-pregnant')}</InputLabel>
+				{!isMentalAgent && (
+					<>
+						<FormControl style={{ marginBottom: '1rem' }} fullWidth>
+							<InputLabel htmlFor="preg-select">{t('is-pregnant')}</InputLabel>
 
-					<Select
-						id="preg-select"
-						value={selected.isPregnant ? 'y' : 'n'}
-						fullWidth
-						onChange={({ target }) => setSelected(c => ({ ...c, isPregnant: target.value === 'y' }))}
-					>
-						{['y', 'n'].map(cat => (
-							<MenuItem key={cat} value={cat}>{t(cat)}</MenuItem>
-						))}
-					</Select>
-				</FormControl>
+							<Select
+								id="preg-select"
+								value={selected.isPregnant ? 'y' : 'n'}
+								fullWidth
+								onChange={({ target }) => setSelected(c => ({ ...c, isPregnant: target.value === 'y' }))}
+							>
+								{['y', 'n'].map(cat => (
+									<MenuItem key={cat} value={cat}>
+										{t(cat)}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 
-				<DatePicker
-					label={t('symptom-start')}
-					value={selected.symptomsStart || null}
-					format={t('date-format')}
-					disableFuture
-					onChange={value => setSelected(c => ({ ...c, symptomsStart: value }))}
-					style={{ marginBottom: '1rem', width: '100%' }}
-					TextFieldComponent={props => <TextField fullWidth InputLabelProps={{ shrink: true }} {...props} />}
-				/>
-				<TextField
-					label={t('notes')}
-					value={selected.description}
-					onChange={({ target }) => setSelected(c => ({ ...c, description: target.value }))}
-					InputLabelProps={{ shrink: true }}
-					multiline
-					fullWidth
-				/>
+						<DatePicker
+							label={t('symptom-start')}
+							value={selected.symptomsStart || null}
+							format={t('date-format')}
+							disableFuture
+							onChange={value => setSelected(c => ({ ...c, symptomsStart: value }))}
+							style={{ marginBottom: '1rem', width: '100%' }}
+							TextFieldComponent={props => <TextField fullWidth InputLabelProps={{ shrink: true }} {...props} />}
+						/>
+						<TextField
+							label={t('notes')}
+							value={selected.description}
+							onChange={({ target }) => setSelected(c => ({ ...c, description: target.value }))}
+							InputLabelProps={{ shrink: true }}
+							multiline
+							fullWidth
+						/>
+					</>
+				)}
+
 				<Box mt={4} mb={2} display="flex" justifyContent="space-between">
 					<Box width={0.52}>
 						<Button variant="contained" color="primary" fullWidth onClick={onClose} startIcon={<CheckIcon />}>

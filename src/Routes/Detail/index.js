@@ -11,6 +11,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { normalizeSymptoms } from '../../Util/format';
 import useStyles from './useStyles';
 
 import fetchContact from '../../DAL/fetchContact';
@@ -97,6 +98,14 @@ const Detail = ({ match }) => {
 	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
 
 	const { personalFields, healthstatusFields } = getFields({ t, contact });
+	const isMentalAgent = get(user, 'data.mentalAgent');
+	if (isMentalAgent) {
+		healthstatusFields.unshift({
+			label: t('mental-problems'),
+			value: get(contact, 'mentalHealthSymptoms'),
+			transformValue: normalizeSymptoms,
+		});
+	}
 
 	const memedAbrirPopUp = (memedToken, memedHost, memedPacienteNome, memedPacienteTelefone) => {
 		const memedPopUp = window.open(
@@ -111,7 +120,7 @@ const Detail = ({ match }) => {
 			);
 			memedPopUp.MdHub.event.add('prescricaoExcluida', console.log);
 			memedPopUp.MdSinapsePrescricao.event.add('core:moduleInit', function startMemedConfigs(module) {
-				if(module.name === 'plataforma.prescricao') {
+				if (module.name === 'plataforma.prescricao') {
 					memedPopUp.MdHub.command.send('plataforma.prescricao', 'setFeatureToggle', {
 						alwaysSendSMS: false,
 						deletePatient: true,
@@ -131,35 +140,13 @@ const Detail = ({ match }) => {
 						newFormula: true,
 					});
 				}
-			});			
+			});
 		};
 	};
 
-	const memedPrescricaoClick = async e => {
-
-		const memedObterPacienteNome = () => {
-			if ((personalFields !== null) && (personalFields !== undefined)
-					&& (personalFields[0] !== null) && (personalFields[0] !== undefined)
-					&& (personalFields[0].value !== null) && (personalFields[0].value !== undefined)
-					&& (personalFields[0].value !== '')) {
-				return personalFields[0].value;
-			}
-			return null;
-		}
-
-		const memedObterPacienteTelefone = () => {
-			if ((personalFields !== null) && (personalFields !== undefined)
-					&& (personalFields[1] !== null) && (personalFields[1] !== undefined)
-					&& (personalFields[1].value !== null) && (personalFields[1].value !== undefined)
-					&& (personalFields[1].value[0] !== null) && (personalFields[1].value[0] !== undefined)
-					&& (personalFields[1].value[0].phoneNumber !== '')) {
-				return personalFields[1].value[0].phoneNumber;
-			}
-			return null;
-		}
-
-		const memedPacienteNome = memedObterPacienteNome()
-		const memedPacienteTelefone = memedObterPacienteTelefone()		
+	const memedPrescricaoClick = async () => {
+		const memedPacienteNome = get(personalFields, '0.value') || null;
+		const memedPacienteTelefone = get(personalFields, '1.value.0.phoneNumber') || null;
 
 		const memedToken = await fetchMemedToken(uid);
 		if (memedToken) {
