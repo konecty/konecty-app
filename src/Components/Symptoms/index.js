@@ -34,13 +34,12 @@ const Symptoms = ({ data, save, cancel }) => {
 	const {
 		config: { symptoms: allSymptoms },
 		rid,
-		user,
 	} = useSelector(({ app }) => app);
 
 	const symptoms = section => filter(allSymptoms, propEq('section', section));
 	const translate = item => item['name_pt-BR']; // item[`name_${i18n.language}`];
 	const onSelect = (key, value) => () => setSelected(sec => ({ ...sec, symptoms: { ...sec.symptoms, [key]: value } }));
-	const isMentalAgent = get(user, 'data.mentalAgent');
+	const isMentalRoom = get(data, 'contact.isMentalHealthRoom');
 
 	const onClose = async () => {
 		const payload = pick(selected, ['symptoms', 'description', 'isPregnant', 'contact', 'symptomsStart']);
@@ -125,7 +124,7 @@ const Symptoms = ({ data, save, cancel }) => {
 				</Container>
 			</Box>
 			<Container maxWidth="sm">
-				{isMentalAgent && (
+				{isMentalRoom && (
 					<Box my={2}>
 						<Typography variant="h6" gutterBottom>
 							{t('mental-problems')}
@@ -133,7 +132,7 @@ const Symptoms = ({ data, save, cancel }) => {
 						{map(symptoms('mentalProblems'), Symptom)}
 					</Box>
 				)}
-				{!isMentalAgent && (
+				{!isMentalRoom && (
 					<>
 						<Box my={2}>
 							<Typography variant="h6" gutterBottom>
@@ -159,7 +158,7 @@ const Symptoms = ({ data, save, cancel }) => {
 				)}
 			</Container>
 			<Container maxWidth="sm" style={{ marginTop: '3rem' }}>
-				{!isMentalAgent && (
+				{!isMentalRoom && (
 					<>
 						<FormControl style={{ marginBottom: '1rem' }} fullWidth>
 							<InputLabel htmlFor="preg-select">{t('is-pregnant')}</InputLabel>

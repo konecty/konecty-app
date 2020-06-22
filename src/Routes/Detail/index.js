@@ -30,6 +30,7 @@ const Detail = ({ match }) => {
 	const classes = useStyles();
 	const { t } = useTranslation();
 	const [contact, setContact] = useState(null);
+    console.log("Detail -> contact", contact)
 	const [loading, setLoading] = useState(true);
 	const [current, setCurrent] = useState(null);
 	const { rid, uid, config, user } = useSelector(({ app }) => app);
@@ -88,7 +89,7 @@ const Detail = ({ match }) => {
 		e.stopPropagation();
 		if (!treatment) return;
 
-		setCurrent({ ...treatment, contact: pick(contact, ['_id', '_updatedAt', 'age']) });
+		setCurrent({ ...treatment, contact: pick(contact, ['_id', '_updatedAt', 'age', 'isMentalHealthRoom']) });
 	};
 
 	// Update state and Konecty data when the fields are saved
@@ -98,8 +99,8 @@ const Detail = ({ match }) => {
 	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
 
 	const { personalFields, healthstatusFields } = getFields({ t, contact });
-	const isMentalAgent = get(user, 'data.mentalAgent');
-	if (isMentalAgent) {
+	const isMentalRoom = get(contact, 'isMentalHealthRoom');
+	if (isMentalRoom) {
 		healthstatusFields.unshift({
 			label: t('mental-problems'),
 			value: get(contact, 'mentalHealthSymptoms'),
