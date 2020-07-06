@@ -21,7 +21,7 @@ const styles = makeStyles(theme => ({
 			margin: 0,
 		},
 	},
-	expansionSummary: {
+	accordionSummary: {
 		padding: theme.spacing(0, 2),
 	},
 	summaryContent: {

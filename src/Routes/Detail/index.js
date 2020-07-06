@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { get, pick, find } from 'lodash';
+import { get, map, find, startCase, toLower, chain } from 'lodash';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -26,11 +26,13 @@ import DisplayForm from '../../Components/DisplayForm';
 import Symptoms from '../../Components/Symptoms';
 import getFields from './fields';
 
+const polite = string => startCase(toLower(string));
+
 const Detail = ({ match }) => {
 	const classes = useStyles();
 	const { t } = useTranslation();
 	const [contact, setContact] = useState(null);
-    console.log("Detail -> contact", contact)
+
 	const [loading, setLoading] = useState(true);
 	const [current, setCurrent] = useState(null);
 	const { rid, uid, config, user } = useSelector(({ app }) => app);
@@ -98,14 +100,40 @@ const Detail = ({ match }) => {
 
 	const getColor = category => ({ Vermelha: 'statusRed', Amarela: 'statusYellow', Verde: 'statusGreen' }[category]);
 
-	const { personalFields, healthstatusFields } = getFields({ t, contact });
+	let { personalFields, healthstatusFields } = getFields({ t, contact });
 	const isMentalRoom = get(contact, 'isMentalHealthRoom');
 	if (isMentalRoom) {
-		healthstatusFields.unshift({
-			label: t('mental-problems'),
-			value: get(contact, 'mentalHealthSymptoms'),
-			transformValue: normalizeSymptoms,
-		});
+		const huServices = hu =>
+			chain(['hasAssistance', 'hasHospitalization', 'hasTestCollect'])
+				.pickBy(v => !!hu[v])
+				.map(v => t(v))
+				.join(', ')
+				.value();
+
+		healthstatusFields = [
+			{
+				label: t('mental-problems'),
+				value: get(contact, 'mentalHealthSymptoms'),
+				transformValue: normalizeSymptoms,
+			},
+			{
+				label: t('notes'),
+				value: {
+					op: find(contact.opportunities, item => item.status === 'Em Andamento') || {},
+					desc: get(contact, 'opDescription'),
+				},
+				transformValue: value => value.desc || get(value, 'op.description'),
+			},
+			{
+				label: t('nearest-health-unit'),
+				value: get(contact, 'healthUnits'),
+				transformValue: value =>
+					[].concat(...map(value, hu => [hu.type, polite(hu.name), polite(hu.address), huServices(hu), ''])),
+				readOnly: true,
+				dispensable: true,
+				breakLine: true,
+			},
+		];
 	}
 
 	const memedAbrirPopUp = (memedToken, memedHost, memedPacienteNome, memedPacienteTelefone) => {
@@ -212,6 +240,7 @@ const Detail = ({ match }) => {
 							title={t('health-status')}
 							fields={healthstatusFields}
 							button={
+								// eslint-disable-next-line react/jsx-wrap-multilines
 								<Button
 									variant="contained"
 									size="small"

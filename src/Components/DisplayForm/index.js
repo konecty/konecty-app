@@ -27,7 +27,10 @@ const DisplayForm = ({ fields, title, editable, onSave, onSuccess, button }) => 
 	const values = {};
 
 	const onEditClick = () => {
-		if (!editing) return setEditing(true);
+		if (!editing) {
+			setEditing(true);
+			return;
+		}
 		setErrors(null);
 
 		const modified = fields.reduce((acc, field) => {
@@ -35,7 +38,13 @@ const DisplayForm = ({ fields, title, editable, onSave, onSuccess, button }) => 
 
 			// Convert string boolean to boolean
 			if (field.boolean) {
-				values[field.label] = values[field.label] === t('y') ? true : values[field.label] === t('n') ? false : null;
+				if (values[field.label] === t('y')) {
+					values[field.label] = true;
+				} else if (values[field.label] === t('n')) {
+					values[field.label] = false;
+				} else {
+					values[field.label] = null;
+				}
 			}
 
 			return field.onSave(acc, values[field.label]);

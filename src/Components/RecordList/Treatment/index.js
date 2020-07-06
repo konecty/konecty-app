@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { map, orderBy, concat, without, filter } from 'lodash';
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
@@ -51,8 +51,8 @@ const TreatmentList = ({ items, onEdit }) => {
 		<div className={classes.root}>
 			{map(sorted, item => (
 				<Paper key={item._id} elevation={4} style={{ marginBottom: 15 }}>
-					<ExpansionPanel expanded={isExpanded(item.code)} onChange={onChange(item.code)}>
-						<ExpansionPanelSummary classes={{ root: classes.expansionSummary, content: classes.summaryContent }}>
+					<Accordion expanded={isExpanded(item.code)} onChange={onChange(item.code)}>
+						<AccordionSummary classes={{ root: classes.accordionSummary, content: classes.summaryContent }}>
 							<Box width={1} display="flex" justifyContent="space-between" flexGrow={1} alignItems="center">
 								<Avatar style={{ marginRight: theme.spacing(2), backgroundColor: '#00000022' }}>
 									{item.type === 'Atendimento Automático' ? <Bot /> : <MD />}
@@ -135,11 +135,11 @@ const TreatmentList = ({ items, onEdit }) => {
 									)}
 								</Box>
 							</Box>
-						</ExpansionPanelSummary>
-						<ExpansionPanelDetails className={classes.details}>
+						</AccordionSummary>
+						<AccordionDetails className={classes.details}>
 							<DisplayForm fields={getFields({ t, data: item })} />
-						</ExpansionPanelDetails>
-					</ExpansionPanel>
+						</AccordionDetails>
+					</Accordion>
 				</Paper>
 			))}
 		</div>

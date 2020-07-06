@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const fetchConfig = async (_, url) => {
 	if (url) {
-		const { data } = await axios.get(`//${url}/api/v2/app-config`);
+		const { data } = await axios.get(`https://${url}/api/v2/app-config`);
 		return {
-			'konecty-url': `//${url}`,
+			'konecty-url': `https://${url}`,
 			...data,
 		};
 	}
