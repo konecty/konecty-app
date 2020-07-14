@@ -8,7 +8,7 @@ const huDistance = string => {
 	if (string) {
 		const arr = string.toString().split('.');
 		const res = [arr[0], arr[1].substring(0, 2)].join(',');
-		return `${res}km`;
+		return `${res}km da localização informada`;
 	}
 	return '';
 };
