@@ -1,10 +1,17 @@
-import { get, map, find, startCase, toLower, chain } from 'lodash';
+import { get, map, find, startCase, toLower, chain, filter } from 'lodash';
 import { set } from 'immutable';
 import { DateTime } from 'luxon';
 import { normalizeSymptoms, formatPhone } from '../../Util/format';
 
 const polite = string => startCase(toLower(string));
-
+const huDistance = string => {
+	if (string) {
+		const arr = string.toString().split('.');
+		const res = [arr[0], arr[1].substring(0, 2)].join(',');
+		return `${res}km`;
+	}
+	return '';
+};
 export default ({ t, contact }) => {
 	const huServices = hu =>
 		chain(['hasAssistance', 'hasHospitalization', 'hasTestCollect'])
@@ -110,7 +117,14 @@ export default ({ t, contact }) => {
 			label: t('nearest-health-unit'),
 			value: get(contact, 'healthUnits'),
 			transformValue: value =>
-				[].concat(...map(value, hu => [hu.type, polite(hu.name), polite(hu.address), huServices(hu), ''])),
+				[].concat(
+					...map(value, hu =>
+						filter(
+							[hu.type, polite(hu.name), polite(hu.address), huServices(hu), huDistance(hu.distance), ' '],
+							i => i !== '',
+						),
+					),
+				),
 			readOnly: true,
 			dispensable: true,
 			breakLine: true,
