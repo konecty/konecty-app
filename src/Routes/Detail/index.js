@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { get, map, find, startCase, toLower, chain } from 'lodash';
+import { get, map, find, startCase, toLower, chain, pick } from 'lodash';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
