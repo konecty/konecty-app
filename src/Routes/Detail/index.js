@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { get, map, find, startCase, toLower, chain, pick } from 'lodash';
+import { get, map, find, startCase, toLower, chain, pick, filter } from 'lodash';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -27,6 +27,14 @@ import Symptoms from '../../Components/Symptoms';
 import getFields from './fields';
 
 const polite = string => startCase(toLower(string));
+const huDistance = string => {
+	if (string) {
+		const arr = string.toString().split('.');
+		const res = [arr[0], arr[1].substring(0, 2)].join(',');
+		return `${res}km da localização informada`;
+	}
+	return '';
+};
 
 const Detail = ({ match }) => {
 	const classes = useStyles();
@@ -128,7 +136,14 @@ const Detail = ({ match }) => {
 				label: t('nearest-health-unit'),
 				value: get(contact, 'healthUnits'),
 				transformValue: value =>
-					[].concat(...map(value, hu => [hu.type, polite(hu.name), polite(hu.address), huServices(hu), ''])),
+					[].concat(
+						...map(value, hu =>
+							filter(
+								[hu.type, polite(hu.name), polite(hu.address), huServices(hu), huDistance(hu.distance), ' '],
+								i => i !== '',
+							),
+						),
+					),
 				readOnly: true,
 				dispensable: true,
 				breakLine: true,
