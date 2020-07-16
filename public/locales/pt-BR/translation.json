@@ -11,7 +11,6 @@
 	"phone": "Telefone",
 	"gender": "Sexo",
 	"age": "Idade",
-	"nearest-health-unit": "Unidades de saúde próximas",
 	"registration-time-expired": "Tempo de cadastro expirado",
 	"notes": "Observação",
 
@@ -33,6 +32,16 @@
 	"hasAssistance": "Atendimento",
 	"hasHospitalization": "Internação",
 	"hasTestCollect": "Coleta de exame",
+	
+	"nearest-health-unit": "Unidades de saúde próximas",
+	"indicated": "Indicada",
+	"text-copied": "Texto copiado.",
+	"distance-from": "{{distance}}km da localização indicada",
+	"indicated-health-unit": "Unidade de Saúde Indicada",
+	"type": "Tipo",
+	"address": "Endereço",
+	"services": "Serviços",
+	"distance": "Distância",
 
 	"opportunities": "Histórico de atendimentos",
 	"activities": "Tarefas",

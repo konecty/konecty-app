@@ -78,8 +78,6 @@ const ClientByToken = () => {
 		return <Loader />;
 	}
 
-	// Render the page instead of redirecting to it
-	// so as to mantain the contact code type [string, number]
 	return <Detail match={{ params: { code: data.code } }} />;
 };
 

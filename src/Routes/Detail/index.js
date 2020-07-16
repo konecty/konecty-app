@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { get, map, find, startCase, toLower, chain, pick, filter } from 'lodash';
+import { get, find, pick } from 'lodash';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -24,23 +24,13 @@ import ElegantError from '../../Components/Error';
 import { Treatment as TreatmentList } from '../../Components/RecordList';
 import DisplayForm from '../../Components/DisplayForm';
 import Symptoms from '../../Components/Symptoms';
+import HealthUnits from '../../Components/HealthUnits';
 import getFields from './fields';
-
-const polite = string => startCase(toLower(string));
-const huDistance = string => {
-	if (string) {
-		const arr = string.toString().split('.');
-		const res = [arr[0], arr[1].substring(0, 2)].join(',');
-		return `${res}km da localização informada`;
-	}
-	return '';
-};
 
 const Detail = ({ match }) => {
 	const classes = useStyles();
 	const { t } = useTranslation();
 	const [contact, setContact] = useState(null);
-
 	const [loading, setLoading] = useState(true);
 	const [current, setCurrent] = useState(null);
 	const { rid, uid, config, user } = useSelector(({ app }) => app);
@@ -48,12 +38,7 @@ const Detail = ({ match }) => {
 	const getDetails = async code => {
 		try {
 			const person = await fetchContact({ code, rid, uid });
-
-			if (person) {
-				return person;
-			}
-
-			return { code };
+			return person || { code };
 		} catch (e) {
 			return { code };
 		}
@@ -111,13 +96,6 @@ const Detail = ({ match }) => {
 	let { personalFields, healthstatusFields } = getFields({ t, contact });
 	const isMentalRoom = get(contact, 'isMentalHealthRoom');
 	if (isMentalRoom) {
-		const huServices = hu =>
-			chain(['hasAssistance', 'hasHospitalization', 'hasTestCollect'])
-				.pickBy(v => !!hu[v])
-				.map(v => t(v))
-				.join(', ')
-				.value();
-
 		healthstatusFields = [
 			{
 				label: t('mental-problems'),
@@ -131,22 +109,6 @@ const Detail = ({ match }) => {
 					desc: get(contact, 'opDescription'),
 				},
 				transformValue: value => value.desc || get(value, 'op.description'),
-			},
-			{
-				label: t('nearest-health-unit'),
-				value: get(contact, 'healthUnits'),
-				transformValue: value =>
-					[].concat(
-						...map(value, hu =>
-							filter(
-								[hu.type, polite(hu.name), polite(hu.address), huServices(hu), huDistance(hu.distance), ' '],
-								i => i !== '',
-							),
-						),
-					),
-				readOnly: true,
-				dispensable: true,
-				breakLine: true,
 			},
 		];
 	}
@@ -267,6 +229,10 @@ const Detail = ({ match }) => {
 									{t('edit')}
 								</Button>
 							}
+						/>
+						<HealthUnits
+							healthUnits={contact.healthUnits}
+							contact={pick(contact, ['_id', '_updatedAt', 'indicatedHealthUnit'])}
 						/>
 					</Box>
 

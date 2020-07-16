@@ -2,9 +2,11 @@ import axios from 'axios';
 
 const fetchConfig = async (_, url) => {
 	if (url) {
-		const { data } = await axios.get(`https://${url}/api/v2/app-config`);
+		const http = /localhost/.test(url) ? 'http' : 'https';
+		const { data } = await axios.get(`${http}://${url}/api/v2/app-config`);
+
 		return {
-			'konecty-url': `https://${url}`,
+			'konecty-url': `${http}://${url}`,
 			...data,
 		};
 	}

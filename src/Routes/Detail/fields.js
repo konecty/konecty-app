@@ -112,23 +112,7 @@ export default ({ t, contact }) => {
 				desc: get(contact, 'opDescription'),
 			},
 			transformValue: value => value.desc || get(value, 'op.description'),
-		},
-		{
-			label: t('nearest-health-unit'),
-			value: get(contact, 'healthUnits'),
-			transformValue: value =>
-				[].concat(
-					...map(value, hu =>
-						filter(
-							[hu.type, polite(hu.name), polite(hu.address), huServices(hu), huDistance(hu.distance), ' '],
-							i => i !== '',
-						),
-					),
-				),
-			readOnly: true,
-			dispensable: true,
-			breakLine: true,
-		},
+		}
 	];
 
 	return { personalFields, healthstatusFields };

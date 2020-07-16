@@ -11,7 +11,6 @@
 	"phone": "Phone",
 	"gender": "Gender",
 	"age": "Age",
-	"nearest-health-unit": "Closest health units",
 	"registration-time-expired": "Registration time expired",
 	"notes": "Observation",
 
@@ -33,6 +32,16 @@
 	"hasAssistance": "Assistance",
 	"hasHospitalization": "Hospitalization",
 	"hasTestCollect": "Exam collection",
+	
+	"nearest-health-unit": "Closest health units",
+	"indicated": "Indicated",
+	"text-copied": "Text copied.",
+	"distance-from": "{{distance}}km from informed distance",
+	"indicated-health-unit": "Indicated Health Unit",
+	"type": "Type",
+	"address": "Address",
+	"services": "Services",
+	"distance": "Distance",
 
 	"opportunities": "Episodes",
 	"activities": "Tasks",
